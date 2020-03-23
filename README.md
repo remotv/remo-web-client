@@ -1,20 +1,19 @@
-If you want to run just the frontend, you can connect it to the live dev server. 
-In clientSettings.js you can: 
+## Remo Web Client
 
-```
-const localHost = "localhost"; //default
-const devServer = "35.185.203.47"; //default
+This is the frontend web client for Remo.TV built in React.
 
-const host = localHost; //If you want to run just the frontend, change this to devServer, instead of localHost
-```
-Like so: 
-```
-const host = devServer;
-```
+## SETUP:
 
-Then in termal run: 
-```npm run react```
+Make sure you have npm installed, then run the following:
+`npm install`
 
+IMPORTANT! Disable tracking for overrides.js, never ever commit any changes to the overrides.js file.
+`git update-index --assume-unchanged src/config/overrides.js`
+
+Instructions for running the client stand-alone TBD, for now you must also run the platform server as localhost:3000 [https://github.com/remotv/remo-platform-server](https://github.com/remotv/remo-platform-server)
+
+Then in termal run:
+`npm run react`
 
 ## Available Scripts
 
@@ -28,11 +27,6 @@ This command will also boot the websocket server, currently running on port: 323
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
-
-### `npm run server`
-
-This runs the express server for user authentication via JWT & Passport.<br>
-Currently not integrated into the main project.
 
 ### `npm test`
 

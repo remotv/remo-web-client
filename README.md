@@ -11,6 +11,7 @@ npm install
 ```
 
 IMPORTANT! Disable tracking for overrides.js, never ever commit any changes to the overrides.js file.<br>
+If your IDE is tracking changes to overrides.js, run this command:
 
 ```
 git update-index --assume-unchanged src/config/overrides.js

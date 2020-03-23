@@ -4,7 +4,7 @@ import Form from "../../common/form";
 import "./serverNotifications.scss";
 import axios from "axios";
 import InlineResponse from "../../common/inlineResult/inlineResult";
-import { membershipSettings } from "../../../config/client/index";
+import { membershipSettings } from "../../../config/index";
 
 export default class ServerNotifications extends Form {
   state = {

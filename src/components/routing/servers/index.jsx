@@ -9,7 +9,7 @@ import {
   listRobotServers,
   listFollowedServers,
   findServer
-} from "../../../config/client";
+} from "../../../config";
 import axios from "axios";
 import Modal from "../../common/modal";
 import "../../common/overlay.css";

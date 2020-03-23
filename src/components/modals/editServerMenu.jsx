@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import EditServerForm from "./editServerForm";
 import ServerNotifications from "../forms/serverNotifications/serverNotifications";
 import axios from "axios";
-import { findServer } from "../../config/client/index";
+import { findServer } from "../../config/index";
 import PaddedMessage from "../common/paddedMessage/paddedMessage";
 
 //Ideally, this should only be accessible if the user is a member of the server,

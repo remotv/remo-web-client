@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { setDefaultChannel } from "../../../config/client";
+import { setDefaultChannel } from "../../../config";
 import "../inlineForms.css";
 
 export default class DefaultChannel extends Component {

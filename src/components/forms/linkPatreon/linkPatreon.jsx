@@ -4,7 +4,7 @@ import {
   patreonClientID,
   patreonUrl,
   removePatreon
-} from "../../../config/client";
+} from "../../../config";
 import Confirm from "../../common/confirm/confirm";
 import Rewards from "./rewards";
 import axios from "axios";

@@ -3,7 +3,7 @@ import Form from "../../common/form";
 import Joi from "joi-browser";
 import "./editEmail.scss";
 import axios from "axios";
-import { updateEmail } from "../../../config/client/index";
+import { updateEmail } from "../../../config/index";
 
 export default class EditEmail extends Form {
   state = {

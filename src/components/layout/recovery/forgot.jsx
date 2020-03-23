@@ -2,7 +2,7 @@ import React from "react";
 import Form from "../../common/form";
 import axios from "axios";
 import Joi from "joi-browser";
-import { requestPasswordReset } from "../../../config/client";
+import { requestPasswordReset } from "../../../config";
 
 export default class Forgot extends Form {
   state = {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { deleteChannel } from "../../../config/client";
+import { deleteChannel } from "../../../config";
 import Confirm from "../../common/confirm/confirm";
 import "./deleteChannelForm.scss";
 

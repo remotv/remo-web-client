@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { welcome } from "../../../config/client/index";
+import { welcome } from "../../../config/index";
 import Images from "../../../imgs/placeholders";
 import InlineLink from "../../common/links/inlineLink";
 import "./welcome.scss";

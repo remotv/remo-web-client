@@ -2,7 +2,7 @@ import React from "react";
 import Form from "../../../common/form";
 import Joi from "joi-browser";
 import axios from "axios";
-import { addRobot } from "../../../../config/client";
+import { addRobot } from "../../../../config";
 
 export default class AddRobotForm extends Form {
   state = {

@@ -3,7 +3,7 @@ import React from "react";
 import Joi from "joi-browser";
 import "./chat.css";
 import { MESSAGE_SENT } from "../../../events/definitions";
-import { defaultRate } from "../../../config/client";
+import { defaultRate } from "../../../config";
 import uuidv4 from "uuid/v4";
 import GetLayout from "../../modules/getLayout";
 

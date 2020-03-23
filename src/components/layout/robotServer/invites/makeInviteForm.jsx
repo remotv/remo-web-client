@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Form from "../../../common/form";
 import axios from "axios";
-import { invite, disableInvite } from "../../../../config/client/index";
+import { invite, disableInvite } from "../../../../config/index";
 
 export default class MakeInviteForm extends Form {
   state = { data: {} };

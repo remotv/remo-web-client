@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BUTTON_COMMAND } from "../../../events/definitions";
-import { buttonRate, getControls } from "../../../config/client";
+import { buttonRate, getControls } from "../../../config";
 import EditOptions from "./editOptions";
 import "./robot.css";
 import VolumeControl from "./volumeControl";
@@ -10,7 +10,7 @@ import defaultImages from "../../../imgs/placeholders";
 import RenderButtons from "./renderButtons";
 import socket from "../../socket";
 import axios from "axios";
-import { ws as configSocket } from "../../../config/client/index";
+import { ws as configSocket } from "../../../config/index";
 
 export default class RobotInterface extends Component {
   state = {

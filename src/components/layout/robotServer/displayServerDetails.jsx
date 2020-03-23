@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Icon from "../../common/icon";
 import ICONS from "../../../icons/icons";
 import axios from "axios";
-import { joinServer, leaveServer } from "../../../config/client";
+import { joinServer, leaveServer } from "../../../config";
 import socket from "../../socket";
 import EditServer from "../../modals/editServer";
 import ServerMembers from "../../modals/serverMembers";

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./frontPage.css";
 import axios from "axios";
-import { getStats, patreonUrl } from "../../../config/client";
+import { getStats, patreonUrl } from "../../../config";
 import defaultImages from "../../../imgs/placeholders";
 
 // import TOS from "./tos";

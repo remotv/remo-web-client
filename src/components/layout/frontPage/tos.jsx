@@ -1,5 +1,5 @@
 import React from "react";
-import { supportEmail } from "../../../config/client";
+import { supportEmail } from "../../../config";
 import "./frontPage.css";
 
 const TOS = formatModal => {

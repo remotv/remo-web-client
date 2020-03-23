@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "../common/form";
 import axios from "axios";
-import { kickMember } from "../../config/client";
+import { kickMember } from "../../config";
 import "./editMember.css";
 
 export default class EditMemberForm extends Form {

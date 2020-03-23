@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { requestEmailValidation } from "../../../config/client/index";
+import { requestEmailValidation } from "../../../config/index";
 import axios from "axios";
 import "./verifyEmail.scss";
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import EditMemberForm from "../forms/editMemberForm";
-import { getMembers } from "../../config/client";
+import { getMembers } from "../../config";
 import "./serverMembersStyle.css";
 
 export default class ServerMembers extends Component {

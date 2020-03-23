@@ -2,7 +2,7 @@ import React from "react";
 import Form from "../../common/form";
 import Joi from "joi-browser";
 import axios from "axios";
-import { renameChannel } from "../../../config/client/index";
+import { renameChannel } from "../../../config/index";
 import InlineResponse from "../../common/inlineResult/inlineResult";
 import "./renameChannel.scss";
 

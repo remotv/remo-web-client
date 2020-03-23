@@ -1,6 +1,6 @@
 import React from "react";
 import { useWindowDimensions } from "../providers/windowDimensionProvider";
-import { breakPoint } from "../../config/client";
+import { breakPoint } from "../../config";
 
 //Interface for event listener, will return cb based window size
 const GetLayout = ({ renderSize, renderMobile, renderDesktop }) => {

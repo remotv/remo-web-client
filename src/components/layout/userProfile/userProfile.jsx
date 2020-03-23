@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "./userProfile.scss";
-import { userProfile } from "../../../config/client/index";
+import { userProfile } from "../../../config/index";
 import EditEmail from "./editEmail";
 import LinkPatreon from "../../forms/linkPatreon/linkPatreon";
 import VerifyEmail from "../../forms/verifyEmail/verifyEmail";

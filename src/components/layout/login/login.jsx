@@ -4,7 +4,7 @@ import Form from "../../common/form";
 import Joi from "joi-browser";
 import "./login.css";
 import axios from "axios";
-import { apiLogin, recoveryPage } from "../../../config/client";
+import { apiLogin, recoveryPage } from "../../../config";
 import { Redirect } from "react-router-dom";
 
 export default class Login extends Form {

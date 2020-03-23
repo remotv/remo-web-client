@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import { validateEmailWithKey } from "../../../config/client";
+import { validateEmailWithKey } from "../../../config";
 import axios from "axios";
 import "./validateEmail.scss";
 

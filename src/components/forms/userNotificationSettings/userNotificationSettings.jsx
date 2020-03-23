@@ -3,7 +3,7 @@ import Toggle from "../../common/toggle";
 import InlineResponse from "../../common/inlineResult/inlineResult";
 import InlineItem from "../../styleComponents/inlineItem/inlineItem";
 import axios from "axios";
-import { updateUserSettings } from "../../../config/client";
+import { updateUserSettings } from "../../../config";
 
 export default class UserNotificationSettings extends Component {
   state = {

@@ -4,7 +4,7 @@ import axios from "axios";
 import Joi from "joi-browser";
 import Forgot from "./forgot";
 import { Redirect } from "react-router-dom";
-import { validateResetKey, passwordReset } from "../../../config/client";
+import { validateResetKey, passwordReset } from "../../../config";
 import "../login/login.css";
 
 export default class Recovery extends Form {

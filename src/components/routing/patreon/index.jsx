@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import queryString from "query-string";
 import { Redirect } from "react-router-dom";
-import { urlPrefix, linkPatreon } from "../../../config/client/index";
+import { urlPrefix, linkPatreon } from "../../../config/index";
 import "./patreon.css";
 
 export default class Patreon extends Component {

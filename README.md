@@ -4,15 +4,15 @@ This is the frontend web client for Remo.TV built in React.
 
 ## SETUP:
 
-Make sure you have npm installed, then run the following:
+Make sure you have npm installed, then run the following:<br>
 `npm install`
 
-IMPORTANT! Disable tracking for overrides.js, never ever commit any changes to the overrides.js file.
-`git update-index --assume-unchanged src/config/overrides.js`
+IMPORTANT! Disable tracking for overrides.js, never ever commit any changes to the overrides.js file.<br>
+`git update-index --assume-unchanged src/config/overrides.js`<br>
 
-Instructions for running the client stand-alone TBD, for now you must also run the platform server as localhost:3000 [https://github.com/remotv/remo-platform-server](https://github.com/remotv/remo-platform-server)
+Instructions for running the client stand-alone TBD, for now you must also run the platform server as localhost:3000 [https://github.com/remotv/remo-platform-server](https://github.com/remotv/remo-platform-server)<br>
 
-Then in termal run:
+Then in termal run:<br>
 `npm run react`
 
 ## Available Scripts

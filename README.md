@@ -1,29 +1,35 @@
-## Remo Web Client
+# Remo Web Client
 
 This is the frontend web client for Remo.TV built in React.
 
-## Setup:
+### Setup:
 
 Make sure you have npm installed, then run the following:<br>
 
-### `npm install`
+```
+npm install
+```
 
 IMPORTANT! Disable tracking for overrides.js, never ever commit any changes to the overrides.js file.<br>
 
-### `git update-index --assume-unchanged src/config/overrides.js`<br>
+```
+git update-index --assume-unchanged src/config/overrides.js
+```
 
 Instructions for running the client stand-alone TBD, for now you must also run the platform server as <br>
 localhost:3000 via [https://github.com/remotv/remo-platform-server](https://github.com/remotv/remo-platform-server)<br>
 
 Then in termal run:<br>
 
-### `npm run react`
+```
+npm run react
+```
 
-## Available Scripts
+### Available Scripts:
 
 In the project directory, you can run:
 
-### `npm start`
+##### `npm start`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -32,12 +38,12 @@ This command will also boot the websocket server, currently running on port: 323
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `npm test`
+##### `npm test`
 
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+##### `npm run build`
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -47,7 +53,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+##### `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 

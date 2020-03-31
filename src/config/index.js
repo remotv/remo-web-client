@@ -81,7 +81,11 @@ const defaults = {
   patreonClientID:
     "qzqYm-sCfZsMr-Va7LoFGRsNPBPO_bNb_TpLbxCOLSRVod_4t7sI2ezCVu3VMQ7o",
   linkPatreon: `${apiUrl}/integrations/patreon`,
-  removePatreon: `${apiUrl}/integrations/patreon-remove`
+  removePatreon: `${apiUrl}/integrations/patreon-remove`,
+
+  //External Links:
+  discordUrl: `https://discord.gg/7cAgWKV`,
+  githubUrl: `https://github.com/remotv/controller`
 };
 
 module.exports = Object.assign({}, defaults, overrides);

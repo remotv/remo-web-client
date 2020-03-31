@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./frontPage.css";
 import axios from "axios";
-import { getStats, patreonUrl } from "../../../config";
+import { getStats, patreonUrl, discordUrl, githubUrl } from "../../../config";
 import defaultImages from "../../../imgs/placeholders";
 
 // import TOS from "./tos";
@@ -107,7 +107,7 @@ const DisplayPrivacyPolicy = () => {
 const AddARobot = () => {
   return (
     <FPLinkCard
-      link="https://github.com/remotv/controller"
+      link={githubUrl}
       text="Software for adding a robot."
       image={defaultImages.gitIcon}
     />
@@ -126,7 +126,7 @@ const Platform = () => {
 const Discord = () => {
   return (
     <FPLinkCard
-      link="https://discord.gg/cczJfYk"
+      link={discordUrl}
       text="Join our Discord."
       image={defaultImages.discordIcon}
     />

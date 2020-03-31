@@ -3,7 +3,12 @@ import Emotes from "../../../emotes/emotes";
 import defaultImages from "../../../imgs/placeholders";
 import { mobileMessageFadeOut } from "../../../config";
 
-const Message = ({ message, channelName, printChannelName }) => {
+const Message = ({
+  message,
+  channelName,
+  printChannelName,
+  fadeoutMessageOnMobile
+}) => {
   const [fadeout, setFadeout] = useState(
     setTimeout(() => handleFade(), mobileMessageFadeOut)
   );
@@ -309,7 +314,8 @@ const Message = ({ message, channelName, printChannelName }) => {
   };
 
   const handleMessageContainer = () => {
-    if (fadeout === true) return "chat-message-container fade-out";
+    if (fadeout === true && fadeoutMessageOnMobile)
+      return "chat-message-container fade-out";
     return "chat-message-container";
   };
 

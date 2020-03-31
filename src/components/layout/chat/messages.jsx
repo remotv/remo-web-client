@@ -7,9 +7,14 @@ export default class Messages extends Component {
     this.scrollDown = this.scrollDown.bind(this);
   }
 
+  state = {
+    fadeoutMessageOnMobile: true
+  };
+
   scrollDown() {
     const { container } = this.refs;
     container.scrollTop = container.scrollHeight;
+    // console.log("Container: ", container);
   }
 
   componentDidMount() {
@@ -18,6 +23,12 @@ export default class Messages extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     this.scrollDown();
+    if (
+      this.state.fadeoutMessageOnMobile !== prevState.fadeoutMessageOnMobile
+    ) {
+      console.log("Change State: ", this.state.fadeoutMessageOnMobile);
+      this.render();
+    }
   }
 
   handleChannelName = channel_id => {
@@ -49,6 +60,7 @@ export default class Messages extends Component {
             showMobileNav={this.props.showMobileNav}
             channelName={this.handleChannelName(message.channel_id)}
             printChannelName={this.handlePrintChannelName(messages, index)}
+            fadeoutMessageOnMobile={this.state.fadeoutMessageOnMobile}
           />
         );
       } else {
@@ -57,9 +69,24 @@ export default class Messages extends Component {
     });
   };
 
+  handleTouchStart = () => {
+    console.log("Touch Start!");
+    this.setState({ fadeoutMessageOnMobile: false });
+  };
+
+  handleTouchEnd = () => {
+    console.log("Touch End!");
+    this.setState({ fadeoutMessageOnMobile: true });
+  };
+
   render() {
     return (
-      <div ref="container" className="chat-scroll">
+      <div
+        ref="container"
+        className="chat-scroll"
+        onTouchStart={() => this.handleTouchStart()}
+        onTouchEnd={() => this.handleTouchEnd()}
+      >
         {this.displayMessages(this.props.messages)}
       </div>
     );

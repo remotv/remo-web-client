@@ -337,7 +337,24 @@
   background-color: rgb(0, 218, 0);
 }
 
+.scroll-alert {
+  position: relative;
+  background-color: #1f93ff;
+  cursor: pointer;
+  display: flex;
+  padding: 6px;
+  margin-top: -2px;
+  z-index: 100;
+}
+
 @media only screen and (max-width: 768px) {
+  .scroll-alert {
+    display: flex;
+    margin: -23px -3px 3px -4px;
+    background-color: #1f93ff91;
+    font-size: 14px;
+  }
+
   .chat-container {
     width: 100%;
   }

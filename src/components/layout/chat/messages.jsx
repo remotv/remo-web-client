@@ -22,6 +22,7 @@ export default class Messages extends Component {
     const out = e.target;
     this.isScrolledToBottom =
       out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+    this.setState({ scrollCheck: this.isScrolledToBottom });
     console.log("Scroll Check: ", this.isScrolledToBottom);
   };
 
@@ -32,9 +33,18 @@ export default class Messages extends Component {
   componentDidUpdate(prevProps, prevState) {
     this.scrollDown();
     if (
-      this.state.fadeoutMessageOnMobile !== prevState.fadeoutMessageOnMobile
+      this.state.fadeoutMessageOnMobile !== prevState.fadeoutMessageOnMobile ||
+      this.state.scrollCheck !== this.isScrolledToBottom
     ) {
       console.log("Change State: ", this.state.fadeoutMessageOnMobile);
+      this.render();
+    }
+
+    if (
+      this.isScrolledToBottom === false &&
+      this.state.fadeoutMessageOnMobile === true
+    ) {
+      this.setState({ fadeoutMessageOnMobile: false });
       this.render();
     }
   }
@@ -87,17 +97,38 @@ export default class Messages extends Component {
     this.setState({ fadeoutMessageOnMobile: true });
   };
 
+  handleResetScroll = () => {
+    if (this.isScrolledToBottom === false) {
+      return (
+        <div
+          className="scroll-alert"
+          onClick={() => {
+            this.isScrolledToBottom = true;
+            this.setState({ fadeoutMessageOnMobile: true });
+            this.scrollDown();
+          }}
+        >
+          You are viewing older messages, click here to return.{" "}
+        </div>
+      );
+    }
+    return <React.Fragment />;
+  };
+
   render() {
     return (
-      <div
-        ref="container"
-        className="chat-scroll"
-        onTouchStart={() => this.handleTouchStart()}
-        onTouchEnd={() => this.handleTouchEnd()}
-        onScroll={e => this.handleMessagesScroll(e)}
-      >
-        {this.displayMessages(this.props.messages)}
-      </div>
+      <React.Fragment>
+        <div
+          ref="container"
+          className="chat-scroll"
+          onTouchStart={() => this.handleTouchStart()}
+          onTouchEnd={() => this.handleTouchEnd()}
+          onScroll={e => this.handleMessagesScroll(e)}
+        >
+          {this.displayMessages(this.props.messages)}
+        </div>
+        {this.handleResetScroll()}
+      </React.Fragment>
     );
   }
 }

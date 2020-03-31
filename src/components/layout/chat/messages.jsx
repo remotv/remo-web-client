@@ -13,9 +13,16 @@ export default class Messages extends Component {
 
   scrollDown() {
     const { container } = this.refs;
-    container.scrollTop = container.scrollHeight;
+    if (this.isScrolledToBottom) container.scrollTop = container.scrollHeight;
     // console.log("Container: ", container);
   }
+
+  handleMessagesScroll = e => {
+    const out = e.target;
+    this.isScrolledToBottom =
+      out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+    console.log("Scroll Check: ", this.isScrolledToBottom);
+  };
 
   componentDidMount() {
     this.scrollDown();
@@ -86,6 +93,7 @@ export default class Messages extends Component {
         className="chat-scroll"
         onTouchStart={() => this.handleTouchStart()}
         onTouchEnd={() => this.handleTouchEnd()}
+        onScroll={e => this.handleMessagesScroll(e)}
       >
         {this.displayMessages(this.props.messages)}
       </div>

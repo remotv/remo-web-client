@@ -344,7 +344,6 @@
   display: flex;
   padding: 6px;
   margin-top: -2px;
-  z-index: 100;
 }
 
 @media only screen and (max-width: 768px) {

@@ -97,15 +97,23 @@ export default class Messages extends Component {
     this.setState({ fadeoutMessageOnMobile: true });
   };
 
+  handleResetScrolling = () => {
+    this.isScrolledToBottom = true;
+    this.setState({ fadeoutMessageOnMobile: true });
+    this.scrollDown();
+  };
+
   handleResetScroll = () => {
     if (this.isScrolledToBottom === false) {
       return (
         <div
           className="scroll-alert"
           onClick={() => {
-            this.isScrolledToBottom = true;
-            this.setState({ fadeoutMessageOnMobile: true });
-            this.scrollDown();
+            this.handleResetScrolling();
+          }}
+          onTouchStart={() => {
+            console.log("touch!");
+            this.handleResetScrolling();
           }}
         >
           You are viewing older messages, click here to return.{" "}

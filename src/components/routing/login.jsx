@@ -3,6 +3,7 @@ import Login from "../layout/login/login";
 import Signup from "../layout/login/signup";
 import "../layout/login/login.css";
 import defaultImages from "../../imgs/placeholders";
+import { discordUrl, supportEmail } from "../../config";
 
 export default class LoginPage extends Component {
   constructor(props) {
@@ -30,11 +31,10 @@ export default class LoginPage extends Component {
           ... or login ...
           <Login />
           <div className="">
-            Questions, Comments, or Issues? contact jill@remo.tv
+            Questions, Comments, or Issues? contact {supportEmail}
           </div>
           <div>
-            Or join our discord ( and get faster response ):{" "}
-            <a href="https://discord.gg/cczJfYk">https://discord.gg/cczJfYk</a>
+            or join our discord: <a href={discordUrl}>{discordUrl}</a>
           </div>
         </div>
       </React.Fragment>

@@ -9,7 +9,8 @@ export default class Messages extends Component {
   }
 
   state = {
-    fadeoutMessageOnMobile: true
+    fadeoutMessageOnMobile: true,
+    usingTouch: false
   };
 
   scrollDown() {
@@ -23,7 +24,6 @@ export default class Messages extends Component {
     this.isScrolledToBottom =
       out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
     this.setState({ scrollCheck: this.isScrolledToBottom });
-    console.log("Scroll Check: ", this.isScrolledToBottom);
   };
 
   componentDidMount() {
@@ -36,7 +36,6 @@ export default class Messages extends Component {
       this.state.fadeoutMessageOnMobile !== prevState.fadeoutMessageOnMobile ||
       this.state.scrollCheck !== this.isScrolledToBottom
     ) {
-      console.log("Change State: ", this.state.fadeoutMessageOnMobile);
       this.render();
     }
 
@@ -45,6 +44,14 @@ export default class Messages extends Component {
       this.state.fadeoutMessageOnMobile === true
     ) {
       this.setState({ fadeoutMessageOnMobile: false });
+      this.render();
+    }
+    if (
+      this.state.usingTouch === false &&
+      this.isScrolledToBottom === true &&
+      this.state.fadeoutMessageOnMobile === false
+    ) {
+      this.setState({ fadeoutMessageOnMobile: true });
       this.render();
     }
   }
@@ -88,13 +95,11 @@ export default class Messages extends Component {
   };
 
   handleTouchStart = () => {
-    console.log("Touch Start!");
-    this.setState({ fadeoutMessageOnMobile: false });
+    this.setState({ fadeoutMessageOnMobile: false, usingTouch: true });
   };
 
   handleTouchEnd = () => {
-    console.log("Touch End!");
-    this.setState({ fadeoutMessageOnMobile: true });
+    this.setState({ fadeoutMessageOnMobile: true, usingTouch: false });
   };
 
   handleResetScrolling = () => {
@@ -112,11 +117,10 @@ export default class Messages extends Component {
             this.handleResetScrolling();
           }}
           onTouchStart={() => {
-            console.log("touch!");
             this.handleResetScrolling();
           }}
         >
-          You are viewing older messages, click here to return.{" "}
+          You are viewing older messages, click here to return.
         </div>
       );
     }

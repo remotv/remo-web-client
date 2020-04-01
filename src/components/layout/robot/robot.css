@@ -159,8 +159,12 @@
   height: 30%;
   align-self: flex-end;
   flex-direction: row-reverse;
-  z-index: 5;
+  /* z-index: 5; */
   /* background-color: red; */
+}
+
+.display-control {
+  z-index: 5;
 }
 
 /* .label-container {

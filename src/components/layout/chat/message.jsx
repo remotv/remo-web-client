@@ -364,7 +364,7 @@ const rainbowForLifeNames = [
   "robosim",
   "backslashkieran",
   "mikey",
-  "skeet",
+  "brooke",
   "andrak",
   "xyamom",
   "RoyE",

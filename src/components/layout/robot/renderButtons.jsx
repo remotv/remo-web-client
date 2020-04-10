@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { updateInterfaceInterval } from "../../../config";
 import "../../presentation/robotInterface/cooldown.scss";
 import "./robot.css";
 

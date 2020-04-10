@@ -35,7 +35,8 @@ export default class RobotInterface extends Component {
 
   sendCurrentKey = () => {
     const button = this.keyMap[this.currentKey];
-    if (button && this.props.chatTabbed === false) {
+
+    if (button && !button.disabled && this.props.chatTabbed === false) {
       this.handleClick({
         user: this.props.user,
         controls_id: this.state.controlsId,
@@ -94,7 +95,8 @@ export default class RobotInterface extends Component {
         return;
       });
     });
-    this.setState({ controls: updateControls });
+    this.onGetControls({ buttons: updateControls, id: this.state.controlsId });
+
     // console.log(data);
   };
 
@@ -270,13 +272,15 @@ export default class RobotInterface extends Component {
 
   handleClick = click => {
     // console.log("CONTROLS ID: ", this.state.controlsId);
-    socket.emit(BUTTON_COMMAND, {
-      user: click.user,
-      button: click.button,
-      controls_id: this.state.controlsId,
-      channel: this.props.channel,
-      server: this.props.server.server_id
-    });
+    if (!click.button.disabled) {
+      socket.emit(BUTTON_COMMAND, {
+        user: click.user,
+        button: click.button,
+        controls_id: this.state.controlsId,
+        channel: this.props.channel,
+        server: this.props.server.server_id
+      });
+    }
   };
 
   handleRenderPresses = press => {

@@ -64,7 +64,7 @@ export default class RenderButtons extends Component {
       return controls.map((aButton, index) => {
         let hotKeyStyle = this.handleHotKeyStyle(aButton);
         let style = {};
-        if (aButton.hot_key === renderCurrentKey) {
+        if (aButton.hot_key === renderCurrentKey && !aButton.disabled) {
           style = {
             boxShadow: "inset 0 0 0 2px rgb(5, 214, 186)",
             transform: "translateY(4px)",

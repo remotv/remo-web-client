@@ -61,6 +61,7 @@
 .robtn-disabled {
   background-color: #414141;
   color: rgb(172, 172, 172);
+  cursor: not-allowed;
 }
 
 .robtn-admin:hover {

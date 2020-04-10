@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { BUTTON_COMMAND } from "../../../events/definitions";
-import { buttonRate, getControls } from "../../../config";
+import {
+  buttonRate,
+  getControls,
+  updateInterfaceInterval
+} from "../../../config";
 import EditOptions from "./editOptions";
 import "./robot.css";
 import VolumeControl from "./volumeControl";
@@ -16,12 +20,39 @@ export default class RobotInterface extends Component {
   state = {
     controls: [],
     logClicks: [],
+    trackTimers: [],
     displayLog: true,
     clickCounter: 0,
     controlsId: "",
     renderCurrentKey: null,
     renderPresses: [],
     canvasHeight: null
+  };
+
+  handleTimers = () => {
+    // const { controls } = this.state;
+    const controls = [...this.state.controls];
+    if (controls) {
+      controls.forEach(btn => {
+        if (btn.cooldown) {
+          this.handleUpdateTimer(btn);
+        }
+      });
+      this.setState({ controls });
+    }
+  };
+
+  handleUpdateTimer = btn => {
+    if (btn.timeStamp) {
+      const expire = btn.timeStamp + btn.cooldown * 1000;
+      const dif = (expire - Date.now()) / 1000;
+      btn.count = Math.round(btn.cooldown - dif);
+      if (btn.count > btn.cooldown) btn.count = btn.cooldown;
+    } else {
+      btn.count = btn.cooldown;
+    }
+    console.log("Updating Timer: ", btn.cooldown, btn.count);
+    return btn;
   };
 
   currentKey = null;
@@ -97,6 +128,10 @@ export default class RobotInterface extends Component {
     this.sendInterval = setInterval(this.sendCurrentKey, buttonRate);
     this.connectAV();
     this.emitGetControls();
+    this.updateInterval = setInterval(
+      this.handleTimers,
+      updateInterfaceInterval
+    );
   };
 
   async componentDidMount() {
@@ -168,6 +203,7 @@ export default class RobotInterface extends Component {
     socket.off("CONTROLS_UPDATED", this.onControlsUpdated);
 
     clearInterval(this.sendInterval);
+    clearInterval(this.updateInterval);
     // console.log("Robot Interface Unmounted");
   }
 
@@ -307,6 +343,7 @@ export default class RobotInterface extends Component {
     return (
       <RenderButtons
         controls={this.state.controls}
+        timers={this.state.trackTimers}
         renderPresses={this.state.renderPresses}
         renderCurrentKey={this.state.renderCurrentKey}
         onClick={e => this.handleClick(e)}

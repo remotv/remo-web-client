@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { updateInterfaceInterval } from "../../../config";
 import "../../presentation/robotInterface/cooldown.scss";
 import "./robot.css";
 
@@ -35,10 +36,9 @@ export default class RenderButtons extends Component {
   };
 
   handleCooldown = btn => {
-    console.log(btn);
     return (
       <span className="cooldown__container">
-        <span className="cooldown__time">{btn.cooldown}</span>
+        <span className="cooldown__time">{btn.count || btn.cooldown}</span>
         {` /`}
         <span className="cooldown__time">{btn.cooldown}</span>
       </span>
@@ -57,7 +57,6 @@ export default class RenderButtons extends Component {
 
   handleButtons = () => {
     const { controls, renderPresses, renderCurrentKey } = this.props;
-
     if (controls) {
       return controls.map((aButton, index) => {
         //console.log("A BUTTON: ", aButton);

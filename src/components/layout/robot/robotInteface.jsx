@@ -16,7 +16,6 @@ export default class RobotInterface extends Component {
   state = {
     controls: [],
     logClicks: [],
-    // trackTimers: [],
     displayLog: true,
     clickCounter: 0,
     controlsId: "",
@@ -24,32 +23,6 @@ export default class RobotInterface extends Component {
     renderPresses: [],
     canvasHeight: null
   };
-
-  // handleTimers = () => {
-  //   // const { controls } = this.state;
-  //   const controls = [...this.state.controls];
-  //   if (controls) {
-  //     controls.forEach(btn => {
-  //       if (btn.cooldown) {
-  //         this.handleUpdateTimer(btn);
-  //       }
-  //     });
-  //     this.setState({ controls });
-  //   }
-  // };
-
-  // handleUpdateTimer = btn => {
-  //   if (btn.timeStamp) {
-  //     const expire = btn.timeStamp + btn.cooldown * 1000;
-  //     const dif = (expire - Date.now()) / 1000;
-  //     btn.count = Math.round(btn.cooldown - dif);
-  //     if (btn.count > btn.cooldown) btn.count = btn.cooldown;
-  //   } else {
-  //     btn.count = btn.cooldown;
-  //   }
-  //   console.log("Updating Timer: ", btn.cooldown, btn.count);
-  //   return btn;
-  // };
 
   currentKey = null;
 
@@ -72,7 +45,7 @@ export default class RobotInterface extends Component {
     }
   };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.channel !== this.props.channel && this.props.channel) {
       this.clearAV();
       this.connectAV();
@@ -111,10 +84,25 @@ export default class RobotInterface extends Component {
     }
   }
 
+  onControlStateUpdated = data => {
+    let controls = [...this.state.controls];
+    let updateControls = [];
+    data.forEach(item => {
+      controls.forEach(button => {
+        if (button.id === item.id) updateControls.push(item);
+        else updateControls.push(button);
+        return;
+      });
+    });
+    this.setState({ controls: updateControls });
+    // console.log(data);
+  };
+
   onMount = () => {
     socket.on("GET_USER_CONTROLS", this.onGetControls);
     socket.on(BUTTON_COMMAND, this.onButtonCommand);
     socket.on("CONTROLS_UPDATED", this.onControlsUpdated);
+    socket.on("CONTROL_STATE_UPDATED", this.onControlStateUpdated);
     if (this.state.controls.length === 0)
       this.setState({ controls: testButtons });
     this.setupKeyMap(testButtons);
@@ -197,6 +185,7 @@ export default class RobotInterface extends Component {
     socket.off(BUTTON_COMMAND, this.onButtonCommand);
     socket.off("GET_USER_CONTROLS", this.onGetControls);
     socket.off("CONTROLS_UPDATED", this.onControlsUpdated);
+    socket.off("CONTROL_STATE_UPDATED", this.onControlStateUpdated);
 
     clearInterval(this.sendInterval);
     // clearInterval(this.updateInterval);

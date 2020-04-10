@@ -4,6 +4,8 @@ import "./robot.css";
 
 export default class RenderButtons extends Component {
   //render a single button
+
+  //oof, what does this all do lol
   handleButton = ({ aButton, style, hotKeyStyle }) => {
     const { onClick, user, controls_id, socket } = this.props;
     let hotKeyRender = this.handleButtonStyle(aButton);
@@ -45,11 +47,13 @@ export default class RenderButtons extends Component {
   };
 
   handleButtonStyle = aButton => {
+    if (aButton.disabled) return "robtn-disabled";
     if (aButton.access && aButton.access === "owner") return "robtn-admin";
     return "robtn";
   };
 
   handleHotKeyStyle = aButton => {
+    if (aButton.disabled) return "hotkey-disabled";
     if (aButton.access && aButton.access === "owner") return "hotkey-admin";
     return "hotkey";
   };
@@ -58,7 +62,6 @@ export default class RenderButtons extends Component {
     const { controls, renderPresses, renderCurrentKey } = this.props;
     if (controls) {
       return controls.map((aButton, index) => {
-        //console.log("A BUTTON: ", aButton);
         let hotKeyStyle = this.handleHotKeyStyle(aButton);
         let style = {};
         if (aButton.hot_key === renderCurrentKey) {
@@ -74,6 +77,9 @@ export default class RenderButtons extends Component {
             if (press.button.access && press.button.access === "owner") {
               style.backgroundColor = "#e44884";
               hotKeyStyle = "hotkey hotkey-admin-highlight";
+            } else if (press.button.disabled) {
+              hotKeyStyle = "hotkey hotkey-disabled-highlight";
+              style.backgroundColor = "#5e5e5e";
             } else {
               style.backgroundColor = "rgb(64, 76, 131)";
               hotKeyStyle = "hotkey hotkey-highlight";

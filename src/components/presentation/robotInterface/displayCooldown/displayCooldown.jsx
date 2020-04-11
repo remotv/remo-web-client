@@ -11,7 +11,12 @@ const DisplayCooldown = ({ count, cooldown }) => {
   const handleDigits = () => {
     const dif = getlength(cooldown) - getlength(count);
     let formatCount = count;
-    for (let i = 0; i < dif; i++) formatCount = " " + formatCount;
+    console.log("Dif: ", dif);
+    for (let i = 0; i < dif; i++) {
+      formatCount = " " + formatCount;
+      console.log("Loop: ", i);
+    }
+    console.log("Format Count////", formatCount, "/////");
     setDisplayCount(formatCount);
   };
 

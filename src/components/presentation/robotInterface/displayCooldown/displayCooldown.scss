@@ -2,8 +2,15 @@
   &__container {
     color: yellow;
     font-weight: bold;
+    font-family: monospace;
   }
-  &__time {
+  &__time-remainder {
     margin-left: 6px;
+  }
+  &__time-total {
+    color: red;
+  }
+  &__time-divider {
+    color: cyan;
   }
 }

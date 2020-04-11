@@ -1,3 +1,2 @@
-import DisplayCooldown from "./cooldown";
-
+import DisplayCooldown from "./displayCooldown/index";
 export { DisplayCooldown };

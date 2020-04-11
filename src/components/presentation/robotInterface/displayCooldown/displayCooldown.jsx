@@ -1,5 +1,5 @@
 import React from "react";
-import "./cooldown.scss";
+import "./displayCooldown.scss";
 
 const DisplayCooldown = ({ count, cooldown }) => {
   return (

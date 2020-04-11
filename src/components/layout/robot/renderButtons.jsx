@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../presentation/robotInterface/cooldown.scss";
+import { DisplayCooldown } from "../../presentation/robotInterface/";
 import "./robot.css";
 
 export default class RenderButtons extends Component {
@@ -31,18 +31,12 @@ export default class RenderButtons extends Component {
           <React.Fragment />
         )}
         {aButton.label}
-        {aButton.cooldown ? this.handleCooldown(aButton) : <React.Fragment />}
+        {aButton.cooldown ? (
+          <DisplayCooldown count={aButton.count} cooldown={aButton.cooldown} />
+        ) : (
+          <React.Fragment />
+        )}
       </button>
-    );
-  };
-
-  handleCooldown = btn => {
-    return (
-      <span className="cooldown__container">
-        <span className="cooldown__time">{btn.count || btn.cooldown}</span>
-        {` /`}
-        <span className="cooldown__time">{btn.cooldown}</span>
-      </span>
     );
   };
 

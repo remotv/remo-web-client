@@ -21,7 +21,7 @@ export default class RobotInterface extends Component {
     controlsId: "",
     renderCurrentKey: null,
     renderPresses: [],
-    canvasHeight: null
+    canvasHeight: null,
   };
 
   currentKey = null;
@@ -41,7 +41,7 @@ export default class RobotInterface extends Component {
         user: this.props.user,
         controls_id: this.state.controlsId,
         socket: socket,
-        button: button
+        button: button,
       });
     }
   };
@@ -70,7 +70,7 @@ export default class RobotInterface extends Component {
 
   emitGetControls = () => {
     const channel = this.props.channels.find(
-      chan => chan.id === this.props.channel
+      (chan) => chan.id === this.props.channel
     );
 
     if (channel) {
@@ -85,11 +85,11 @@ export default class RobotInterface extends Component {
     }
   }
 
-  onControlStateUpdated = data => {
+  onControlStateUpdated = (data) => {
     let controls = [...this.state.controls];
     let updateControls = [];
-    data.forEach(item => {
-      controls.forEach(button => {
+    data.forEach((item) => {
+      controls.forEach((button) => {
         if (button.id === item.id) updateControls.push(item);
         else updateControls.push(button);
         return;
@@ -144,7 +144,7 @@ export default class RobotInterface extends Component {
         videoBufferSize: 1 * 1024 * 1024,
         audio: false,
         disableWebAssembly: true,
-        opacity: true
+        opacity: true,
       }
     );
   };
@@ -194,7 +194,7 @@ export default class RobotInterface extends Component {
     // console.log("Robot Interface Unmounted");
   }
 
-  handleKeyDown = e => {
+  handleKeyDown = (e) => {
     if (!this.props.chatTabbed && !this.props.isModalShowing) {
       if (this.currentKey !== e.key) {
         this.setState({ renderCurrentKey: e.key });
@@ -204,7 +204,7 @@ export default class RobotInterface extends Component {
     }
   };
 
-  handleKeyUp = e => {
+  handleKeyUp = (e) => {
     if (e.key === this.currentKey) {
       this.currentKey = null;
       this.setState({ renderCurrentKey: null });
@@ -213,25 +213,25 @@ export default class RobotInterface extends Component {
 
   keyMap = {};
 
-  setupKeyMap = controls => {
+  setupKeyMap = (controls) => {
     const keyMap = {};
-    controls.map(button => {
+    controls.map((button) => {
       return (keyMap[button.hot_key] = button);
     });
     this.keyMap = keyMap;
   };
 
-  onButtonCommand = command => {
+  onButtonCommand = (command) => {
     this.handleLoggingClicks(command);
     this.handleRenderPresses(command);
   };
 
-  onGetControls = getControlData => {
+  onGetControls = (getControlData) => {
     // console.log("OnGetControls: ", getControlData);
     if (getControlData && getControlData.buttons.length > 0) {
       this.setState({
         controls: getControlData.buttons,
-        controlsId: getControlData.id
+        controlsId: getControlData.id,
       });
       this.setupKeyMap(getControlData.buttons);
     }
@@ -254,46 +254,48 @@ export default class RobotInterface extends Component {
       .post(
         getControls,
         {
-          channel_id: this.props.channel
+          channel_id: this.props.channel,
         },
         {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .then(res => {
+      .then((res) => {
         console.log(res);
         this.onGetControls(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
     return null;
   };
 
-  handleClick = click => {
+  handleClick = (click) => {
     // console.log("CONTROLS ID: ", this.state.controlsId);
-    if (!click.button.disabled) {
+    const isOwner = this.props.server.owner_id === this.props.user.id;
+    if (isOwner || !click.button.disabled) {
+      console.log("SENDING BUTTON EVENT: ", click.user);
       socket.emit(BUTTON_COMMAND, {
         user: click.user,
         button: click.button,
         controls_id: this.state.controlsId,
         channel: this.props.channel,
-        server: this.props.server.server_id
+        server: this.props.server.server_id,
       });
     }
   };
 
-  handleRenderPresses = press => {
+  handleRenderPresses = (press) => {
     let updatePresses = this.state.renderPresses;
     press.counter = setTimeout(() => this.handleClear(press), 200);
     updatePresses.push(press);
     this.setState({ renderPresses: updatePresses });
   };
 
-  handleClear = press => {
+  handleClear = (press) => {
     clearTimeout(press.counter);
     let updatePresses = [];
-    this.state.renderPresses.map(getPress => {
+    this.state.renderPresses.map((getPress) => {
       if (press.button.id === getPress.button.id) {
         //do nothing
       } else {
@@ -306,7 +308,7 @@ export default class RobotInterface extends Component {
       this.setState({ renderPresses: updatePresses });
   };
 
-  handleLoggingClicks = click => {
+  handleLoggingClicks = (click) => {
     let { logClicks, clickCounter } = this.state;
     clickCounter++;
     click.count = clickCounter;
@@ -319,7 +321,7 @@ export default class RobotInterface extends Component {
   };
 
   renderClickLog = () => {
-    return this.state.logClicks.map(click => {
+    return this.state.logClicks.map((click) => {
       return (
         <div className="display-info" key={click.count}>
           {`${click.user.username} pressed ${click.button.label}`}
@@ -334,7 +336,7 @@ export default class RobotInterface extends Component {
         controls={this.state.controls}
         renderPresses={this.state.renderPresses}
         renderCurrentKey={this.state.renderCurrentKey}
-        onClick={e => this.handleClick(e)}
+        onClick={(e) => this.handleClick(e)}
         user={this.props.user}
         controls_id={this.state.controlsId}
         socket={socket}
@@ -355,7 +357,7 @@ export default class RobotInterface extends Component {
     return (
       <div
         className="mobile-options-menu"
-        ref={options => {
+        ref={(options) => {
           this.options = options;
         }}
       >

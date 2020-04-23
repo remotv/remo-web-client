@@ -96,8 +96,6 @@ export default class RobotInterface extends Component {
       });
     });
     this.onGetControls({ buttons: updateControls, id: this.state.controlsId });
-
-    // console.log(data);
   };
 
   onMount = () => {
@@ -190,8 +188,6 @@ export default class RobotInterface extends Component {
     socket.off("CONTROL_STATE_UPDATED", this.onControlStateUpdated);
 
     clearInterval(this.sendInterval);
-    // clearInterval(this.updateInterval);
-    // console.log("Robot Interface Unmounted");
   }
 
   handleKeyDown = (e) => {
@@ -227,7 +223,6 @@ export default class RobotInterface extends Component {
   };
 
   onGetControls = (getControlData) => {
-    // console.log("OnGetControls: ", getControlData);
     if (getControlData && getControlData.buttons.length > 0) {
       this.setState({
         controls: getControlData.buttons,
@@ -248,8 +243,6 @@ export default class RobotInterface extends Component {
   //Uses an API call to get controls for specific user.
   handleGetControls = async () => {
     const token = localStorage.getItem("token");
-    console.log("Get Controls for User", this.props.channel);
-    console.log(token);
     await axios
       .post(
         getControls,
@@ -261,7 +254,6 @@ export default class RobotInterface extends Component {
         }
       )
       .then((res) => {
-        console.log(res);
         this.onGetControls(res.data);
       })
       .catch((err) => {
@@ -271,10 +263,8 @@ export default class RobotInterface extends Component {
   };
 
   handleClick = (click) => {
-    // console.log("CONTROLS ID: ", this.state.controlsId);
     const isOwner = this.props.server.owner_id === this.props.user.id;
     if (isOwner || !click.button.disabled) {
-      console.log("SENDING BUTTON EVENT: ", click.user);
       socket.emit(BUTTON_COMMAND, {
         user: click.user,
         button: click.button,
@@ -346,7 +336,6 @@ export default class RobotInterface extends Component {
   };
 
   handleDisplayActivity = () => {
-    // console.log(this.refs);
     return (
       <div className="display-info-container">
         {this.state.displayLog ? this.renderClickLog() : <React.Fragment />}

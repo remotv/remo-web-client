@@ -78,7 +78,6 @@ export default class RenderButtons extends Component {
           }; // noice!
         }
         renderPresses.map((press) => {
-          // console.log(aButton.id);
           if (press && press.button.id === aButton.id) {
             if (press.button.access && press.button.access === "owner") {
               style.backgroundColor = "#e44884";
@@ -94,7 +93,7 @@ export default class RenderButtons extends Component {
           return null;
         });
         if (aButton.break) {
-          //console.log("Break!!!!!"); is this saved?
+          //do nothing?
         }
         if (aButton.break) return this.handleBreak(aButton, index);
         return this.handleButton({ aButton, style, hotKeyStyle });
@@ -103,15 +102,12 @@ export default class RenderButtons extends Component {
   };
 
   handleBreakPointStyle = (index) => {
-    //console.log("Checking Breakpoint Index: ", index);
     if (index === 0) return "label label-top";
     return "label";
   };
   handleBreak = (breakPoint, index) => {
     let renderBreak = null;
-    //console.log("Break: ", breakPoint);
     if (breakPoint.label !== "") {
-      //return label header
       renderBreak = (
         <div className="label-container">
           <div className={this.handleBreakPointStyle(index)}>

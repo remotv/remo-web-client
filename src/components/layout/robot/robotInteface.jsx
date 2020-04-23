@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { BUTTON_COMMAND } from "../../../events/definitions";
 import { buttonRate, getControls } from "../../../config";
 import EditOptions from "./editOptions";
-import "./robot.css";
 import VolumeControl from "./volumeControl";
 import GetLayout from "../../modules/getLayout";
 import { GlobalStoreCtx } from "../../providers/globalStore";
@@ -11,17 +10,29 @@ import RenderButtons from "./renderButtons";
 import socket from "../../socket";
 import axios from "axios";
 import { ws as configSocket } from "../../../config/index";
+import "./robot.css";
+
+/**
+ * Manage layout & behavior for robot controls:
+ * - video, audio, and button controls
+ *
+ * TODO:
+ * - Refactor into smaller components
+ * - Find a better method for using context to feed video canvas hieght to other components in app
+ * - emitGetControls should be a REST call
+ * - Fix offline video bg image issue ( troublesome for iOS, Safari, and possibly firefox )
+ */
 
 export default class RobotInterface extends Component {
   state = {
-    controls: [],
-    logClicks: [],
-    displayLog: true,
-    clickCounter: 0,
-    controlsId: "",
-    renderCurrentKey: null,
-    renderPresses: [],
-    canvasHeight: null,
+    controls: [], //controls to render
+    logClicks: [], //records incoming clicks by users from the server
+    displayLog: true, //display activity
+    clickCounter: 0, //number of clicks / presses behing sent to the server by this user
+    controlsId: "", //id reference for controls stored in serverside database
+    renderCurrentKey: null, //key this user is activiely pressing
+    renderPresses: [], //render user activity streamed from the server
+    canvasHeight: null, //height of the video display area
   };
 
   currentKey = null;
@@ -35,7 +46,6 @@ export default class RobotInterface extends Component {
 
   sendCurrentKey = () => {
     const button = this.keyMap[this.currentKey];
-
     if (button && !button.disabled && this.props.chatTabbed === false) {
       this.handleClick({
         user: this.props.user,
@@ -47,10 +57,13 @@ export default class RobotInterface extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    //Clear video / audio on channel change
     if (prevProps.channel !== this.props.channel && this.props.channel) {
       this.clearAV();
       this.connectAV();
     }
+
+    //update size of video canvas when the browser window changes sizes
     if (
       this.refs["video-canvas"] &&
       this.refs["video-canvas"].clientHeight &&
@@ -68,6 +81,7 @@ export default class RobotInterface extends Component {
     }
   }
 
+  //Get controls from server
   emitGetControls = () => {
     const channel = this.props.channels.find(
       (chan) => chan.id === this.props.channel
@@ -85,6 +99,7 @@ export default class RobotInterface extends Component {
     }
   }
 
+  //records updates to controls state streamed from server
   onControlStateUpdated = (data) => {
     let controls = [...this.state.controls];
     let updateControls = [];
@@ -112,13 +127,9 @@ export default class RobotInterface extends Component {
     this.sendInterval = setInterval(this.sendCurrentKey, buttonRate);
     this.connectAV();
     this.emitGetControls();
-    // this.updateInterval = setInterval(
-    //   this.handleTimers,
-    //   updateInterfaceInterval
-    // );
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     this.onMount();
   }
 
@@ -356,6 +367,7 @@ export default class RobotInterface extends Component {
     );
   };
 
+  //This is a mess.
   handleCanvasHeight = () => {
     const { canvasHeight } = this.state;
     return (

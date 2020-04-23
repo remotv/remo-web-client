@@ -3,9 +3,7 @@ import { DisplayCooldown } from "../../presentation/robotInterface/";
 import "./robot.css";
 
 export default class RenderButtons extends Component {
-  //render a single button
-
-  //oof, what does this all do lol
+  //single button render
   handleButton = ({ aButton, style, hotKeyStyle }) => {
     const { onClick, user, controls_id, socket } = this.props;
     let hotKeyRender = this.handleButtonStyle(aButton);
@@ -40,6 +38,28 @@ export default class RenderButtons extends Component {
     );
   };
 
+  //Render a break instead of a button
+  handleBreak = (breakPoint, index) => {
+    let renderBreak = null;
+    if (breakPoint.label !== "") {
+      renderBreak = (
+        <div className="label-container">
+          <div className={this.handleBreakPointStyle(index)}>
+            {breakPoint.label}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <React.Fragment key={`break-${index}`}>
+        {index === 0 ? <React.Fragment /> : <br />}
+        {renderBreak}
+      </React.Fragment>
+    );
+  };
+
+  //style assignment for the main part of the button display
   handleButtonStyle = (aButton) => {
     const isOwner = this.props.server.owner_id === this.props.user.id;
     if (aButton.disabled && isOwner) return "robtn-not-disabled-for-owner";
@@ -48,12 +68,19 @@ export default class RenderButtons extends Component {
     return "robtn";
   };
 
+  //style assignment for the button hotkey display
   handleHotKeyStyle = (aButton) => {
     if (aButton.disabled) return "hotkey-disabled";
     if (aButton.access && aButton.access === "owner") return "hotkey-admin";
     return "hotkey";
   };
 
+  handleBreakPointStyle = (index) => {
+    if (index === 0) return "label label-top";
+    return "label";
+  };
+
+  //map through all the buttons & display behavior
   handleButtons = () => {
     const {
       controls,
@@ -99,30 +126,6 @@ export default class RenderButtons extends Component {
         return this.handleButton({ aButton, style, hotKeyStyle });
       });
     }
-  };
-
-  handleBreakPointStyle = (index) => {
-    if (index === 0) return "label label-top";
-    return "label";
-  };
-  handleBreak = (breakPoint, index) => {
-    let renderBreak = null;
-    if (breakPoint.label !== "") {
-      renderBreak = (
-        <div className="label-container">
-          <div className={this.handleBreakPointStyle(index)}>
-            {breakPoint.label}
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <React.Fragment key={`break-${index}`}>
-        {index === 0 ? <React.Fragment /> : <br />}
-        {renderBreak}
-      </React.Fragment>
-    );
   };
 
   render() {

@@ -340,6 +340,7 @@ export default class RobotInterface extends Component {
         user={this.props.user}
         controls_id={this.state.controlsId}
         socket={socket}
+        server={this.props.server}
       />
     );
   };

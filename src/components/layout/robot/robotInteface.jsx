@@ -9,7 +9,7 @@ import defaultImages from "../../../imgs/placeholders";
 import RenderButtons from "./renderButtons";
 import socket from "../../socket";
 import axios from "axios";
-import { ws as configSocket } from "../../../config/index";
+import { ws as configSocket, jsmpegDisabled } from "../../../config/index";
 import "./robot.css";
 
 /**
@@ -134,6 +134,7 @@ export default class RobotInterface extends Component {
   }
 
   connectA = () => {
+    if (jsmpegDisabled) return;
     //need to add client options for video relay
     const protocol =
       window.location.protocol === "https:" ? "wss://" : configSocket;
@@ -144,6 +145,7 @@ export default class RobotInterface extends Component {
   };
 
   connectV = () => {
+    if (jsmpegDisabled) return;
     const protocol =
       window.location.protocol === "https:" ? "wss://" : configSocket;
     this.videoPlayer = new window.JSMpeg.Player(

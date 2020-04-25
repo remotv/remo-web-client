@@ -7,31 +7,35 @@ export default class DefaultChannel extends Component {
   state = {
     isDefault: null,
     error: "",
-    status: ""
+    status: "",
   };
 
   handleSetDefault = async () => {
-    const { id, host_id } = this.props.channel;
+    const { id, server_id } = this.props.channel;
     this.setState({ status: "...pending." });
     const token = localStorage.getItem("token");
-    await axios
+    axios
       .post(
         setDefaultChannel,
         {
           channel_id: id,
-          server_id: host_id
+          server_id: server_id,
         },
         {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .then(res => {
+      .then((res) => {
         console.log("Set Default Channel Response: ", res.data);
         if (res.data.error) {
           this.setState({ error: res.data.error });
         } else {
           this.setState({ status: "Channel is Default" });
         }
+      })
+      .catch((err) => {
+        console.log(err.response.data.error);
+        this.setState({ error: err.response.data.error });
       });
   };
 
@@ -47,7 +51,8 @@ export default class DefaultChannel extends Component {
   };
 
   handleStatus = () => {
-    const { status } = this.state;
+    const { status, error } = this.state;
+    if (error) return <div className="inline-error">{error}</div>;
     if (status !== "")
       return <div className="inline-no-action"> {status} </div>;
     return (

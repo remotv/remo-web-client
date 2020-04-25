@@ -86,7 +86,10 @@ const defaults = {
 
   //External Links:
   discordUrl: `https://discord.gg/7cAgWKV`,
-  githubUrl: `https://github.com/remotv/controller`
+  githubUrl: `https://github.com/remotv/controller`,
+
+  //JSMpeg
+  jsmpegDisabled: false,
 };
 
 module.exports = Object.assign({}, defaults, overrides);

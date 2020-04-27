@@ -136,20 +136,18 @@ export default class RobotInterface extends Component {
   connectA = () => {
     if (jsmpegDisabled) return;
     //need to add client options for video relay
-    const protocol =
-      window.location.protocol === "https:" ? "wss://" : configSocket;
+
     this.audioPlayer = new window.JSMpeg.Player(
-      `${protocol}remo.tv/receive?name=${this.props.channel}-audio`,
+      `wss://remo.tv/receive?name=${this.props.channel}-audio`,
       { video: false, disableWebAssembly: true }
     );
   };
 
   connectV = () => {
     if (jsmpegDisabled) return;
-    const protocol =
-      window.location.protocol === "https:" ? "wss://" : configSocket;
+
     this.videoPlayer = new window.JSMpeg.Player(
-      `${protocol}remo.tv/receive?name=${this.props.channel}-video`,
+      `wss://remo.tv/receive?name=${this.props.channel}-video`,
       {
         canvas: this.refs["video-canvas"],
         videoBufferSize: 1 * 1024 * 1024,

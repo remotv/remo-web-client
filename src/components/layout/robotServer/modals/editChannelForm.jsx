@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import DeleteChannelForm from "../../../forms/deleteChannelForm/deleteChannelForm";
 import DefaultChannel from "../../../forms/defaultChannel/index";
 import RenameChannel from "../../../forms/renameChannel/renameChannel";
+import DisplayRobotAPIKey from "../../../forms/displayRobotAPIKey";
 import "../../../forms/inlineForms.css";
 
 export default class EditChannelForm extends Component {
@@ -22,7 +23,7 @@ export default class EditChannelForm extends Component {
           channel={this.props.channel}
           displayName={this.state.name}
           server={this.props.server}
-          onChange={e => this.handleNameChange(e)}
+          onChange={(e) => this.handleNameChange(e)}
         />
 
         <DefaultChannel
@@ -33,11 +34,12 @@ export default class EditChannelForm extends Component {
           channel={this.props.channel}
           onDeleted={this.handleDeleted}
         />
+        <DisplayRobotAPIKey channel={this.props.channel} />
       </React.Fragment>
     );
   };
 
-  handleNameChange = name => {
+  handleNameChange = (name) => {
     this.setState({ name: name });
   };
 

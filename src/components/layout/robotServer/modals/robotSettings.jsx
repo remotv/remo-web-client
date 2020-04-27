@@ -6,6 +6,8 @@ import { deleteRobot, robotAPIKey } from "../../../../config";
 
 import axios from "axios";
 
+//TO BE DEPRECATED
+
 export default class RobotSettings extends Component {
   constructor(props) {
     super(props);
@@ -13,11 +15,11 @@ export default class RobotSettings extends Component {
       settings: {},
       apiToggle: false,
       apiKey: "",
-      isConfirmingDelete: false
+      isConfirmingDelete: false,
     };
     this.inputRef = null;
 
-    this.setInputRef = element => {
+    this.setInputRef = (element) => {
       this.inputRef = element;
     };
 
@@ -39,21 +41,21 @@ export default class RobotSettings extends Component {
       .post(
         robotAPIKey,
         {
-          robot_id: this.props.robot.id
+          robot_id: this.props.robot.id,
         },
         {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .then(res => {
+      .then((res) => {
         this.setState({ apiKey: res.data.key });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("Problem Fetching Key", err);
       });
   };
 
-  handleDelete = async e => {
+  handleDelete = async (e) => {
     console.log(this.props);
     const token = localStorage.getItem("token");
     e.preventDefault();
@@ -64,13 +66,13 @@ export default class RobotSettings extends Component {
         {
           robot_id: this.props.robot.id,
           host_id: this.props.robot.host_id,
-          owner_id: this.props.robot.owner_id
+          owner_id: this.props.robot.owner_id,
         },
         {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .catch(err => {
+      .catch((err) => {
         console.log("Could Not Delete Robot", err);
       });
 
@@ -79,7 +81,7 @@ export default class RobotSettings extends Component {
     this.props.onCloseModal();
   };
 
-  handleButtonType = label => {
+  handleButtonType = (label) => {
     if (label === "Delete Robot") {
       console.log(label);
       return "btn btn-delete";

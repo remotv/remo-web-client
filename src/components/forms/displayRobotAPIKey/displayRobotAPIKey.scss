@@ -1,0 +1,12 @@
+@import "../../../styles/mixins/inlineStyles.scss";
+@import "../mixins/mixins.scss";
+
+.displayRobotAPIKey {
+  &__container {
+    @include inline-container;
+    justify-content: space-between;
+  }
+  &__label {
+    @include label;
+  }
+}

@@ -7,7 +7,7 @@ import {
 import { colors } from "../../../config/colors";
 import AddChannelForm from "./modals/addChannelForm";
 import EditChannel from "./modals/editChannel";
-import DisplayRobot from "./displayRobot";
+// import DisplayRobot from "./displayRobot";
 import DisplayServerDetails from "./displayServerDetails";
 import socket from "../../socket";
 import { Link, Route, Switch } from "react-router-dom";

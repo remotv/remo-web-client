@@ -2,10 +2,11 @@ import React from "react";
 import "./inlineInput.scss";
 
 const InlineInput = React.forwardRef((props, ref) => {
-  const { name, label, error, type, passError, ...rest } = props;
+  const { name, label, error, type, passError, labelStyle, ...rest } = props;
+  const style = labelStyle || "inlineInput__label";
   return (
     <React.Fragment>
-      <label className="inlineInput__label" htmlFor={name}>
+      <label className={style} htmlFor={name}>
         {label}
       </label>
       <input
@@ -15,7 +16,7 @@ const InlineInput = React.forwardRef((props, ref) => {
         name={name}
         className="inlineInput__control"
       />
-      {passError(error)}
+      {error && passError ? passError(error) : <React.Fragment />}
     </React.Fragment>
   );
 });

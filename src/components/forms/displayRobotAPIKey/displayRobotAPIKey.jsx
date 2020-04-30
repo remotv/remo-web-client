@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Input from "../../common/input";
 import Toggle from "../../common/toggle";
 import { robotAPIKey } from "../../../config";
+import InlineInput from "../../common/inlineInput/inlineInput";
 import "./displayRobotAPIKey.scss";
 
 export default class DisplayRobotAPIKey extends Component {
@@ -12,7 +12,7 @@ export default class DisplayRobotAPIKey extends Component {
       settings: {},
       apiToggle: false,
       apiKey: "",
-      isConfirmingDelete: false,
+      copyState: "",
     };
     this.inputRef = null;
 
@@ -24,6 +24,7 @@ export default class DisplayRobotAPIKey extends Component {
       if (this.inputRef) {
         this.inputRef.select();
         document.execCommand("copy");
+        this.setState({ copyState: "Copied!" });
       }
     };
   }
@@ -64,28 +65,43 @@ export default class DisplayRobotAPIKey extends Component {
   render() {
     return (
       <div className="displayRobotAPIKey__container">
-        <Input
-          name={"API Key: "}
-          label={"API Key: "}
-          type={this.state.apiToggle ? "form" : "password"}
-          value={this.state.apiKey}
-          readOnly
-        />
-        <div className="toggle-clipboard-group">
+        <div className="displayRobotAPIKey__header">
+          This API key is required for your robot to stream.
+        </div>
+        <div className="displayRobotAPIKey__container-top">
+          <InlineInput
+            name={"API Key: "}
+            label={"API Key: "}
+            labelStyle="displayRobotAPIKey__label"
+            type={this.state.apiToggle ? "form" : "password"}
+            value={this.state.apiKey}
+            readOnly
+          />
           <textarea
             aria-hidden="true"
             className="hidden-clipboard"
             ref={this.setInputRef}
             value={this.state.apiKey}
           />
-          <div className="copy-to-clipboard" onClick={this.handleCopy}>
+        </div>
+        <div className="displayRobotAPIKey__container-bottom">
+          <div className="displayRobotAPIKey__toggle-container">
+            <Toggle
+              toggle={this.state.apiToggle}
+              label={"Show API Key"}
+              onClick={this.handleToggle}
+            />
+          </div>
+
+          <div
+            className="displayRobotAPIKey__copy-text"
+            onClick={this.handleCopy}
+          >
             copy to clipboard
           </div>
-          <Toggle
-            toggle={this.state.apiToggle}
-            label={"Show API Key"}
-            onClick={this.handleToggle}
-          />
+          <div className="displayRobotAPIKey__copy-success">
+            {this.state.copyState}
+          </div>
         </div>
       </div>
     );

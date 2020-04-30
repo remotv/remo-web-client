@@ -25,16 +25,15 @@ export default class EditChannelForm extends Component {
           server={this.props.server}
           onChange={(e) => this.handleNameChange(e)}
         />
-
         <DefaultChannel
           channel={this.props.channel}
           server={this.props.server}
         />
+        <DisplayRobotAPIKey channel={this.props.channel} />
         <DeleteChannelForm
           channel={this.props.channel}
           onDeleted={this.handleDeleted}
         />
-        <DisplayRobotAPIKey channel={this.props.channel} />
       </React.Fragment>
     );
   };

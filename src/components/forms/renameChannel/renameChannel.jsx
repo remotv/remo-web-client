@@ -131,7 +131,7 @@ export default class RenameChannel extends Form {
     return (
       <React.Fragment>
         <div className="renameChannel__container">
-          <div className="renameChannel__label">Channel Name: </div>
+          <div className="renameChannel__label">Robot Name: </div>
           {edit ? (
             this.handleEdit()
           ) : (

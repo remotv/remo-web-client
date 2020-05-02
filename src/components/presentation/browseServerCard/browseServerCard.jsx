@@ -37,8 +37,6 @@ const BrowseServerCard = ({
     );
   };
 
-  console.log(server);
-
   return (
     <div className="browseServerCard__container" title={title}>
       <div className="browseServerCard__image-container">

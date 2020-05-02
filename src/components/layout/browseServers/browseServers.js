@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import "./browseServers.css";
-import defaultImages from "../../../imgs/placeholders";
 import sortServers from "../robotServer/sortServers";
+import BrowseServerCard from "../../presentation/browseServerCard";
+import "./browseServers.css";
 
 export default class BrowseServers extends Component {
   state = {};
@@ -19,19 +19,20 @@ export default class BrowseServers extends Component {
     return this.handleDisplayServers(sorted);
   };
 
-  handleDisplayServers = servers => {
-    return servers.map(server => {
+  handleDisplayServers = (servers) => {
+    return servers.map((server) => {
+      let followed = this.props.followedServers.find(
+        (match) => match.server_id === server.server_id
+      );
+      if (followed) followed = true;
+      else followed = false;
       return (
-        <DisplayBrowseServers
+        <Link
+          to={`/${server.server_name}/${server.settings.defaultChannel}`}
           key={server.server_id}
-          defaultChannel={server.settings.default_channel}
-          serverName={server.server_name}
-          liveDevices={
-            server.status.liveDevices ? server.status.liveDevices : []
-          }
-          followed={server.followed}
-          count={server.status.count}
-        />
+        >
+          <BrowseServerCard {...server} followed={followed} />
+        </Link>
       );
     });
   };
@@ -42,29 +43,3 @@ export default class BrowseServers extends Component {
     );
   }
 }
-
-const DisplayBrowseServers = ({
-  serverName,
-  defaultChannel,
-  liveDevices,
-  count,
-  followed
-}) => {
-  return (
-    <Link to={`/${serverName}/${defaultChannel}`}>
-      <div className="browse-robot-server-container">
-        <img
-          className={
-            liveDevices.length > 0
-              ? "browse-display-robot-server-img live"
-              : "browse-display-robot-server-img"
-          }
-          alt=""
-          src={defaultImages.default01}
-        />
-        <div className={"browse-display-robot-server"}>{serverName}</div>
-        <div className="browse-display-robot-stats"> Members: {count}</div>
-      </div>
-    </Link>
-  );
-};

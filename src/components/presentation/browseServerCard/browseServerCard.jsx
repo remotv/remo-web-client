@@ -40,7 +40,7 @@ const BrowseServerCard = ({
   console.log(server);
 
   return (
-    <div className="browseServerCard__container">
+    <div className="browseServerCard__container" title={title}>
       <div className="browseServerCard__image-container">
         {handleLiveStatus()}
         {handleDisplayCount()}
@@ -56,9 +56,7 @@ const BrowseServerCard = ({
       </div>
 
       <div className="browseServerCard__info-container">
-        <div className="browseServerCard__server-name" title={title}>
-          {server_name}
-        </div>
+        <div className="browseServerCard__server-name">{server_name}</div>
       </div>
     </div>
   );

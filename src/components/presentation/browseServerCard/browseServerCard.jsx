@@ -14,8 +14,7 @@ const BrowseServerCard = ({
   const date = new Date(parseInt(created)).toDateString();
   const iconSize = 12;
   const title = `Created by: ${username} on ${date}`;
-  // const live = server.status.liveDevices.length || 0;
-  const live = username === "jill" ? 3 : 0;
+  const live = server.status.liveDevices.length || 0;
 
   const handleLiveStatus = () => {
     if (live)

@@ -195,6 +195,12 @@
   padding: 5px;
 }
 
+.alert-message {
+  color: white;
+  background: -webkit-linear-gradient(-45deg, #b31515 0%, #ee3b94 100%);
+  padding: 5px;
+}
+
 .messages-container {
   justify-content: left;
   text-align: left;

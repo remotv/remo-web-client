@@ -26,7 +26,6 @@ export default class BrowseServers extends Component {
       );
       if (followed) followed = true;
       else followed = false;
-      console.log(server, server.settings);
       return (
         <Link
           to={`/${server.server_name}/${server.settings.default_channel}`}

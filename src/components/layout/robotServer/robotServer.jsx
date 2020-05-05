@@ -8,6 +8,7 @@ import GetLayout from "../../modules/getLayout";
 
 export default class RobotServer extends Component {
   displayServers = (servers) => {
+    console.log("Robot Server Props: ", this.props);
     return servers.map((server) => {
       return (
         <DisplayRobotServer
@@ -45,7 +46,7 @@ export default class RobotServer extends Component {
     // console.log(this.props.followedServers);
     return (
       <div className="robot-server-container">
-        <Browse selectedServer={this.props.selectedServer} />
+        <Browse />
         {this.handleSorting(this.props.followedServers)}
         <AddServer
           modal={this.props.modal}

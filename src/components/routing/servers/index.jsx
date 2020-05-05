@@ -8,7 +8,7 @@ import ServerPage from "./server";
 import {
   listRobotServers,
   listFollowedServers,
-  findServer
+  findServer,
 } from "../../../config";
 import axios from "axios";
 import Modal from "../../common/modal";
@@ -29,40 +29,40 @@ export default class ServersPage extends Component {
       modalContent: [],
       reload: false,
       showMobileNav: true, //For handling mobile navigation states
-      getLogin: false
+      getLogin: false,
     };
   }
 
-  onCloseModal = e => {
+  onCloseModal = (e) => {
     if (e && e.reload) {
       this.setState({
         isShowing: false,
         modalContent: [],
-        reload: true
+        reload: true,
       });
     } else {
       this.setState({
         isShowing: false,
-        modalContent: []
+        modalContent: [],
       });
     }
   };
 
   //Mobile Navigation Handler
-  handleMobileFlag = e => {
+  handleMobileFlag = (e) => {
     const { showMobileNav } = e;
     // console.log("Mobile Flag Test", e);
     this.setState({ showMobileNav });
     return null;
   };
 
-  setModal = input => {
+  setModal = (input) => {
     // console.log("Modal Input: ", input);
     let updateContent = this.state.modalContent;
-    input.map(getInput => updateContent.push(getInput));
+    input.map((getInput) => updateContent.push(getInput));
     this.setState({
       isShowing: true,
-      modalContent: updateContent
+      modalContent: updateContent,
     });
     return null;
   };
@@ -89,12 +89,12 @@ export default class ServersPage extends Component {
     if (token) {
       await axios
         .get(listFollowedServers, {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         })
-        .then(response => {
+        .then((response) => {
           this.setState({ followedServers: response.data });
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           setTimeout(this.getFollowedServers, 600); //retry
         });
@@ -105,7 +105,7 @@ export default class ServersPage extends Component {
     return null;
   };
 
-  appendUnlistedServer = server => {
+  appendUnlistedServer = (server) => {
     // console.log("APPEND SERVER: ", server);
     let updateServers = this.state.robotServers;
     if (updateServers) {
@@ -123,13 +123,13 @@ export default class ServersPage extends Component {
         .post(
           findServer,
           {
-            server_name: selectedServer.server_name
+            server_name: selectedServer.server_name,
           },
           {
-            headers: { authorization: `Bearer ${token}` }
+            headers: { authorization: `Bearer ${token}` },
           }
         )
-        .then(response => {
+        .then((response) => {
           const { server_id } = response.data;
           if (server_id === selectedServer.server_id) {
             // console.log("Selected Server Response: ", response.data);
@@ -139,7 +139,7 @@ export default class ServersPage extends Component {
             console.log("Problem fetching data for selected server");
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           setTimeout(this.getSelectedServer, 600); //retry
         });
@@ -170,7 +170,7 @@ export default class ServersPage extends Component {
     Promise.all([this.getServers(), this.getFollowedServers()]);
   }
 
-  setServer = server => {
+  setServer = (server) => {
     const { selectedServer } = this.state;
     // console.log(server, selectedServer);
     // if server is going from server to home clear modals else if server is being set from no server or server is different
@@ -178,7 +178,7 @@ export default class ServersPage extends Component {
       this.setState({
         selectedServer: server,
         isShowing: false,
-        modalContent: []
+        modalContent: [],
       });
     } else if (
       (!selectedServer && server) ||
@@ -189,7 +189,7 @@ export default class ServersPage extends Component {
         server.server_id !== selectedServer.server_id)
     ) {
       this.setState({
-        selectedServer: server
+        selectedServer: server,
       });
     }
   };
@@ -231,7 +231,7 @@ export default class ServersPage extends Component {
     if (token) {
       socket.emit("AUTHENTICATE", {
         token: localStorage.getItem("token"),
-        alt
+        alt,
       });
       return;
     } else {
@@ -240,7 +240,7 @@ export default class ServersPage extends Component {
     this.setState({ getLogin: true });
   };
 
-  setUser = user => {
+  setUser = (user) => {
     this.setState({ user });
   };
 
@@ -305,11 +305,12 @@ export default class ServersPage extends Component {
             followedServers={this.state.followedServers}
             mobileState={this.handleMobileFlag}
             showMobileNav={this.state.showMobileNav}
+            locationSearch={this.props.location.search}
           />
           <Switch>
             <Route
               path="/get"
-              render={props => (
+              render={(props) => (
                 <BrowseServers
                   {...props}
                   setServer={this.setServer}
@@ -322,7 +323,7 @@ export default class ServersPage extends Component {
             <Route
               path="/:name"
               onChange={this.onRouteChange}
-              render={props => (
+              render={(props) => (
                 <ServerPage
                   {...props}
                   modal={this.setModal}
@@ -331,16 +332,16 @@ export default class ServersPage extends Component {
                   isModalShowing={this.state.isShowing}
                   robotServers={this.state.robotServers}
                   selectedServer={this.state.selectedServer}
-                  setServer={server => this.setServer(server)}
+                  setServer={(server) => this.setServer(server)}
                   mobileState={this.handleMobileFlag}
                   showMobileNav={this.state.showMobileNav}
-                  appendServer={server => this.appendUnlistedServer(server)}
+                  appendServer={(server) => this.appendUnlistedServer(server)}
                 />
               )}
             />
             <Route
               path="/"
-              render={props => (
+              render={(props) => (
                 <NoServerPage {...props} setServer={this.setServer} />
               )}
             />

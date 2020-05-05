@@ -8,7 +8,7 @@ export default class AddChannelForm extends Form {
   state = {
     data: { channel_name: "" },
     errors: {},
-    error: ""
+    error: "",
   };
 
   schema = {
@@ -18,7 +18,7 @@ export default class AddChannelForm extends Form {
       .max(18)
       .regex(/^[a-zA-Z0-9_]*$/)
       .trim()
-      .label("Channel Name")
+      .label("Channel Name"),
   };
 
   handleSubmitError = () => {
@@ -39,21 +39,22 @@ export default class AddChannelForm extends Form {
         addChannel,
         {
           server_id: server.server_id,
-          channel_name: channel_name
+          channel_name: channel_name,
         },
         {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .then(response => {
+      .then((response) => {
         if (response.data.error) {
           this.setState({ error: response.data.error });
         } else {
           this.setState({ error: "" });
         }
       })
-      .catch(err => {
-        console.log("Add Server Error: ", err);
+      .catch((err) => {
+        console.log(err.response.data.error);
+        this.setState({ error: err.response.data.error });
       });
 
     if (this.state.error === "") this.props.onCloseModal();

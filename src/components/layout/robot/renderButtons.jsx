@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import { DisplayCooldown } from "../../presentation/robotInterface/";
 import "./robot.css";
 
 export default class RenderButtons extends Component {
-  //render a single button
+  //single button render
   handleButton = ({ aButton, style, hotKeyStyle }) => {
     const { onClick, user, controls_id, socket } = this.props;
     let hotKeyRender = this.handleButtonStyle(aButton);
@@ -17,7 +18,7 @@ export default class RenderButtons extends Component {
             user: user,
             controls_id: controls_id,
             socket: socket,
-            button: aButton
+            button: aButton,
           })
         }
         style={style}
@@ -28,67 +29,19 @@ export default class RenderButtons extends Component {
           <React.Fragment />
         )}
         {aButton.label}
+        {aButton.cooldown ? (
+          <DisplayCooldown count={aButton.count} cooldown={aButton.cooldown} />
+        ) : (
+          <React.Fragment />
+        )}
       </button>
     );
   };
 
-  handleButtonStyle = aButton => {
-    if (aButton.access && aButton.access === "owner") return "robtn-admin";
-    return "robtn";
-  };
-
-  handleHotKeyStyle = aButton => {
-    if (aButton.access && aButton.access === "owner") return "hotkey-admin";
-    return "hotkey";
-  };
-
-  handleButtons = () => {
-    const { controls, renderPresses, renderCurrentKey } = this.props;
-
-    if (controls) {
-      return controls.map((aButton, index) => {
-        //console.log("A BUTTON: ", aButton);
-        let hotKeyStyle = this.handleHotKeyStyle(aButton);
-        let style = {};
-        if (aButton.hot_key === renderCurrentKey) {
-          style = {
-            boxShadow: "inset 0 0 0 2px rgb(5, 214, 186)",
-            transform: "translateY(4px)",
-            WebkitTransform: "translateY(4px)"
-          }; // noice!
-        }
-        renderPresses.map(press => {
-          // console.log(aButton.id);
-          if (press && press.button.id === aButton.id) {
-            if (press.button.access && press.button.access === "owner") {
-              style.backgroundColor = "#e44884";
-              hotKeyStyle = "hotkey hotkey-admin-highlight";
-            } else {
-              style.backgroundColor = "rgb(64, 76, 131)";
-              hotKeyStyle = "hotkey hotkey-highlight";
-            }
-          }
-          return null;
-        });
-        if (aButton.break) {
-          //console.log("Break!!!!!"); is this saved?
-        }
-        if (aButton.break) return this.handleBreak(aButton, index);
-        return this.handleButton({ aButton, style, hotKeyStyle });
-      });
-    }
-  };
-
-  handleBreakPointStyle = index => {
-    //console.log("Checking Breakpoint Index: ", index);
-    if (index === 0) return "label label-top";
-    return "label";
-  };
+  //Render a break instead of a button
   handleBreak = (breakPoint, index) => {
     let renderBreak = null;
-    //console.log("Break: ", breakPoint);
     if (breakPoint.label !== "") {
-      //return label header
       renderBreak = (
         <div className="label-container">
           <div className={this.handleBreakPointStyle(index)}>
@@ -104,6 +57,75 @@ export default class RenderButtons extends Component {
         {renderBreak}
       </React.Fragment>
     );
+  };
+
+  //style assignment for the main part of the button display
+  handleButtonStyle = (aButton) => {
+    const isOwner = this.props.server.owner_id === this.props.user.id;
+    if (aButton.disabled && isOwner) return "robtn-not-disabled-for-owner";
+    else if (aButton.disabled) return "robtn-disabled";
+    if (aButton.access && aButton.access === "owner") return "robtn-admin";
+    return "robtn";
+  };
+
+  //style assignment for the button hotkey display
+  handleHotKeyStyle = (aButton) => {
+    if (aButton.disabled) return "hotkey-disabled";
+    if (aButton.access && aButton.access === "owner") return "hotkey-admin";
+    return "hotkey";
+  };
+
+  handleBreakPointStyle = (index) => {
+    if (index === 0) return "label label-top";
+    return "label";
+  };
+
+  //map through all the buttons & display behavior
+  handleButtons = () => {
+    const {
+      controls,
+      renderPresses,
+      renderCurrentKey,
+      user,
+      server,
+    } = this.props;
+    const isOwner = server.owner_id === user.id;
+    if (controls) {
+      return controls.map((aButton, index) => {
+        let hotKeyStyle = this.handleHotKeyStyle(aButton);
+        let style = {};
+        if (
+          aButton.hot_key === renderCurrentKey &&
+          (isOwner || !aButton.disabled)
+        ) {
+          style = {
+            boxShadow: "inset 0 0 0 2px rgb(5, 214, 186)",
+            transform: "translateY(4px)",
+            WebkitTransform: "translateY(4px)",
+          }; // noice!
+        }
+        renderPresses.map((press) => {
+          if (press && press.button.id === aButton.id) {
+            if (press.button.access && press.button.access === "owner") {
+              style.backgroundColor = "#e44884";
+              hotKeyStyle = "hotkey hotkey-admin-highlight";
+            } else if (press.button.disabled) {
+              hotKeyStyle = "hotkey hotkey-disabled-highlight";
+              style.backgroundColor = "#5e5e5e";
+            } else {
+              style.backgroundColor = "rgb(64, 76, 131)";
+              hotKeyStyle = "hotkey hotkey-highlight";
+            }
+          }
+          return null;
+        });
+        if (aButton.break) {
+          //do nothing?
+        }
+        if (aButton.break) return this.handleBreak(aButton, index);
+        return this.handleButton({ aButton, style, hotKeyStyle });
+      });
+    }
   };
 
   render() {

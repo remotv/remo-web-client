@@ -1,0 +1,19 @@
+.cooldown {
+  &__container {
+    color: rgb(174, 195, 214);
+    font-weight: bold;
+    font-family: monospace;
+    margin-left: 8px;
+  }
+  &__time-remainder {
+    color: yellow;
+    white-space: pre;
+  }
+  &__time-total {
+    color: rgb(174, 195, 214);
+  }
+  &__time-divider {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+}

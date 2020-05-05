@@ -7,7 +7,7 @@ const Message = ({
   message,
   channelName,
   printChannelName,
-  fadeoutMessageOnMobile
+  fadeoutMessageOnMobile,
 }) => {
   const [fadeout, setFadeout] = useState(
     setTimeout(() => handleFade(), mobileMessageFadeOut)
@@ -26,10 +26,10 @@ const Message = ({
     special: "special",
     siteCommand: "site-command",
     self: "self",
-    event: "event"
+    event: "event",
   };
 
-  const handleEmotes = filterMessage => {
+  const handleEmotes = (filterMessage) => {
     let filter = [];
     filterMessage.split(" ").forEach((word, i) => {
       if (Emotes.hasOwnProperty(word)) {
@@ -53,12 +53,12 @@ const Message = ({
   Slot 4: Local Support (AKA Server Sub) 
   */
 
-  const handleBadges = message => {
+  const handleBadges = (message) => {
     const { badges } = message;
     if (message && message.type === types.moderation) return <React.Fragment />;
     if (badges && badges.length > 0) {
       // console.log("BADGES GET: ", badges);
-      return badges.map(badge => {
+      return badges.map((badge) => {
         // const checkString = badge.substring(0, 7);
         // console.log("BADGE GET: ", badge);
         if (badge === "patreon100") {
@@ -260,7 +260,7 @@ const Message = ({
     }
   };
 
-  const handleMessageType = message => {
+  const handleMessageType = (message) => {
     const { color } = message;
     if (message.type === types.moderation) {
       // console.log("Moderation Type Message");
@@ -269,6 +269,8 @@ const Message = ({
       return `chat-message robot-message`;
     } else if (message.type === "event") {
       return `chat-message event-message`;
+    } else if (message.type === "alert") {
+      return "chat-message alert-message";
     } else {
       return `chat-message ${color} ${
         // return `chat-message rainbow ${
@@ -277,7 +279,7 @@ const Message = ({
     }
   };
 
-  const handleMessageSender = message => {
+  const handleMessageSender = (message) => {
     if (
       message &&
       (message.type === types.moderation || message.type === "event")
@@ -287,12 +289,12 @@ const Message = ({
     return message.sender;
   };
 
-  const handleSenderColor = message => {
+  const handleSenderColor = (message) => {
     let color = "chat-user-name";
 
     //Older method with hardcoded names.
     //since rainbow names never expire, a server side implementation is required to replace this method
-    rainbowForLifeNames.forEach(name => {
+    rainbowForLifeNames.forEach((name) => {
       if (message.sender.toLowerCase() === name.toLowerCase()) {
         color = "chat-user-name rainbow";
       }
@@ -303,7 +305,7 @@ const Message = ({
     //Make username rainbow color if they have a patreon badge
     if (badges && badges.length > 0) {
       // console.log("BADGES GET: ", badges);
-      badges.map(badge => {
+      badges.map((badge) => {
         const checkString = badge.substring(0, 7);
         if (checkString === "patreon") color = "chat-user-name rainbow";
         return null;
@@ -319,7 +321,7 @@ const Message = ({
     return "chat-message-container";
   };
 
-  const handleChannelName = name => {
+  const handleChannelName = (name) => {
     if (name)
       return (
         <React.Fragment>
@@ -346,7 +348,7 @@ const Message = ({
           message.type === types.self ? "" : ":"
         }  `}</span>{" "}
         <span className="message-spacing">
-          {handleEmotes(message.message).map(element => {
+          {handleEmotes(message.message).map((element) => {
             return element;
           })}
         </span>
@@ -382,5 +384,5 @@ const rainbowForLifeNames = [
   "sybergoosejr",
   "Nocturnal",
   "Hopper",
-  "brillan150"
+  "brillan150",
 ];

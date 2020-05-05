@@ -7,8 +7,9 @@ import sortServers from "./sortServers";
 import GetLayout from "../../modules/getLayout";
 
 export default class RobotServer extends Component {
-  displayServers = servers => {
-    return servers.map(server => {
+  displayServers = (servers) => {
+    console.log("Robot Server Props: ", this.props);
+    return servers.map((server) => {
       return (
         <DisplayRobotServer
           key={server.server_id}
@@ -25,12 +26,12 @@ export default class RobotServer extends Component {
     });
   };
 
-  handleSorting = servers => {
+  handleSorting = (servers) => {
     const sorted = sortServers(servers, [], "default");
     return this.displayServers(sorted);
   };
 
-  handleActive = server => {
+  handleActive = (server) => {
     if (
       this.props.selectedServer &&
       server.server_id === this.props.selectedServer.server_id
@@ -45,8 +46,8 @@ export default class RobotServer extends Component {
     // console.log(this.props.followedServers);
     return (
       <div className="robot-server-container">
-        {this.handleSorting(this.props.followedServers)}
         <Browse />
+        {this.handleSorting(this.props.followedServers)}
         <AddServer
           modal={this.props.modal}
           onCloseModal={this.props.onCloseModal}

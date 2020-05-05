@@ -1,0 +1,61 @@
+@import "../../../styles/mixins/inlineStyles.scss";
+@import "../mixins/mixins.scss";
+
+.displayRobotAPIKey {
+  &__container {
+    @include inline-container;
+    flex-direction: column;
+  }
+  &__header {
+    color: #acacac;
+    display: flex;
+    padding-bottom: 6px;
+    padding-top: 6px;
+  }
+  &__container-top {
+    display: flex;
+    //  padding: 6px;
+    margin-bottom: 6px;
+  }
+  &__container-bottom {
+    display: flex;
+    flex-direction: row;
+
+    align-content: center;
+    //  padding: 6px;
+    //  justify-content: space-between;
+  }
+  &__textArea {
+    @include text-area;
+  }
+  &__label {
+    @include inline-label;
+    color: #ff5ca3;
+    align-self: center;
+  }
+  &__toggle-container {
+    display: flex;
+    margin-top: -6px;
+    //  padding: 6px;
+  }
+  &__copy-text {
+    font-size: 11px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* background-color: red; */
+    margin-right: 12px;
+    color: cyan;
+    cursor: pointer;
+    font-style: italic;
+    margin-left: 12px;
+  }
+  &__copy-text:hover {
+    text-decoration: underline;
+  }
+  &__copy-success {
+    font-size: 11px;
+    font-style: italic;
+    align-self: center;
+  }
+}

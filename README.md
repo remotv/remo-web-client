@@ -26,6 +26,19 @@ Then in termal run:<br>
 npm run react
 ```
 
+# Application Structure:
+
+For future development, componets will be migrated into these folders within the components folder: <br>
+functional - Pure logic and function components <br>
+presentation - Pure Style & CSS application <br>
+routing - Interal application navigation & routing structure <br>
+content - Pure Content, example: TOS text
+containers ( maybe ) - Basically components that just contain other components, like "NavBar". <br>
+providers - Context Providers <br>
+stores - application data stores <br>
+
+Any additional folders are part of an older structure, and will eventually be migrated into this new structure.
+
 ### Available Scripts:
 
 In the project directory, you can run:

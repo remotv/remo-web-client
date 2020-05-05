@@ -19,6 +19,7 @@ const defaults = {
   buttonRate: 100, //Pulse rate for holding down a button
   breakPoint: 768, //mobile layout resolution
   mobileMessageFadeOut: 5000, //how long do mobile messages display in chat before they fade out
+  // updateInterfaceInterval: 250, //update frequency for robot interface UI
 
   //URL Management:
   urlPrefix: "https://remo.tv/",
@@ -85,7 +86,10 @@ const defaults = {
 
   //External Links:
   discordUrl: `https://discord.gg/7cAgWKV`,
-  githubUrl: `https://github.com/remotv/controller`
+  githubUrl: `https://github.com/remotv/controller`,
+
+  //JSMpeg
+  jsmpegDisabled: false,
 };
 
 module.exports = Object.assign({}, defaults, overrides);

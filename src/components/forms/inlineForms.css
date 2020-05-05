@@ -38,6 +38,12 @@
   justify-content: flex-end;
 }
 
+.inline-error {
+  color: red;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .inline-action:hover {
   text-decoration: underline;
 }

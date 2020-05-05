@@ -6,9 +6,13 @@ import AddRobotForm from "./modals/addRobotForm";
 import RobotSettings from "./modals/robotSettings";
 import socket from "../../socket";
 
+/**
+ * TO BE DELETED: Just keeping it as a reference for now
+ */
+
 export default class DisplayRobot extends Component {
   state = {
-    robots: []
+    robots: [],
   };
 
   componentDidMount() {
@@ -19,7 +23,7 @@ export default class DisplayRobot extends Component {
 
   getRobotsEmit = () => {
     socket.emit("GET_ROBOTS", {
-      server_id: this.props.server.server_id
+      server_id: this.props.server.server_id,
     });
   };
 
@@ -28,7 +32,7 @@ export default class DisplayRobot extends Component {
     socket.off("connect", this.getRobotsEmit);
   }
 
-  socketRobotsHandler = robots => {
+  socketRobotsHandler = (robots) => {
     // console.log("GET ROBOTS CHECK: ", robots);
     this.setState({ robots: robots });
   };
@@ -83,10 +87,10 @@ class GetRobotSettings extends Component {
       {
         body: (
           <RobotSettings robot={this.props.robot} onCloseModal={onCloseModal} />
-        )
+        ),
       },
       { header: "" },
-      { footer: "" }
+      { footer: "" },
     ];
   };
 
@@ -110,10 +114,10 @@ class AddRobot extends Component {
     const { server, onCloseModal } = this.props;
     return [
       {
-        body: <AddRobotForm server={server} onCloseModal={onCloseModal} />
+        body: <AddRobotForm server={server} onCloseModal={onCloseModal} />,
       },
       { header: "" },
-      { footer: "" }
+      { footer: "" },
     ];
   };
 

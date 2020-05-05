@@ -16,7 +16,7 @@ export default class Chat extends Component {
     storeUsers: [],
     users: [],
     menu: "Chat",
-    chatLoaded: false
+    chatLoaded: false,
   };
 
   onMount = () => {
@@ -47,21 +47,22 @@ export default class Chat extends Component {
   emitGetChat = () => {
     // console.log("EMIT GET CHAT");
     const channel = this.props.channels.find(
-      chan => chan.id === this.props.channel
+      (chan) => chan.id === this.props.channel
     );
 
     if (channel) {
-      socket.emit("GET_CHAT", channel.chat);
+      console.log("GET CHAT CHECK: ", channel);
+      socket.emit("GET_CHAT", channel.chat_id);
     }
   };
 
-  handleLocalChatModeration = data => {
+  handleLocalChatModeration = (data) => {
     // console.log("MODERATION EVENT: ", data);
     if (data.event === "remove_messages" && this.state.chatroom) {
       // console.log("REMOVING MESSAGES");
       let { messages } = this.state.chatroom;
       let remove = [];
-      messages.forEach(message => {
+      messages.forEach((message) => {
         if (message.sender_id === data.user) {
           message.type = "moderation";
           message.message = " ...message removed...";
@@ -82,9 +83,9 @@ export default class Chat extends Component {
     this._isMounted = false;
   }
 
-  removeModerationMessagesOnLoad = messages => {
+  removeModerationMessagesOnLoad = (messages) => {
     let remove = [];
-    messages.forEach(message => {
+    messages.forEach((message) => {
       if (message.type === "moderation" || message.type === "event") {
         //do nothing
       } else {
@@ -94,13 +95,13 @@ export default class Chat extends Component {
     return remove;
   };
 
-  onSendChat = chat => {
+  onSendChat = (chat) => {
     chat.messages = this.removeModerationMessagesOnLoad(chat.messages);
     // console.log(chat);
     this.setState({ chatroom: chat });
   };
 
-  onMessageRecieved = message => {
+  onMessageRecieved = (message) => {
     if (this.state.chatroom) {
       let { chatroom } = this.state;
       chatroom.messages.push(message);
@@ -108,7 +109,7 @@ export default class Chat extends Component {
     }
   };
 
-  handleChatFeedback = fromSendChat => {
+  handleChatFeedback = (fromSendChat) => {
     let push = previousFeedback !== fromSendChat.id;
 
     // console.log("HANDLE CHAT FEEDBACK", fromSendChat.id);
@@ -136,20 +137,20 @@ export default class Chat extends Component {
 
   getMessageColors = () => {
     const { chatroom } = this.state;
-    return chatroom.messages.map(message => {
+    return chatroom.messages.map((message) => {
       return {
         ...message,
-        color: this.props.getColor(message.sender || "nobody")
+        color: this.props.getColor(message.sender || "nobody"),
       };
     });
   };
 
-  handleMenuSelect = selected => {
+  handleMenuSelect = (selected) => {
     // console.log(selected);
     this.setState({ menu: selected });
   };
 
-  handleMenuItem = option => {
+  handleMenuItem = (option) => {
     return (
       <span
         className="menu-option"
@@ -210,7 +211,7 @@ export default class Chat extends Component {
               <div
                 className="chat-background"
                 style={{
-                  height: adjustCanvas
+                  height: adjustCanvas,
                 }}
               >
                 {this.handleDisplayMessages()}

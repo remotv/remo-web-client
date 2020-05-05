@@ -1,0 +1,57 @@
+@import "../../../styles/mixins/serverCard.scss";
+@import "../../../styles/variables.scss";
+
+.browseServerCard {
+  &__container {
+    @include browse-server-container;
+  }
+  //   &__info-container {
+  //     background: blue;
+  //   }
+  &__info-item {
+    color: $color-lavender;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  &__server-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: $color-lavender;
+    margin-top: 4px;
+  }
+  &__live-status {
+    @include live-status;
+    position: absolute;
+    margin-top: 6px;
+    margin-left: 12px;
+    font-size: 12px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+  &__member-count-container {
+    position: absolute;
+    font-size: 12px;
+    margin-top: 80px;
+    margin-left: 12px;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    //  align-items: center;
+  }
+  &__heart-container {
+    margin-right: 6px;
+  }
+  &__count {
+    margin-top: 1px;
+  }
+  &__server-img {
+    @include browse-server-image;
+  }
+  &__server-img-live {
+    @include browse-server-image-live;
+  }
+  &__image-container {
+    position: relative;
+  }
+}

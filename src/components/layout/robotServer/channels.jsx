@@ -2,12 +2,11 @@ import React, { Component } from "react";
 import {
   SEND_ROBOT_SERVER_INFO,
   ACTIVE_USERS_UPDATED,
-  CHANNELS_UPDATED
+  CHANNELS_UPDATED,
 } from "../../../events/definitions";
 import { colors } from "../../../config/colors";
 import AddChannelForm from "./modals/addChannelForm";
 import EditChannel from "./modals/editChannel";
-import DisplayRobot from "./displayRobot";
 import DisplayServerDetails from "./displayServerDetails";
 import socket from "../../socket";
 import { Link, Route, Switch } from "react-router-dom";
@@ -29,11 +28,11 @@ export default class Channels extends Component {
       storeSelectedServer: null,
       defaultLoaded: false,
       loadControls: "",
-      chatTabbed: false
+      chatTabbed: false,
     };
   }
 
-  setChatTabbed = value => {
+  setChatTabbed = (value) => {
     this.setState({ chatTabbed: value });
   };
 
@@ -56,12 +55,12 @@ export default class Channels extends Component {
     this.colorCleanup = setInterval(() => {
       const newColors = this.state.userColors;
       let usernamesToKeep = [];
-      this.state.users.map(user => {
+      this.state.users.map((user) => {
         usernamesToKeep.push(user.username);
         return null;
       });
 
-      Object.keys(colors).map(username => {
+      Object.keys(colors).map((username) => {
         if (usernamesToKeep.includes(username) !== true) {
           delete newColors[username];
         }
@@ -73,7 +72,7 @@ export default class Channels extends Component {
     document.addEventListener("keydown", this.handleKeyPress);
   }
 
-  handleKeyPress = e => {
+  handleKeyPress = (e) => {
     if (e.keyCode === 9) {
       e.preventDefault();
       // console.log(this.state.chatTabbed);
@@ -85,7 +84,7 @@ export default class Channels extends Component {
     return colors[Math.floor(Math.random() * colors.length)];
   };
 
-  getColor = username => {
+  getColor = (username) => {
     const { userColors } = this.state;
     const newColors = userColors;
 
@@ -102,59 +101,59 @@ export default class Channels extends Component {
   //Get users from props
   //See if user is in state, if so do nothing, if not add a color, and save them
   //V-2 if a user has been removed from props, remove them from state
-  getUserColors = users => {
-    return users.map(user => {
+  getUserColors = (users) => {
+    return users.map((user) => {
       return {
         ...user,
-        color: this.getColor(user.username)
+        color: this.getColor(user.username),
       };
     });
   };
 
-  handleSendServerInfo = data => {
+  handleSendServerInfo = (data) => {
     // console.log("SEND ROBOT SERVER INFO: ", data);
     this.setState({
       channels: data.channels,
       users: this.getUserColors(data.users),
-      invites: data.invites
+      invites: data.invites,
     });
     //if (this.state.currentChannel) this.handleClick(data.channels[0]);
   };
 
-  handleActiveUsersUpdated = users => {
+  handleActiveUsersUpdated = (users) => {
     this.setState({ users: this.getUserColors(users) });
   };
 
-  handleChannelsUpdated = data => {
+  handleChannelsUpdated = (data) => {
     const { selectedServer } = this.props;
     // console.log("CHANNELS UPDATED: ", data, selectedServer);
     if (selectedServer) {
       // console.log("UPDATING CHANNELS");
       this.setState({
-        channels: data
+        channels: data,
       });
     }
   };
 
   channelListener = () => {
     if (socket) {
-      socket.on(SEND_ROBOT_SERVER_INFO, data =>
+      socket.on(SEND_ROBOT_SERVER_INFO, (data) =>
         this.handleSendServerInfo(data)
       );
-      socket.on(ACTIVE_USERS_UPDATED, users =>
+      socket.on(ACTIVE_USERS_UPDATED, (users) =>
         this.handleActiveUsersUpdated(users)
       );
       socket.on(CHANNELS_UPDATED, this.handleChannelsUpdated);
     }
   };
 
-  handleServer = resetState => {
+  handleServer = (resetState) => {
     // console.log("handle server");
     if (resetState) this.setState({ channels: null, currentChannel: null });
     // console.log("get channels for", this.props.selectedServer.server_name);
     socket.emit("GET_CHANNELS", {
       user: this.props.user.id,
-      server_id: this.props.selectedServer.server_id
+      server_id: this.props.selectedServer.server_id,
     });
   };
 
@@ -166,12 +165,11 @@ export default class Channels extends Component {
     return null;
   };
 
-  handleCheckLiveDevices = channel => {
+  handleCheckLiveDevices = (channel) => {
     const { liveDevices } = this.props.selectedServer.status;
     let live = false;
-    liveDevices.forEach(device => {
-      const { current_channel } = device.status;
-      if (current_channel === channel.id) {
+    liveDevices.forEach((device) => {
+      if (device.id === channel.id) {
         // console.log(channel.name, "IS LIVE");
         live = true;
       }
@@ -227,7 +225,7 @@ export default class Channels extends Component {
     }
   };
 
-  setCurrentChannel = channel => {
+  setCurrentChannel = (channel) => {
     this.setState({ currentChannel: channel });
   };
 
@@ -256,13 +254,6 @@ export default class Channels extends Component {
         />
         {this.displayChannels()}
         <AddChannel
-          channels={this.state.channels}
-          server={selectedServer}
-          user={user}
-          modal={this.props.modal}
-          onCloseModal={this.props.onCloseModal}
-        />
-        <DisplayRobot
           channels={this.state.channels}
           server={selectedServer}
           user={user}
@@ -300,7 +291,7 @@ export default class Channels extends Component {
         <Switch>
           <Route
             path="/:name/:id"
-            render={props => (
+            render={(props) => (
               <Channel
                 {...props}
                 user={user}
@@ -322,7 +313,7 @@ export default class Channels extends Component {
           />
           <Route
             path="/:name"
-            render={props => (
+            render={(props) => (
               <NoChannel
                 {...props}
                 setCurrentChannel={this.setCurrentChannel}
@@ -354,10 +345,10 @@ class AddChannel extends Component {
             onCloseModal={this.props.onCloseModal}
             server={this.props.server}
           />
-        )
+        ),
       },
       { header: "" },
-      { footer: "" }
+      { footer: "" },
     ];
   };
 

@@ -13,7 +13,7 @@ export default class RenameChannel extends Form {
     errors: {},
     error: "",
     status: "",
-    success: ""
+    success: "",
   };
 
   componentDidMount() {
@@ -27,7 +27,7 @@ export default class RenameChannel extends Form {
       .max(18)
       .regex(/^[a-zA-Z0-9_]*$/)
       .trim()
-      .label("Channel Name")
+      .label("Channel Name"),
   };
 
   handleCloseResponse = () => {
@@ -52,7 +52,7 @@ export default class RenameChannel extends Form {
     return null;
   };
 
-  renderInlineButton = label => {
+  renderInlineButton = (label) => {
     //require validation?
     if (this.state.validation === true) {
       return (
@@ -73,26 +73,27 @@ export default class RenameChannel extends Form {
         renameChannel,
         {
           id: this.props.channel.id,
-          name: this.state.data.channel_name
+          name: this.state.data.channel_name,
         },
         {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .then(response => {
+      .then((response) => {
         console.log("Update Channel Response: ", response);
         if (response.data.error)
           this.setState({ error: response.data.error, status: "" });
         else {
           this.setState({
             success: "Channel name updated successfully!",
-            status: ""
+            status: "",
           });
           onChange(response.data.name);
         }
       })
-      .catch(err => {
-        console.log(err);
+      .catch((err) => {
+        console.log(err.response.data.error);
+        this.setState({ error: err.response.data.error, status: "" });
       });
   };
 
@@ -130,7 +131,7 @@ export default class RenameChannel extends Form {
     return (
       <React.Fragment>
         <div className="renameChannel__container">
-          <div className="renameChannel__label">Channel Name: </div>
+          <div className="renameChannel__label">Robot Name: </div>
           {edit ? (
             this.handleEdit()
           ) : (
@@ -142,7 +143,7 @@ export default class RenameChannel extends Form {
                   this.setState({
                     edit: !edit,
                     error: "",
-                    data: { channel_name: displayName }
+                    data: { channel_name: displayName },
                   })
                 }
               >

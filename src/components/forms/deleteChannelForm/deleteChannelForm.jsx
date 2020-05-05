@@ -9,7 +9,7 @@ export default class DeleteChannelForm extends Component {
     displayConfirm: false, //Toggle Confirm
     displayPending: false,
     displayResult: "", //Response Message
-    displayError: false
+    displayError: false,
   };
 
   handleDelete = async () => {
@@ -19,18 +19,17 @@ export default class DeleteChannelForm extends Component {
         deleteChannel,
         {
           channel_id: this.props.channel.id,
-          server_id: this.props.channel.host_id
         },
         {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .then(res => {
+      .then((res) => {
         // console.log("Delete Channel Response: ", res.data);
         if (res.data.error) {
           this.setState({
             displayResult: res.data.error,
-            displayError: true
+            displayError: true,
           });
           return;
         } else {
@@ -39,8 +38,12 @@ export default class DeleteChannelForm extends Component {
           return;
         }
       })
-      .catch(err => {
-        console.log("Add Server Error: ", err);
+      .catch((err) => {
+        console.log(err.response.data.error);
+        this.setState({
+          displayResult: err.response.data.error,
+          displayError: true,
+        });
       });
   };
 
@@ -54,7 +57,7 @@ export default class DeleteChannelForm extends Component {
     this.setState({
       displayConfirm: false,
       displayPending: false,
-      displayResult: ""
+      displayResult: "",
     });
 
     // onUpdated(); //Update Parent component
@@ -63,7 +66,7 @@ export default class DeleteChannelForm extends Component {
   handleCancel = () => {
     this.setState({
       displayConfirm: false,
-      displayPending: false
+      displayPending: false,
     });
   };
 
@@ -72,7 +75,7 @@ export default class DeleteChannelForm extends Component {
       displayConfirm,
       displayPending,
       displayResult,
-      displayError
+      displayError,
     } = this.state;
     return (
       <React.Fragment>

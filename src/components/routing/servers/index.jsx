@@ -166,7 +166,6 @@ export default class ServersPage extends Component {
       this.setState({ socketConnected: true });
       this.emitAuthentication();
     }
-
     Promise.all([this.getServers(), this.getFollowedServers()]);
   }
 

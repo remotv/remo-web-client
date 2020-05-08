@@ -240,7 +240,10 @@ export default class ServersPage extends Component {
   };
 
   setUser = (user) => {
-    this.setState({ user });
+    if (!user) {
+      localStorage.removeItem("token");
+      this.setState({ getLogin: true });
+    } else this.setState({ user });
   };
 
   socketConnected = () => {

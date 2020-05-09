@@ -51,7 +51,6 @@ export default class Chat extends Component {
     );
 
     if (channel) {
-      console.log("GET CHAT CHECK: ", channel);
       socket.emit("GET_CHAT", channel.chat_id);
     }
   };

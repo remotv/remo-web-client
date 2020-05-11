@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import EditServerForm from "./editServerForm";
-import ServerNotifications from "../forms/serverNotifications/serverNotifications";
+import ServerNotifications from "../forms/serverNotifications";
 import axios from "axios";
 import { findServer } from "../../config/index";
 import PaddedMessage from "../common/paddedMessage/paddedMessage";
@@ -36,16 +36,16 @@ export default class EditServerMenu extends Component {
       .post(
         findServer,
         {
-          server_name: server.server_name
+          server_name: server.server_name,
         },
         { headers: { authorization: `Bearer ${token}` } }
       )
-      .then(response => {
+      .then((response) => {
         console.log("Get Membership: ", response.data);
         const { membership } = response.data || null;
         this.setState({ membership: membership });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };

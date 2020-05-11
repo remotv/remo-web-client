@@ -1,0 +1,22 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/mixins/buttonStyles.scss";
+@import "../../../styles/mixins/inlineStyles.scss";
+@import "../mixins/mixins.scss";
+
+.defaultChannel {
+  &__container {
+    @include inline-container;
+    justify-content: space-between;
+  }
+  &__label {
+    @include label;
+  }
+  &__inline-no-action {
+    @include inline-content;
+    color: $color-robins-egg-blue-1;
+  }
+  &__inline-action {
+    @include button-as-text-default;
+    color: $color-remo-pink;
+  }
+}

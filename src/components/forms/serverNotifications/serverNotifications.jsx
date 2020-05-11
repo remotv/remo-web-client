@@ -3,7 +3,7 @@ import Toggle from "../../common/toggle";
 import Form from "../../common/form";
 import "./serverNotifications.scss";
 import axios from "axios";
-import InlineResponse from "../../common/inlineResult/inlineResult";
+import InlineResponse from "../../common/inlineResponse";
 import { membershipSettings } from "../../../config/index";
 
 export default class ServerNotifications extends Form {
@@ -12,12 +12,12 @@ export default class ServerNotifications extends Form {
     errors: {},
     error: "",
     settings: {
-      enable_notifications: null
+      enable_notifications: null,
     },
     compareSettings: {
-      enable_notifications: null
+      enable_notifications: null,
     },
-    status: ""
+    status: "",
   };
 
   schema = {};
@@ -40,13 +40,13 @@ export default class ServerNotifications extends Form {
         membershipSettings,
         {
           settings,
-          server_id: server_id
+          server_id: server_id,
         },
         {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .then(res => {
+      .then((res) => {
         console.log("Update membership settings result: ", res.data);
         if (res.data.error) {
           this.setState({ error: res.data.error });
@@ -57,12 +57,12 @@ export default class ServerNotifications extends Form {
   };
 
   handleNotificationToggle = () => {
-    this.setState(state => {
+    this.setState((state) => {
       return {
         settings: {
           ...state.settings,
-          enable_notifications: !state.settings.enable_notifications
-        }
+          enable_notifications: !state.settings.enable_notifications,
+        },
       };
     });
   };

@@ -81,6 +81,7 @@ export default class DisplayRobotAPIKey extends Component {
             className="hidden-clipboard"
             ref={this.setInputRef}
             value={this.state.apiKey}
+            readOnly
           />
         </div>
         <div className="displayRobotAPIKey__container-bottom">

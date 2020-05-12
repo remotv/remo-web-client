@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { setDefaultChannel } from "../../../config";
-import InlineForm from "../../presentation/inlineForm";
+import InlineForm from "../../templates/InlineForm";
 import InlineResponseHandler from "../../functional/inlineResponseHandler";
 import "./defaultChannel.scss";
 
@@ -68,8 +68,7 @@ export default class DefaultChannel extends Component {
         className="defaultChannel__inline-action"
         onClick={() => this.handleSetDefault()}
       >
-        {" "}
-        Set as Default{" "}
+        {`Set as Default.`}
       </div>
     );
   };

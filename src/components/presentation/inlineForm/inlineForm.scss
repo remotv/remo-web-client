@@ -11,4 +11,7 @@
   &__content {
     @include inline-content;
   }
+  &__group-container {
+    @include inline-group-container;
+  }
 }

@@ -1,2 +1,11 @@
-import InlineForm from "./inlineForm";
-export default InlineForm;
+import InlineFormLabel from "./inlineFormLabel";
+import InlineFormContent from "./inlineFormContent";
+import InlineFormContainer from "./inlineFormContainer";
+import InlineFormGroupContainer from "./inlineFormGroupContainer";
+
+export {
+  InlineFormLabel,
+  InlineFormContent,
+  InlineFormContainer,
+  InlineFormGroupContainer,
+};

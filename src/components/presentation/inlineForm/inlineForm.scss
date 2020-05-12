@@ -1,0 +1,14 @@
+@import "../../../styles/colors.scss";
+@import "../mixins/inlineForms.scss";
+
+.inlineForm {
+  &__container {
+    @include inline-container;
+  }
+  &__label {
+    @include inline-label;
+  }
+  &__content {
+    @include inline-content;
+  }
+}

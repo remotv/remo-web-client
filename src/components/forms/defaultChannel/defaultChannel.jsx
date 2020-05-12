@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { setDefaultChannel } from "../../../config";
+import InlineForm from "../../presentation/inlineForm";
 import InlineResponseHandler from "../../functional/inlineResponseHandler";
 import "./defaultChannel.scss";
 
@@ -75,24 +76,15 @@ export default class DefaultChannel extends Component {
 
   render() {
     const { error, success } = this.state;
+    const label = `Make this my default channel: `;
     return (
       <React.Fragment>
-        <div className="defaultChannel__container">
-          <div className="defaultChannel__label">
-            {" "}
-            Make this my default channel:{" "}
-          </div>
-          {this.handleStatus()}
-        </div>
-        {error || success ? (
-          <InlineResponseHandler
-            error={error}
-            success={success}
-            onClose={this.handleCloseResponse}
-          />
-        ) : (
-          <React.Fragment />
-        )}
+        <InlineForm label={label} content={this.handleStatus()} />
+        <InlineResponseHandler
+          error={error}
+          success={success}
+          onClose={this.handleCloseResponse}
+        />
       </React.Fragment>
     );
   }

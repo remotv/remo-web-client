@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Toggle from "../../common/toggle";
 import InlineResponse from "../../common/inlineResponse";
-import InlineItem from "../../presentation/inlineItem/inlineItem";
+import InlineItem from "../../presentation/inlineItem";
 import axios from "axios";
 import { updateUserSettings } from "../../../config";
 

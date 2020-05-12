@@ -48,7 +48,6 @@ export default class DisplayRobotAPIKey extends Component {
         }
       )
       .then((res) => {
-        console.log("API KEY RESPONSE: ", res.data);
         this.setState({ apiKey: res.data.key });
       })
       .catch((err) => {

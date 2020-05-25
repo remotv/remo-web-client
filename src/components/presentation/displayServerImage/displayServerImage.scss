@@ -1,0 +1,7 @@
+@import "../../../styles/mixins/serverCard.scss";
+
+.displayServerImage {
+  &__display {
+    @include browse-server-image;
+  }
+}

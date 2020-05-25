@@ -3,6 +3,8 @@ import Form from "../common/form";
 import Toggle from "../common/toggle";
 import axios from "axios";
 import { updateSettings } from "../../config";
+import UploadServerImage from "../views/inlineForms/uploadServerImage";
+import { InlineFormGroupContainer } from "../presentation/inlineForm/";
 
 export default class EditServerForm extends Form {
   state = {
@@ -12,15 +14,15 @@ export default class EditServerForm extends Form {
       unlist: null,
       private: null,
       phonetic_filter: null,
-      announce_followers_in_chat: null
+      announce_followers_in_chat: null,
     },
     compareSettings: {
       unlist: null,
       private: null,
       phonetic_filter: null,
-      announce_followers_in_chat: null
+      announce_followers_in_chat: null,
     },
-    error: ""
+    error: "",
   };
   schema = {};
 
@@ -33,7 +35,7 @@ export default class EditServerForm extends Form {
 
     this.setState({
       settings: settings,
-      compareSettings: settings
+      compareSettings: settings,
     });
   }
 
@@ -78,23 +80,23 @@ export default class EditServerForm extends Form {
           private: this.state.settings.private,
           phonetic_filter: this.state.settings.phonetic_filter,
           announce_followers_in_chat: this.state.settings
-            .announce_followers_in_chat
-        }
-      }
+            .announce_followers_in_chat,
+        },
+      },
     };
   };
 
-  handleUpdateSettings = async token => {
+  handleUpdateSettings = async (token) => {
     //  if (this.state.settings.unlist !== this.state.compareSettings.unlist) {
     console.log("Ding");
     await axios
       .post(updateSettings, this.settingsObject(), {
-        headers: { authorization: `Bearer ${token}` }
+        headers: { authorization: `Bearer ${token}` },
       })
-      .then(response => {
+      .then((response) => {
         console.log("SET LISTING RESPONSE: ", response);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -114,6 +116,9 @@ export default class EditServerForm extends Form {
           {this.props.server.server_name}
         </span>
         <br />
+        <InlineFormGroupContainer>
+          <UploadServerImage {...this.props.server} />
+        </InlineFormGroupContainer>
         <form onSubmit={this.handleSubmit}>
           Make Server Unlisted:
           <div className="toggle-group">

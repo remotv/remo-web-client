@@ -14,4 +14,14 @@
   &__group-container {
     @include inline-group-container;
   }
+  &__with-image-container {
+    display: flex;
+    flex-direction: row;
+  }
+  &__image-container {
+    margin-right: 6px;
+  }
+  &__form-with-image-container {
+    width: 100%;
+  }
 }

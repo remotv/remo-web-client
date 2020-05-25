@@ -20,6 +20,7 @@ export default class RobotServer extends Component {
           }
           followed={server.followed}
           settings={server.settings}
+          image_id={server.image_id}
         />
       );
     });

@@ -2,6 +2,7 @@ import React from "react";
 import "./robotServer.css";
 import defaultImages from "../../../imgs/placeholders";
 import { Link } from "react-router-dom";
+const { imageStore } = require("../../../config");
 
 const DisplayRobotServer = ({
   serverName,
@@ -9,7 +10,8 @@ const DisplayRobotServer = ({
   displayClasses,
   liveDevices,
   followed,
-  settings
+  settings,
+  image_id,
 }) => {
   return (
     <Link to={`/${serverName}/${defaultChannel}`}>
@@ -21,7 +23,7 @@ const DisplayRobotServer = ({
               : "display-robot-server-img"
           }
           alt=""
-          src={defaultImages.default01}
+          src={image_id ? imageStore + image_id : defaultImages.default01}
         />
         {handleShowPrivacy(settings)}
         <div className={"display-robot-server"}>{serverName}</div>
@@ -30,7 +32,7 @@ const DisplayRobotServer = ({
   );
 };
 
-const handleShowPrivacy = settings => {
+const handleShowPrivacy = (settings) => {
   const setPrivate = settings.private;
   const { unlist } = settings;
   if (setPrivate)

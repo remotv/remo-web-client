@@ -27,6 +27,7 @@ const defaults = {
   apiUrl: apiUrl,
   recoveryPage: overrides.recoveryPage || "https://remo.tv/recovery",
   ws: overrides.ws || "ws://",
+  imageStore: "https://remo-image-store.sfo2.digitaloceanspaces.com/user/",
 
   //User Signup / Login:
   reCaptchaSiteKey: "6Lfg_KYUAAAAAH1hvQdp-qDOUToVn6FQWFOvbySo",

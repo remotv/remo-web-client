@@ -1,5 +1,6 @@
 import React from "react";
 import defaultImages from "../../imgs/placeholders";
+import { imageStore } from "../../config";
 import "./serverCard.css";
 
 const ServerCard = ({
@@ -7,12 +8,17 @@ const ServerCard = ({
   owner_name,
   created,
   members,
-  live_devices
+  live_devices,
+  image_id,
 }) => {
   const renderServerImage = () => {
     return (
       <div className="server-img-container">
-        <img className="server-img" alt="" src={defaultImages.default01} />
+        <img
+          className="server-img"
+          alt=""
+          src={image_id ? imageStore + image_id : defaultImages.default01}
+        />
       </div>
     );
   };

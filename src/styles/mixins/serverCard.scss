@@ -11,12 +11,16 @@
 
 @mixin browse-server-image {
   width: 128px;
+  height: 96px;
+  object-fit: cover;
   border-radius: 6px;
   padding: 2px;
 }
 
 @mixin browse-server-img-small {
   width: 64px;
+  height: 48px;
+  object-fit: cover;
   border-radius: 24px;
   padding: 2px;
 }

@@ -1,0 +1,16 @@
+@import "../../../styles/mixins/buttonStyles.scss";
+
+.inlineButton {
+  &__default {
+    @include button-inline-default;
+  }
+  &__inline-gray {
+    @include button-inline-gray;
+  }
+  &__inline-inactive {
+    @include button-inline-inactive;
+  }
+  &__inline-delete {
+    @include button-inline-delete;
+  }
+}

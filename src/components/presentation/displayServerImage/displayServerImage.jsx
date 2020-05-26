@@ -7,7 +7,7 @@ const DisplayServerImage = ({ ...props }) => {
   return (
     <img
       className="displayServerImage__display"
-      src={getServerImage(props.image_id)}
+      src={getServerImage({ ...props })}
       alt=""
     />
   );

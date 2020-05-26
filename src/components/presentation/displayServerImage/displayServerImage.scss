@@ -3,5 +3,7 @@
 .displayServerImage {
   &__display {
     @include browse-server-image;
+    height: 100%;
+    padding: 0;
   }
 }

@@ -14,13 +14,24 @@ export default class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      redirect: false
+      redirect: false,
     };
   }
 
   componentDidMount() {
     this.handleQuery();
+    socket.on("LOGOUT", this.handleLogoutEvent);
   }
+
+  componentWillUnmount() {
+    socket.off("LOGOUT", this.handleLogoutEvent);
+  }
+
+  handleLogoutEvent = (user) => {
+    console.log("Logout, ", user);
+    localStorage.removeItem("token");
+    this.setState({ redirect: true });
+  };
 
   handleQuery = () => {
     const { locationSearch } = this.props;
@@ -73,10 +84,10 @@ export default class NavBar extends Component {
   handleModal = () => {
     return [
       {
-        body: <UserProfile {...this.props} />
+        body: <UserProfile {...this.props} />,
       },
       { header: "" },
-      { footer: "" }
+      { footer: "" },
     ];
   };
 

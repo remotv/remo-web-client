@@ -20,18 +20,18 @@ export default class FrontPage extends Component {
     totalUsers: "...",
     totalServers: "...",
     activeDevices: "...",
-    registeredDevices: "..."
+    registeredDevices: "...",
   };
 
   async componentDidMount() {
-    await axios.get(getStats).then(res => {
+    await axios.get(getStats).then((res) => {
       // console.log(res);
       this.setState({
         activeUsers: res.data.activeUsers,
         totalUsers: res.data.totalUsers,
         totalServers: res.data.totalServers,
         activeDevices: res.data.activeDevices,
-        registeredDevices: res.data.registeredDevices
+        registeredDevices: res.data.registeredDevices,
       });
     });
   }
@@ -42,12 +42,12 @@ export default class FrontPage extends Component {
       totalUsers,
       totalServers,
       activeDevices,
-      registeredDevices
+      registeredDevices,
     } = this.state;
     return (
       <div className="front-page-container">
         <div className="front-page-text">
-          <DisplayAlert show={false} />
+          <DisplayAlert show={true} />
           <br />
           <span>
             Control & share robots online remotely in real time with remo.tv{" "}
@@ -152,15 +152,19 @@ const Medium = () => {
 const DisplayAlert = ({ show }) => {
   return show === true ? (
     <div className="alert">
-      <span className="bolder">Important Notice 11/20/2019 </span>
+      <span className="bolder">Important Notice 05/27/2020 </span>
       <div>
-        In order to make Remo more secure, we've updated our site's encryption
-        methods. As a result, any robot using an API key generated before today
-        will not work.
+        In order to make remo more secure, we are requiring all robot video
+        streams to be authenticated. The robot's API key must be included in the
+        authorization header.
         <div>
           <br />
-          You can simply copy and paste the updated key already provided for
-          each robot under, "manage robots" to your robot's local settings.
+          If you are using the RemoTV python controller from the main repo, all
+          you need to do is pull the latest update, and you should be good to
+          go. This update is mandatory if you want your robot to continue to
+          work with Remo. If you have questions or comments, the discord link
+          below is the best place to get in touch, otherwise you can email
+          jill@remo.tv.
         </div>
       </div>
     </div>
@@ -174,7 +178,7 @@ const SingleLink = ({ link, text }) => {
     <div className="inline-link">
       <a
         href={link}
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault();
           window.open(link, "_blank");
         }}
@@ -191,7 +195,7 @@ const InlineLink = ({ link, text }) => {
       {text}
       <a
         href={link}
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault();
           window.open(link, "_blank");
         }}
@@ -207,7 +211,7 @@ const FPLinkCard = ({ link, image, text }) => {
     <React.Fragment>
       <a
         href={link}
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault();
           window.open(link, "_blank");
         }}

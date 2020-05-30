@@ -5,10 +5,13 @@ import {
   InlineFormStack,
   InlineFormContainer,
 } from "../../../presentation/inlineForm";
+import { uploadServerImage } from "../../../../config";
+import Requests from "../../../functional/requests";
 
 const UploadServerImage = ({ ...props }) => {
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState("");
+  const [doUpload, setDoUpload] = useState(false);
 
   console.log(props);
 
@@ -21,17 +24,35 @@ const UploadServerImage = ({ ...props }) => {
     setFile(file);
   };
 
+  const handleResult = (result) => {
+    console.log("RESULT: ", result);
+  };
+
   const handleUpload = () => {
     console.log("Upload!");
     setStatus({ status: "Uploading Image..." });
+    setDoUpload(true);
     return null;
+  };
+
+  const handleDoUpload = () => {
+    if (doUpload) {
+      const url = uploadServerImage.replace(":id", props.server_id);
+      return (
+        <Requests
+          url={url}
+          handleResult={(result) => handleResult(result)}
+          payload={{ server_img: file }}
+        />
+      );
+    } else return <React.Fragment />;
   };
 
   const handleDisplayUpload = () => {
     if (file)
       return (
         <InlineFormContainer>
-          <InlineButton onClick={() => handleUpload()}> Upload </InlineButton>
+          <InlineButton onClick={() => handleUpload()}>Upload</InlineButton>
         </InlineFormContainer>
       );
     return <Fragment />;
@@ -39,7 +60,7 @@ const UploadServerImage = ({ ...props }) => {
 
   const handleDisplayStatus = () => {
     if (status !== "")
-      return <InlineFormContainer> {status}</InlineFormContainer>;
+      return <InlineFormContainer> {status.status}</InlineFormContainer>;
   };
 
   const handleContent = () => {
@@ -60,6 +81,7 @@ const UploadServerImage = ({ ...props }) => {
         <InlineFormStack>
           {handleContent()}
           {handleDisplayUpload()}
+          {handleDoUpload()}
           {handleDisplayStatus()}
         </InlineFormStack>
       </InlineFormContainer>

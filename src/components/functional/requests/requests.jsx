@@ -17,57 +17,58 @@ import axios from "axios";
  *           />
  */
 
-const Requests = async ({ url, type, payload, handleResult }) => {
-  const [token] = useState(() => {
-    return localStorage.getItem("token");
-  });
-
+const Requests = ({ url, type, payload, handleResult }) => {
   const [retry, setRetry] = useState(0);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     handleReq();
   });
 
-  const handleReq = async () => {
+  const handleReq = () => {
+    const token = localStorage.getItem("token");
+    setToken(token);
     if (!type || type === "post") handlePost();
     return null;
   };
 
-  handleTimeout = callback => {
+  const handleTimeout = () => {
     handleResult({ error: "error, unable to complete request, retrying." });
     if (retry < 3) {
       setTimeout(() => {
-        callback;
+        handlePost();
       }, 600); //retry
       setRetry(retry + 1);
     } else {
       handleResult({
-        error: "unable to contact server, please try again later."
+        error: "unable to contact server, please try again later.",
       });
     }
   };
 
-  handlePost = async () => {
+  const handlePost = () => {
     if (!token) handleResult({ error: "authentication error." });
-    await axios
+    console.log("Posting to URL: ", url);
+    console.log(token, payload);
+    axios
       .post(
         url,
+
+        payload,
+
         {
-          payload
-        },
-        {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .then(res => {
+      .then((res) => {
+        console.log("REQUEST RESULT: ", res.data);
         handleResult(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("API Request Error: ", err);
-        handleTimeout(handlePost);
+        // handleTimeout();
       });
-
-    return;
+    return null;
   };
 
   return <React.Fragment />;

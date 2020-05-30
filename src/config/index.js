@@ -70,7 +70,7 @@ const defaults = {
   setServerListing: `${apiUrl}/robot-server/settings/listing`,
   setServerPrivate: `${apiUrl}/robot-server/settings/private`,
   updateSettings: `${apiUrl}/robot-server/settings/update`,
-  uploadServerImage: `${apiUrl}/:id/upload`,
+  uploadServerImage: `${apiUrl}/robot-server/:id/upload`,
   //Server Invites
   validateInviteKey: `${apiUrl}/robot-server/validate-invite`,
   disableInvite: `${apiUrl}/robot-server/deactivate-invite`,

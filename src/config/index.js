@@ -42,7 +42,6 @@ const defaults = {
 
   //General API
   listRobotServers: `${apiUrl}/robot-server/list`,
-
   addRobot: `${apiUrl}/robot/setup`,
   deleteRobot: `${apiUrl}/robot/delete`,
   robotAPIKey: `${apiUrl}/robot/key`,

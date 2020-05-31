@@ -17,14 +17,25 @@ import axios from "axios";
  *           />
  */
 
-const Requests = ({ url, type, payload, handleResult }) => {
+const Requests = ({
+  url,
+  type,
+  payload,
+  handleResult,
+  pending,
+  handlePending,
+}) => {
   const [retry, setRetry] = useState(0);
   const [token] = useState(() => {
     return localStorage.getItem("token");
   });
 
   useEffect(() => {
-    handleReq();
+    if (!pending) {
+      console.log(handlePending);
+      handlePending(true);
+      handleReq();
+    }
   });
 
   const handleReq = () => {
@@ -62,7 +73,9 @@ const Requests = ({ url, type, payload, handleResult }) => {
         handleResult(res.data);
       })
       .catch((err) => {
-        console.log("API Request Error: ", err);
+        const error = err.response.data.error;
+        console.log("API Request Error: ", error);
+        handleResult({ error: error });
         // handleTimeout();
       });
     return null;

@@ -7,25 +7,39 @@ import {
 } from "../../../presentation/inlineForm";
 import { uploadServerImage } from "../../../../config";
 import Requests from "../../../functional/requests";
+import InlineResponseHandler from "../../../functional/inlineResponseHandler/index";
 
 const UploadServerImage = ({ ...props }) => {
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState("");
   const [doUpload, setDoUpload] = useState(false);
-
-  console.log(props);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [pending, setPending] = useState(false);
+  const [previewImg, setPreviewImg] = useState(null);
 
   const handleImage = () => {
-    return <DisplayServerImage {...props} />;
+    return <DisplayServerImage otherImage={previewImg} {...props} />;
+  };
+
+  const handlePending = (pending) => {
+    setPending(pending);
+    return;
   };
 
   const handleSetFile = (e) => {
     let file = e.target.files[0];
     setFile(file);
+    setPreviewImg(URL.createObjectURL(e.target.files[0]));
   };
 
   const handleResult = (result) => {
     console.log("RESULT: ", result);
+    if (result.error) setError(result.error);
+    else setSuccess("Upload Successful!");
+    setStatus({ status: "" });
+    setDoUpload(false);
+    setFile(null);
   };
 
   const handleUpload = () => {
@@ -36,7 +50,7 @@ const UploadServerImage = ({ ...props }) => {
   };
 
   const handleDoUpload = () => {
-    if (doUpload) {
+    if (doUpload && !success && !error) {
       const url = uploadServerImage.replace(":id", props.server_id);
       let formData = new FormData();
       formData.append("server_img", file);
@@ -45,9 +59,16 @@ const UploadServerImage = ({ ...props }) => {
           url={url}
           handleResult={(result) => handleResult(result)}
           payload={formData}
+          pending={pending}
+          handlePending={(p) => handlePending(p)}
         />
       );
     } else return <React.Fragment />;
+  };
+
+  const handleCloseResponse = () => {
+    setSuccess("");
+    setError("");
   };
 
   const handleDisplayUpload = () => {
@@ -85,6 +106,11 @@ const UploadServerImage = ({ ...props }) => {
           {handleDisplayUpload()}
           {handleDoUpload()}
           {handleDisplayStatus()}
+          <InlineResponseHandler
+            success={success}
+            error={error}
+            onClose={handleCloseResponse}
+          />
         </InlineFormStack>
       </InlineFormContainer>
     </Fragment>

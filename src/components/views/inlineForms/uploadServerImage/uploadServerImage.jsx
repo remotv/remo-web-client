@@ -38,11 +38,13 @@ const UploadServerImage = ({ ...props }) => {
   const handleDoUpload = () => {
     if (doUpload) {
       const url = uploadServerImage.replace(":id", props.server_id);
+      let formData = new FormData();
+      formData.append("server_img", file);
       return (
         <Requests
           url={url}
           handleResult={(result) => handleResult(result)}
-          payload={{ server_img: file }}
+          payload={formData}
         />
       );
     } else return <React.Fragment />;

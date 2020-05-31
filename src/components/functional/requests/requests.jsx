@@ -19,15 +19,15 @@ import axios from "axios";
 
 const Requests = ({ url, type, payload, handleResult }) => {
   const [retry, setRetry] = useState(0);
-  const [token, setToken] = useState(null);
+  const [token] = useState(() => {
+    return localStorage.getItem("token");
+  });
 
   useEffect(() => {
     handleReq();
   });
 
   const handleReq = () => {
-    const token = localStorage.getItem("token");
-    setToken(token);
     if (!type || type === "post") handlePost();
     return null;
   };
@@ -47,13 +47,10 @@ const Requests = ({ url, type, payload, handleResult }) => {
   };
 
   const handlePost = () => {
-    if (!token) handleResult({ error: "authentication error." });
-    console.log("Posting to URL: ", url);
-    console.log(token, payload);
+    if (!token) return handleResult({ error: "authentication error." });
     axios
       .post(
         url,
-
         payload,
 
         {

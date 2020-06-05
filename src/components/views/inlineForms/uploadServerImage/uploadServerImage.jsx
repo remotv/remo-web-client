@@ -17,7 +17,6 @@ const UploadServerImage = ({ ...props }) => {
   const [success, setSuccess] = useState("");
   const [pending, setPending] = useState(false);
   const [previewImg, setPreviewImg] = useState(null);
-  const [updateImg, setUpdateImg] = useState(false);
 
   const handleImage = () => {
     return <DisplayServerImage otherImage={previewImg} {...props} />;
@@ -30,6 +29,15 @@ const UploadServerImage = ({ ...props }) => {
 
   const handleSetFile = (e) => {
     let file = e.target.files[0];
+    if (!file) return;
+    if (file.type !== "image/jpeg" && file.type !== "image/png") {
+      setError("Image format must be JPG or PNG");
+      return;
+    }
+    if (file.size >= 1024 * 1024) {
+      setError("File must be less than 1MB");
+      return;
+    }
     setFile(file);
     setPreviewImg(URL.createObjectURL(e.target.files[0]));
   };
@@ -90,31 +98,11 @@ const UploadServerImage = ({ ...props }) => {
   const handleContent = () => {
     return (
       <InlineFormContainer>
-        {updateImg ? (
-          <InlineFormStack>
-            <input
-              type="file"
-              name="myFile"
-              onChange={(file) => handleSetFile(file)}
-            />
-            <InlineButton
-              options="gray"
-              onClick={() => {
-                setUpdateImg(false);
-              }}
-            >
-              Cancel
-            </InlineButton>
-          </InlineFormStack>
-        ) : (
-          <InlineButton
-            onClick={() => {
-              setUpdateImg(true);
-            }}
-          >
-            Update Image
-          </InlineButton>
-        )}
+        <input
+          type="file"
+          name="myFile"
+          onChange={(file) => handleSetFile(file)}
+        />
       </InlineFormContainer>
     );
   };

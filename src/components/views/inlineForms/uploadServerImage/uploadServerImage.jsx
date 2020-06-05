@@ -17,6 +17,7 @@ const UploadServerImage = ({ ...props }) => {
   const [success, setSuccess] = useState("");
   const [pending, setPending] = useState(false);
   const [previewImg, setPreviewImg] = useState(null);
+  const [updateImg, setUpdateImg] = useState(false);
 
   const handleImage = () => {
     return <DisplayServerImage otherImage={previewImg} {...props} />;
@@ -89,11 +90,31 @@ const UploadServerImage = ({ ...props }) => {
   const handleContent = () => {
     return (
       <InlineFormContainer>
-        <input
-          type="file"
-          name="myFile"
-          onChange={(file) => handleSetFile(file)}
-        />
+        {updateImg ? (
+          <InlineFormStack>
+            <input
+              type="file"
+              name="myFile"
+              onChange={(file) => handleSetFile(file)}
+            />
+            <InlineButton
+              options="gray"
+              onClick={() => {
+                setUpdateImg(false);
+              }}
+            >
+              Cancel
+            </InlineButton>
+          </InlineFormStack>
+        ) : (
+          <InlineButton
+            onClick={() => {
+              setUpdateImg(true);
+            }}
+          >
+            Update Image
+          </InlineButton>
+        )}
       </InlineFormContainer>
     );
   };

@@ -45,7 +45,7 @@ const UploadServerImage = ({ ...props }) => {
   const handleResult = (result) => {
     console.log("RESULT: ", result);
     if (result.error) setError(result.error);
-    else setSuccess("Upload Successful!");
+    else setSuccess(result);
     setStatus({ status: "" });
     setDoUpload(false);
     setFile(null);
@@ -91,11 +91,13 @@ const UploadServerImage = ({ ...props }) => {
   };
 
   const handleDisplayStatus = () => {
-    if (status !== "")
+    if (status && status.status !== "")
       return <InlineFormContainer> {status.status}</InlineFormContainer>;
+    return <React.Fragment />;
   };
 
   const handleContent = () => {
+    if (error || success) return <React.Fragment />;
     return (
       <InlineFormContainer>
         <input

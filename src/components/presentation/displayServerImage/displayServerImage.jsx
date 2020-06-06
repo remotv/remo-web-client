@@ -9,7 +9,8 @@ const DisplayServerImage = ({ otherImage, ...props }) => {
     setImage(otherImage || getServerImage({ ...props }));
   });
 
-  const handleError = () => setImage(getServerImage(null));
+  //getServerImg requires an object
+  const handleError = () => setImage(getServerImage({}));
   return (
     <img
       className="displayServerImage__display"

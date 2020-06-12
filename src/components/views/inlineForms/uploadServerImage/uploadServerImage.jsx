@@ -19,7 +19,9 @@ const UploadServerImage = ({ ...props }) => {
   const [previewImg, setPreviewImg] = useState(null);
 
   const handleImage = () => {
-    return <DisplayServerImage otherImage={previewImg} {...props} />;
+    return (
+      <DisplayServerImage otherImage={previewImg} {...props} key={previewImg} />
+    );
   };
 
   const handlePending = (pending) => {
@@ -39,7 +41,9 @@ const UploadServerImage = ({ ...props }) => {
       return;
     }
     setFile(file);
-    setPreviewImg(URL.createObjectURL(e.target.files[0]));
+    const objUrl = URL.createObjectURL(file);
+    console.log(objUrl);
+    setPreviewImg(objUrl);
   };
 
   const handleResult = (result) => {

@@ -19,7 +19,7 @@ const defaults = {
   buttonRate: 100, //Pulse rate for holding down a button
   breakPoint: 768, //mobile layout resolution
   mobileMessageFadeOut: 5000, //how long do mobile messages display in chat before they fade out
-  maxServersPerPage: 1,
+  maxServersPerPage: 50,
   // updateInterfaceInterval: 250, //update frequency for robot interface UI
 
   //URL Management:

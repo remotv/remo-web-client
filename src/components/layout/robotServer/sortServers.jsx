@@ -95,16 +95,10 @@ const sortFollowed = (robotServers, followedServers) => {
 };
 
 export default sortServers;
-
+// Sorted by followers, descending.
 const compare = (a, b) => {
-  const serverA = a.created;
-  const serverB = b.created;
+  const serverA = a.status.count;
+  const serverB = b.status.count;
 
-  let comparison = 0;
-  if (serverA > serverB) {
-    comparison = 1;
-  } else if (serverA < serverB) {
-    comparison = -1;
-  }
-  return comparison * -1;
+  return serverB - serverA
 };

@@ -15,6 +15,7 @@ import Modal from "../../common/modal";
 import "../../common/overlay.css";
 import FrontPage from "../../layout/frontPage/frontPage";
 import BrowseServers from "../../layout/browseServers/browseServers";
+import { createLogger } from "winston";
 
 export default class ServersPage extends Component {
   constructor(props) {
@@ -30,6 +31,8 @@ export default class ServersPage extends Component {
       reload: false,
       showMobileNav: true, //For handling mobile navigation states
       getLogin: false,
+      serverPage: 1,
+      pages: [],
     };
   }
 
@@ -66,6 +69,24 @@ export default class ServersPage extends Component {
     });
     return null;
   };
+  //https://stackoverflow.com/a/1584377
+  arrayUnique = (arr) => {
+    Array.from(new Set(arr.map(a => a.server_id)))
+ .map(server_id => {
+   return arr.find(a => a.server_id === server_id)
+ })
+}
+  
+  mergeArrays = (a, b) => {
+    //console.log(`Merged arrays!`)
+    //console.log(typeof a)
+    if (!(typeof a === 'undefined')) {
+    return this.arrayUnique(a.concat(b))
+    } else {
+      //console.log(`line 85 ${b}`)
+      return b
+    }
+  }
 
   handleReload = async () => {
     await this.getServers();
@@ -75,14 +96,40 @@ export default class ServersPage extends Component {
 
   getServers = async () => {
     try {
-      const response = await axios.get(listRobotServers);
-      this.setState({ robotServers: response.data });
+      const response = await axios.get(`${listRobotServers}?page=${this.state.serverPage}`);
+      if (!(typeof this.state.robotServers === 'undefined') && !(this.state.robotServers == response.data)) {
+        console.log(this.state.robotServers == response.data)
+        console.log("response.data")
+        console.log(response.data)
+        console.log("this.state.robotServers")
+        
+        //console.log(`AAAAAAAA ${this.state.robotServers === 'undefined'}`)
+      this.setState({ robotServers: this.mergeArrays(this.state.robotServers, response.data) }); // Add new servers to current server list
+      
+      
+
+      console.log(this.mergeArrays(this.state.robotServers, response.data))
+      } else if (!(this.state.robotServers == response.data)) { //if no servers have been loaded
+        this.setState({ robotServers: response.data }); // Add new servers to current server list
+        console.log(`No servers loaded yet`)
+      }
     } catch (e) {
       console.error(e);
-      setTimeout(this.getServers, 600); //retry
+      //console.log("on errior")
+      //setTimeout(this.getServers, 600); //retry
     }
     return null;
   };
+
+  nextPage = () => {
+    const { maxServersPerPage } = require("../../../config");
+    if (this.state.robotServers.length >= maxServersPerPage) {
+    this.state.serverPage +=1
+    this.getServers();
+    console.log("next page " + this.state.serverPage)
+    }
+    return null;
+  }
 
   getFollowedServers = async () => {
     const token = localStorage.getItem("token");
@@ -264,6 +311,7 @@ export default class ServersPage extends Component {
       loadingText = "Waiting for User...";
     } else if (!this.state.robotServers || !this.state.followedServers) {
       loadingText = "Waiting for Robot Servers...";
+      console.log("Adhjsdfhjfgdshhjfsegd")
     }
 
     if (this.state.user === null || this.state.getLogin === true)
@@ -349,6 +397,7 @@ export default class ServersPage extends Component {
             />
           </Switch>
         </div>
+        <button className="btn" onClick={() => this.nextPage()}>Load More</button>
       </React.Fragment>
     );
   }

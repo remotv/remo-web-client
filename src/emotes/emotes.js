@@ -4,7 +4,6 @@ import robotYay from "./imgs/robotYay.png";
 import jill from "./imgs/jill.png";
 import brooke from "./imgs/brooke.png";
 import ged from "./imgs/gedyy.png";
-import tgcfabian from "./imgs/tgcfabian.png";
 import boland from "./imgs/boland.png";
 import remoji from "./imgs/remo.png";
 import peter from "./imgs/peter.png";
@@ -17,7 +16,6 @@ const emotes = {
   jill: jill,
   brooke: brooke,
   ged: ged,
-  TGCFabian: tgcfabian,
   Boland: boland,
   remoji: remoji,
   peter: peter,

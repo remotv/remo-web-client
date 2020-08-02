@@ -37,7 +37,7 @@ export default class EditButtonsModal extends Form {
       .then(res => {
         console.log(res);
         this.setState({
-          data: { submitJSON: JSON.stringify(this.handleCleanText(res.data)) }
+          data: { submitJSON: JSON.stringify(this.handleCleanText(res.data), null, 2) }
         });
       })
       .catch(err => {

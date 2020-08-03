@@ -153,7 +153,6 @@ export default class ServersPage extends Component {
       return null;
     });
     socket.on("SELECTED_SERVER_UPDATED", () => {
-      // console.log("UPDATING SELECTED SERVER!");
       this.getSelectedServer();
       return null;
     });

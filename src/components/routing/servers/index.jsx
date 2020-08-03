@@ -29,7 +29,6 @@ export default class ServersPage extends Component {
       modalContent: [],
       reload: false,
       showMobileNav: true, //For handling mobile navigation states
-      getLogin: false,
     };
   }
 
@@ -51,13 +50,11 @@ export default class ServersPage extends Component {
   //Mobile Navigation Handler
   handleMobileFlag = (e) => {
     const { showMobileNav } = e;
-    // console.log("Mobile Flag Test", e);
     this.setState({ showMobileNav });
     return null;
   };
 
   setModal = (input) => {
-    // console.log("Modal Input: ", input);
     let updateContent = this.state.modalContent;
     input.map((getInput) => updateContent.push(getInput));
     this.setState({
@@ -101,7 +98,6 @@ export default class ServersPage extends Component {
     } else {
       console.log("Unable to get token for user ( getFolllowedServers ) ");
     }
-
     return null;
   };
 
@@ -236,13 +232,11 @@ export default class ServersPage extends Component {
     } else {
       console.log("Unable to get token for user ( emitAuthentication )");
     }
-    this.setState({ getLogin: true });
   };
 
   setUser = (user) => {
     if (!user) {
       localStorage.removeItem("token");
-      this.setState({ getLogin: true });
     } else this.setState({ user });
   };
 
@@ -261,13 +255,10 @@ export default class ServersPage extends Component {
     if (!this.state.socketConnected) {
       loadingText = "Connecting...";
     } else if (!this.state.user) {
-      loadingText = "Waiting for User...";
+      // loadingText = "Waiting for User...";
     } else if (!this.state.robotServers || !this.state.followedServers) {
       loadingText = "Waiting for Robot Servers...";
     }
-
-    if (this.state.user === null || this.state.getLogin === true)
-      return <Redirect to="/login" />;
 
     return loadingText ? (
       <div className="ConnectingOverlay">

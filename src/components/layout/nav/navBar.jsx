@@ -109,6 +109,26 @@ export default class NavBar extends Component {
     );
   };
 
+  //Let's break this into it's own component later.
+  handleDisplayUser = () => {
+    if (!this.props.user) return <React.Fragment />;
+    return (
+      <div className="user-container">
+        <div
+          className="user"
+          onClick={() => {
+            this.props.modal(this.handleModal());
+          }}
+        >
+          {this.props.user.username}{" "}
+          <button className="user-logout btn" onClick={this.logout}>
+            logout
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   render() {
     return this.state.redirect ? (
       <Redirect to="/login" />
@@ -117,19 +137,7 @@ export default class NavBar extends Component {
         {this.renderBurger()}
         <Link to="/"> {this.renderLogo()}</Link>
         <Welcome {...this.props} />
-        <div className="user-container">
-          <div
-            className="user"
-            onClick={() => {
-              this.props.modal(this.handleModal());
-            }}
-          >
-            {this.props.user.username}{" "}
-            <button className="user-logout btn" onClick={this.logout}>
-              logout
-            </button>
-          </div>
-        </div>
+        {this.handleDisplayUser()}
       </div>
     );
   }

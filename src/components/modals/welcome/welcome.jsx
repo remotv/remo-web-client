@@ -7,7 +7,7 @@ import "./welcome.scss";
 
 export default class Welcome extends Component {
   state = {
-    messageLoaded: false
+    messageLoaded: false,
   };
 
   handleWelcomeStatus = async () => {
@@ -17,13 +17,13 @@ export default class Welcome extends Component {
         welcome,
         {},
         {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .then(res => {
+      .then((res) => {
         if (res.data.error) console.log(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -33,17 +33,18 @@ export default class Welcome extends Component {
     this.handleWelcomeStatus();
     return [
       {
-        body: <HandleContent {...this.props} />
+        body: <HandleContent {...this.props} />,
       },
       { header: "" },
-      { footer: "" }
+      { footer: "" },
     ];
   };
 
   render() {
-    const { displayWelcome } = this.props.user.status;
     const { messageLoaded } = this.state;
-    return displayWelcome && !messageLoaded ? (
+    return this.props.user &&
+      this.props.user.status.displayWelcome &&
+      !messageLoaded ? (
       this.props.modal(this.handleDisplayModal())
     ) : (
       <React.Fragment />

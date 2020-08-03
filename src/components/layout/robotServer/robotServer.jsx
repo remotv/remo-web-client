@@ -47,7 +47,11 @@ export default class RobotServer extends Component {
     return (
       <div className="robot-server-container">
         <Browse />
-        {this.handleSorting(this.props.followedServers)}
+        {this.props.followedServers ? (
+          this.handleSorting(this.props.followedServers)
+        ) : (
+          <React.Fragment />
+        )}
         <AddServer
           modal={this.props.modal}
           onCloseModal={this.props.onCloseModal}

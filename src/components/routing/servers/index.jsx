@@ -254,9 +254,12 @@ export default class ServersPage extends Component {
     if (!this.state.socketConnected) {
       loadingText = "Connecting...";
     } else if (!this.state.user) {
+      console.log("NO USER");
       // loadingText = "Waiting for User...";
-    } else if (!this.state.robotServers || !this.state.followedServers) {
+    } else if (!this.state.robotServers) {
       loadingText = "Waiting for Robot Servers...";
+    } else if (this.state.user && !this.state.followedServers) {
+      loadingText = "Awaiting user information.";
     }
 
     return loadingText ? (

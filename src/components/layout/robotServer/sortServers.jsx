@@ -14,7 +14,7 @@ const sortAll = (robotServers, followedServers) => {
 
   robotServers = robotServers.sort(compare);
 
-  robotServers.forEach(server => {
+  robotServers.forEach((server) => {
     if (
       followedServers.includes(server.server_id) &&
       server.status.liveDevices &&
@@ -45,14 +45,15 @@ const sortAll = (robotServers, followedServers) => {
   return sorted;
 };
 
-const defaultSort = robotServers => {
+const defaultSort = (robotServers) => {
   let live = [];
   let rest = [];
 
-  // console.log(robotServers);
+  console.log(robotServers);
   robotServers = robotServers.sort(compare);
+  console.log(robotServers);
 
-  robotServers.forEach(server => {
+  robotServers.forEach((server) => {
     if (server.status.liveDevices && server.status.liveDevices.length > 0) {
       // server.followed = false;
       live.push(server);
@@ -72,7 +73,7 @@ const sortFollowed = (robotServers, followedServers) => {
   let followed = [];
 
   robotServers = robotServers.sort(compare);
-  robotServers.forEach(server => {
+  robotServers.forEach((server) => {
     if (
       followedServers.includes(server.server_id) &&
       server.status.liveDevices &&

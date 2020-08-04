@@ -9,21 +9,28 @@ export default class BrowseServers extends Component {
 
   componentDidMount() {
     this.props.setServer(null);
-    // console.log(this.props);
   }
 
   handleSorting = () => {
     const { robotServers, followedServers } = this.props;
+    if (!robotServers) {
+      console.log(
+        "Client Error, for some reason the client did not wait on the list of robot servers before attempting to display the browse servers page."
+      );
+      return this.handleDisplayServers(null);
+    }
     const sorted = sortServers(robotServers, followedServers, "default");
-    // console.log(sorted);
     return this.handleDisplayServers(sorted);
   };
 
   handleDisplayServers = (servers) => {
+    if (!servers) return <BrowseServerCard placeholder />;
     return servers.map((server) => {
-      let followed = this.props.followedServers.find(
-        (match) => match.server_id === server.server_id
-      );
+      let followed =
+        this.props.followedServers &&
+        this.props.followedServers.find(
+          (match) => match.server_id === server.server_id
+        );
       if (followed) followed = true;
       else followed = false;
       return (

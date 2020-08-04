@@ -21,9 +21,7 @@ const BrowseServerCard = ({
 
     const handleLiveStatus = () => {
       if (live)
-        return (
-          <div className="browseServerCard__live-status"> Live: {live}</div>
-        );
+        return <div className="browseServerCard__live-status"> Live </div>;
       return <React.Fragment />;
     };
 

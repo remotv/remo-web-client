@@ -31,12 +31,15 @@
   &__member-count-container {
     position: absolute;
     font-size: 12px;
-    margin-top: 80px;
+    margin-top: 73px;
     margin-left: 12px;
     color: white;
     font-weight: bold;
     display: flex;
     flex-direction: row;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    padding: 3px;
     //  align-items: center;
   }
   &__heart-container {

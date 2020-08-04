@@ -81,7 +81,7 @@ export default class NavBar extends Component {
     );
   };
 
-  handleModal = () => {
+  handleUserModal = () => {
     return [
       {
         body: <UserProfile {...this.props} />,
@@ -123,7 +123,7 @@ export default class NavBar extends Component {
       <div
         className="user"
         onClick={() => {
-          this.props.modal(this.handleModal());
+          this.props.modal(this.handleUserModal());
         }}
       >
         {this.props.user.username}{" "}

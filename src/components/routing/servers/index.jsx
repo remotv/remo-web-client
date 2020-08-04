@@ -29,6 +29,7 @@ export default class ServersPage extends Component {
       modalContent: [],
       reload: false,
       showMobileNav: true, //For handling mobile navigation states
+      displayLogin: false,
     };
   }
 
@@ -45,6 +46,12 @@ export default class ServersPage extends Component {
         modalContent: [],
       });
     }
+  };
+
+  handleDisplayLogin = (e) => {
+    const { displayLogin } = e;
+    this.setState({ displayLogin });
+    return null;
   };
 
   //Mobile Navigation Handler
@@ -289,6 +296,7 @@ export default class ServersPage extends Component {
           modal={this.setModal}
           onCloseModal={this.onCloseModal}
           locationSearch={this.props.location.search}
+          onDisplayLogin={this.handleDisplayLogin}
         />
         <div className="server-container">
           <RobotServer

@@ -4,11 +4,11 @@ import "./editOptions.css";
 
 export default class EditOptions extends Component {
   state = {
-    edit: <div className=""> ... </div>
+    edit: <div className=""> ... </div>,
   };
 
   componentWillMount() {
-    if (this.props.user.id === this.props.server.owner_id) {
+    if (this.props.user && this.props.user.id === this.props.server.owner_id) {
       this.setState({ edit: this.handleEditButton() });
     }
   }
@@ -38,10 +38,10 @@ export default class EditOptions extends Component {
             onCloseModal={this.props.onCloseModal}
             channel={this.props.channel}
           />
-        )
+        ),
       },
       { header: "" },
-      { footer: "" }
+      { footer: "" },
     ];
   };
 

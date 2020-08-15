@@ -61,7 +61,10 @@ export default class RenderButtons extends Component {
 
   //style assignment for the main part of the button display
   handleButtonStyle = (aButton) => {
-    const isOwner = this.props.server.owner_id === this.props.user.id;
+    let isOwner = null;
+    if (this.props.user)
+      isOwner = this.props.server.owner_id === this.props.user.id;
+
     if (aButton.disabled && isOwner) return "robtn-not-disabled-for-owner";
     else if (aButton.disabled) return "robtn-disabled";
     if (aButton.access && aButton.access === "owner") return "robtn-admin";
@@ -89,11 +92,16 @@ export default class RenderButtons extends Component {
       user,
       server,
     } = this.props;
-    const isOwner = server.owner_id === user.id;
+
+    //handle no user
+    let isOwner = null;
+    if (user) isOwner = server.owner_id === user.id;
+
     if (controls) {
       return controls.map((aButton, index) => {
         let hotKeyStyle = this.handleHotKeyStyle(aButton);
         let style = {};
+
         if (
           aButton.hot_key === renderCurrentKey &&
           (isOwner || !aButton.disabled)

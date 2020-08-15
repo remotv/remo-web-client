@@ -36,15 +36,13 @@ export default class Channels extends Component {
     this.setState({ chatTabbed: value });
   };
 
-  // not sure if needed, but why not
+  //Not clear if this is useful. Should make sure whether or not it is useful.
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.selectedServer.server_id !== this.props.selectedServer.server_id
     ) {
-      //console.log("SELECTED SERVER: ", this.props.selectedServer);
       this.handleServer(true);
     }
-    // if (prevState.channels !== this.state.channels) this.displayChannels();
   }
 
   async componentDidMount() {
@@ -147,12 +145,13 @@ export default class Channels extends Component {
     }
   };
 
+  //This probably needs to be changed to an API call, not 100% sure what it's doing.
   handleServer = (resetState) => {
-    // console.log("handle server");
     if (resetState) this.setState({ channels: null, currentChannel: null });
-    // console.log("get channels for", this.props.selectedServer.server_name);
+    let userId = null;
+    if (this.props.user && this.props.user.id) userId = this.props.user.id;
     socket.emit("GET_CHANNELS", {
-      user: this.props.user.id,
+      user: userId || null,
       server_id: this.props.selectedServer.server_id,
     });
   };

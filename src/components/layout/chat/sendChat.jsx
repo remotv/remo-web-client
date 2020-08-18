@@ -18,7 +18,7 @@ export default class SendChat extends Form {
     errors: {},
     user: {},
     coolDown: false,
-    indicator: false
+    indicator: false,
   };
 
   componentDidMount() {
@@ -48,11 +48,15 @@ export default class SendChat extends Form {
   };
 
   schema = {
-    sendChat: Joi.string()
-      .min(1)
-      .max(512)
-      .trim()
-      .label("Chat Message")
+    sendChat: Joi.string().min(1).max(512).trim().label("Chat Message"),
+  };
+
+  handleFeedbackMessage = () => {
+    if (!this.props.user) return `Login required to send chat messages.`;
+    if (this.state.coolDown)
+      return `You are sending messages too fast, you must wait at least ${
+        defaultRate / 1000
+      } seconds before you can send a new message`;
   };
 
   doSubmit = () => {
@@ -63,23 +67,23 @@ export default class SendChat extends Form {
       chatId,
       server_id,
       onChatFeedback,
-      channel
+      channel,
     } = this.props;
 
-    if (this.state.coolDown) {
+    if (!user || this.state.coolDown) {
       keepGoing = false;
-      let toUser = `You are sending messages too fast, you must wait at least ${defaultRate /
-        1000} seconds before you can send a new message`;
+      let feedbackMessage = this.handleFeedbackMessage();
+
       const messageBlank = {
         time_stamp: Date.now(),
         display_message: true,
         type: "moderation",
-        sender: "System"
+        sender: "System",
       };
 
       let feedback = messageBlank;
-      feedback.message = toUser;
-      feedback.userId = user.id;
+      feedback.message = feedbackMessage;
+      feedback.userId = user ? user.id : null;
       feedback.chat_id = chatId;
       feedback.server_id = server_id;
       feedback.id = uuidv4();
@@ -90,14 +94,14 @@ export default class SendChat extends Form {
     }
 
     const { sendChat } = this.state.data;
-    if (user !== null && chatId !== "" && keepGoing) {
+    if (user && chatId !== "" && keepGoing) {
       socket.emit(MESSAGE_SENT, {
         username: user.username,
         userId: user.id,
         message: sendChat,
         chatId: chatId,
         server_id: server_id,
-        channel_id: channel
+        channel_id: channel,
       });
       // console.log(
       //   `SEND TO CHAT, user: ${user.username} userId ${user.id} message ${sendChat} chatId ${chatId}, channelId ${channel}`
@@ -116,7 +120,7 @@ export default class SendChat extends Form {
     //Don't clear the chat unless the message can be sent
   };
 
-  setError = error => {
+  setError = (error) => {
     this.setState({ error });
   };
 

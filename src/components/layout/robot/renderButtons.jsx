@@ -8,7 +8,7 @@ export default class RenderButtons extends Component {
     const { onClick, user, controls_id, socket } = this.props;
     let hotKeyRender = this.handleButtonStyle(aButton);
     let hotKeyLabel = aButton.hot_key || "";
-    if (hotKeyLabel === " ") hotKeyLabel = "SpaceBar";
+    if (hotKeyLabel === " ") hotKeyLabel = "spacebar";
     if (aButton && aButton.hot_key && aButton.key)
       hotKeyRender = "robtn robtn-hot-key";
     return (

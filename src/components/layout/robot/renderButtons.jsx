@@ -7,6 +7,8 @@ export default class RenderButtons extends Component {
   handleButton = ({ aButton, style, hotKeyStyle }) => {
     const { onClick, user, controls_id, socket } = this.props;
     let hotKeyRender = this.handleButtonStyle(aButton);
+    let hotKeyLabel = aButton.hot_key || "";
+    if (hotKeyLabel === " ") hotKeyLabel = "spacebar";
     if (aButton && aButton.hot_key && aButton.key)
       hotKeyRender = "robtn robtn-hot-key";
     return (
@@ -24,7 +26,7 @@ export default class RenderButtons extends Component {
         style={style}
       >
         {aButton.hot_key ? (
-          <span className={hotKeyStyle}>{aButton.hot_key}</span>
+          <span className={hotKeyStyle}>{hotKeyLabel}</span>
         ) : (
           <React.Fragment />
         )}

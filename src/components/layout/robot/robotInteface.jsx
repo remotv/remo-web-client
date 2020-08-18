@@ -274,15 +274,18 @@ export default class RobotInterface extends Component {
   };
 
   handleClick = (click) => {
-    const isOwner = this.props.server.owner_id === this.props.user.id;
-    if (isOwner || !click.button.disabled) {
-      socket.emit(BUTTON_COMMAND, {
-        user: click.user,
-        button: click.button,
-        controls_id: this.state.controlsId,
-        channel: this.props.channel,
-        server: this.props.server.server_id,
-      });
+    if (this.props.user) {
+      const isOwner = this.props.server.owner_id === this.props.user.id;
+      if (isOwner || !click.button.disabled) {
+        socket.emit(BUTTON_COMMAND, {
+          user: click.user,
+          button: click.button,
+          controls_id: this.state.controlsId,
+          channel: this.props.channel,
+          server: this.props.server.server_id,
+        });
+      }
+      //else pop up the login message
     }
   };
 

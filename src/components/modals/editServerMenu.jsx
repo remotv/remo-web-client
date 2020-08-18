@@ -53,23 +53,29 @@ export default class EditServerMenu extends Component {
   render() {
     const { server, user } = this.props;
     const { membership } = this.state;
-    return (
-      <React.Fragment>
-        {server.owner_id === user.id ? (
-          <EditServerForm {...this.props} />
-        ) : membership ? (
-          membership.status.member === true ? (
-            <ServerNotifications membership={membership} {...this.props} />
-          ) : (
-            <PaddedMessage>
-              You are not a member of this server. You must join this server in
-              order to become a member.
-            </PaddedMessage>
-          )
-        ) : (
-          <PaddedMessage> Waiting for Server Information...</PaddedMessage>
-        )}
-      </React.Fragment>
-    );
+    return [
+      {
+        body: (
+          <React.Fragment>
+            {server.owner_id === user.id ? (
+              <EditServerForm {...this.props} />
+            ) : membership ? (
+              membership.status.member === true ? (
+                <ServerNotifications membership={membership} {...this.props} />
+              ) : (
+                <PaddedMessage>
+                  You are not a member of this server. You must join this server
+                  in order to become a member.
+                </PaddedMessage>
+              )
+            ) : (
+              <PaddedMessage> Waiting for Server Information...</PaddedMessage>
+            )}
+          </React.Fragment>
+        ),
+      },
+      { header: "" },
+      { footer: "" },
+    ];
   }
 }

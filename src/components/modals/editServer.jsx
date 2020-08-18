@@ -4,19 +4,9 @@ import EditServerMenu from "./editServerMenu";
 export default class EditServer extends Component {
   handleModal = () => {
     const { onCloseModal, server, user } = this.props;
-    return [
-      {
-        body: (
-          <EditServerMenu
-            onCloseModal={onCloseModal}
-            server={server}
-            user={user}
-          />
-        )
-      },
-      { header: "" },
-      { footer: "" }
-    ];
+    return (
+      <EditServerMenu onCloseModal={onCloseModal} server={server} user={user} />
+    );
   };
 
   render() {
@@ -24,7 +14,7 @@ export default class EditServer extends Component {
 
     return (
       <React.Fragment>
-        {user.id === server.owner_id ||
+        {(user && user.id === server.owner_id) ||
         (localStatus && localStatus.member === true) ? (
           <div
             className="server-settings"

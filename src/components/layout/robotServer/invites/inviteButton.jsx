@@ -9,10 +9,10 @@ export default class InviteButton extends Component {
   handleModal = () => {
     return [
       {
-        body: <MakeInvite {...this.props} />
+        body: <MakeInvite {...this.props} />,
       },
       { header: "" },
-      { footer: "" }
+      { footer: "" },
     ];
   };
 
@@ -39,7 +39,7 @@ export default class InviteButton extends Component {
   render() {
     const { user, server } = this.props;
 
-    return user.id === server.owner_id ? (
+    return user && user.id === server.owner_id ? (
       this.handleDisplay()
     ) : (
       <React.Fragment />

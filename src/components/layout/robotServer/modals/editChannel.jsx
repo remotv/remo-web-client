@@ -13,16 +13,16 @@ export default class EditChannel extends Component {
             channel={channel}
             server={server}
           />
-        )
+        ),
       },
       { header: "" },
-      { footer: "" }
+      { footer: "" },
     ];
   };
 
   handleBehavior = () => {
     const { server, user } = this.props;
-    if (server.owner_id === user.id) {
+    if (user && server.owner_id === user.id) {
       return (
         <React.Fragment>
           <div

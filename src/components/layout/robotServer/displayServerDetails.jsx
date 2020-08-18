@@ -14,7 +14,7 @@ export default class DisplayServerDetails extends Component {
     localStatus: null,
     memberCount: "...",
     hoverText: "Joined",
-    icon: <React.Fragment />
+    icon: <React.Fragment />,
   };
 
   componentWillUnmount() {
@@ -50,26 +50,30 @@ export default class DisplayServerDetails extends Component {
     this.setState({ currentStatus: this.props.server.server_id });
     this.initSocket();
 
-    if (this.state.localStatus && this.state.localStatus.member) {
+    if (
+      this.props.user &&
+      this.state.localStatus &&
+      this.state.localStatus.member
+    ) {
       this.setState({ icon: <Icon icon={ICONS.FOLLOW} color={"#FF0000"} /> });
     } else {
       this.setState({ icon: <Icon icon={ICONS.FOLLOW} /> });
     }
 
-    if (this.props.server.owner_id === this.props.user.id)
+    if (this.props.user && this.props.server.owner_id === this.props.user.id)
       this.setState({
         hoverText: "Members",
-        icon: <Icon icon={ICONS.FOLLOW} color={"#FF0000"} />
+        icon: <Icon icon={ICONS.FOLLOW} color={"#FF0000"} />,
       });
   }
 
-  handleModerationEvent = e => {
+  handleModerationEvent = (e) => {
     console.log("HANDLE MODERATION EVENT: ", e);
     if (e.event === "kicked" && e.server_id)
       this.handleBeingKicked(e.server_id);
   };
 
-  handleBeingKicked = async server_id => {
+  handleBeingKicked = async (server_id) => {
     console.log("CHECK KICKED: ", server_id, this.props.server.server_id);
     if (server_id === this.props.server.server_id) {
       console.log("YOU DONE GOT KICKED!");
@@ -81,15 +85,17 @@ export default class DisplayServerDetails extends Component {
   handleGetServerStatus = () => {
     // console.log("GET SERVER STATUS CHECK");
     socket.emit("GET_SERVER_STATUS", {
-      server_id: this.props.server.server_id
+      server_id: this.props.server.server_id,
     });
   };
 
   handleGetLocalStatus = () => {
-    socket.emit("GET_LOCAL_STATUS", {
-      server_id: this.props.server.server_id,
-      user_id: this.props.user.id
-    });
+    if (this.props.user) {
+      socket.emit("GET_LOCAL_STATUS", {
+        server_id: this.props.server.server_id,
+        user_id: this.props.user.id,
+      });
+    }
   };
 
   handleMemberCount = () => {
@@ -102,17 +108,17 @@ export default class DisplayServerDetails extends Component {
     this.handleGetServerStatus();
   };
 
-  handleSocketLocalStatus = status => {
+  handleSocketLocalStatus = (status) => {
     // console.log("GET LOCAL STATUS!", status);
     this.setState({
       localStatus: status,
       icon: (
         <Icon icon={ICONS.FOLLOW} color={status.member ? "#FF0000" : "#FFF"} />
-      )
+      ),
     });
   };
 
-  handleSocketServerStatus = status => {
+  handleSocketServerStatus = (status) => {
     this.setState({ memberCount: status.count });
   };
 
@@ -128,11 +134,11 @@ export default class DisplayServerDetails extends Component {
           leaveServer,
           {
             server_id: server.server_id,
-            join: invites[0].id
+            join: invites[0].id,
           },
           { headers: { authorization: `Bearer ${token}` } }
         )
-        .then(result => {
+        .then((result) => {
           if (result.data.status.member === false) this.handleGetLocalStatus();
         });
     } else {
@@ -141,49 +147,63 @@ export default class DisplayServerDetails extends Component {
           joinServer,
           {
             server_id: server.server_id,
-            join: invites[0].id
+            join: invites[0].id,
           },
           { headers: { authorization: `Bearer ${token}` } }
         )
-        .then(result => {
+        .then((result) => {
           if (result.data.status.member) this.handleGetLocalStatus();
         });
     }
   };
 
   handleMouseEnter = () => {
-    if (this.props.server.owner_id === this.props.user.id) {
+    if (this.props.user && this.props.server.owner_id === this.props.user.id) {
     } else {
       if (this.state.localStatus && this.state.localStatus.member === true) {
         this.setState({
           hoverText: "Leave",
-          icon: <Icon icon={ICONS.UNFOLLOW} color={"#FF0000"} />
+          icon: <Icon icon={ICONS.UNFOLLOW} color={"#FF0000"} />,
         });
       }
-      if (this.state.localStatus && this.state.localStatus.member === false) {
+      if (
+        !this.props.user ||
+        (this.state.localStatus && this.state.localStatus.member === false)
+      ) {
         this.setState({ icon: <Icon icon={ICONS.FOLLOW} color={"#FF0000"} /> });
       }
     }
   };
 
   handleMouseLeave = () => {
-    if (this.props.server.owner_id === this.props.user.id) {
+    if (this.props.user && this.props.server.owner_id === this.props.user.id) {
     } else {
-      if (this.state.localStatus && this.state.localStatus.member === true) {
+      if (
+        this.props.user &&
+        this.state.localStatus &&
+        this.state.localStatus.member === true
+      ) {
         this.setState({
           hoverText: "Joined",
-          icon: <Icon icon={ICONS.FOLLOW} color={"#FF0000"} />
+          icon: <Icon icon={ICONS.FOLLOW} color={"#FF0000"} />,
         });
       }
 
-      if (this.state.localStatus && this.state.localStatus.member === false) {
+      if (
+        !this.props.user ||
+        (this.state.localStatus && this.state.localStatus.member === false)
+      ) {
         this.setState({ icon: <Icon icon={ICONS.FOLLOW} /> });
       }
     }
   };
 
   handleHoverText = () => {
-    if (this.state.localStatus && this.state.localStatus.member === true) {
+    if (
+      this.props.user &&
+      this.state.localStatus &&
+      this.state.localStatus.member === true
+    ) {
       return this.state.hoverText;
     }
     return "Join Server";
@@ -217,10 +237,10 @@ export default class DisplayServerDetails extends Component {
             server={server}
             user={user}
           />
-        )
+        ),
       },
       { header: "" },
-      { footer: "" }
+      { footer: "" },
     ];
   };
 

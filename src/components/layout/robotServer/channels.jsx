@@ -353,7 +353,12 @@ class AddChannel extends Component {
 
   handleDisplayAddChannel() {
     const { server, user, channels } = this.props;
-    if (channels && channels.length > 0 && user.id === server.owner_id) {
+    if (
+      user &&
+      channels &&
+      channels.length > 0 &&
+      user.id === server.owner_id
+    ) {
       return (
         <div
           className="add-channel"

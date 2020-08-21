@@ -8,18 +8,34 @@ import axios from "axios";
 import { apiUrl, addServer } from "../../../../config";
 import defaultImages from "../../../../imgs/placeholders";
 import { Redirect } from "react-router-dom";
+import LoginWidget from "../../login/loginWidget";
 
 export default class AddServer extends React.Component {
   state = {};
 
   handleModal = () => {
-    return [
-      {
-        body: <AddServerForm onCloseModal={this.props.onCloseModal} />
-      },
-      { header: "" },
-      { footer: "" }
-    ];
+    if (!this.props.user)
+      return [
+        {
+          body: (
+            <LoginWidget
+              {...this.props}
+              type="modal"
+              modalFeedback="An account is required to perform this action"
+            />
+          ),
+        },
+        { header: "" },
+        { footer: "" },
+      ];
+    else
+      return [
+        {
+          body: <AddServerForm onCloseModal={this.props.onCloseModal} />,
+        },
+        { header: "" },
+        { footer: "" },
+      ];
   };
 
   render() {
@@ -48,7 +64,7 @@ class AddServerForm extends Form {
     data: { server: "" },
     errors: {},
     error: "",
-    redirect: ""
+    redirect: "",
   };
 
   schema = {
@@ -58,17 +74,17 @@ class AddServerForm extends Form {
       .max(18)
       .regex(/^[a-zA-Z0-9_]*$/)
       .trim()
-      .label("Robot Server Name")
+      .label("Robot Server Name"),
   };
 
   async componentDidMount() {
     //Just a test to see my API stuff is working
     await axios
       .get(apiUrl)
-      .then(function(response) {
+      .then(function (response) {
         console.log(response);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
@@ -92,13 +108,13 @@ class AddServerForm extends Form {
       .post(
         addServer,
         {
-          server_name: server
+          server_name: server,
         },
         {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .then(response => {
+      .then((response) => {
         console.log("SUBMIT SERVER RESPONSE: ", response, response.data.status);
         if (response.data.error) {
           console.log("ERROR! ", response.data.error);
@@ -107,7 +123,7 @@ class AddServerForm extends Form {
           //Redirect to server.
           this.setState({
             redirect: `/${response.data.server_name}/${response.data.settings.default_channel}`,
-            error: ""
+            error: "",
           });
 
           console.log("redirecting", this.state.redirect);
@@ -115,7 +131,7 @@ class AddServerForm extends Form {
           //wait just a second...
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("Add Server Error: ", err);
       });
 

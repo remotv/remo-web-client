@@ -55,6 +55,7 @@ export default class RobotServer extends Component {
         <AddServer
           modal={this.props.modal}
           onCloseModal={this.props.onCloseModal}
+          user={this.props.user}
         />
         ...
       </div>

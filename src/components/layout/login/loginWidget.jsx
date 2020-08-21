@@ -48,6 +48,13 @@ export default class LoginWidget extends Component {
     this.setState({ display: e });
   };
 
+  handleFeedback = () => {
+    const { modalFeedback } = this.props;
+    if (modalFeedback)
+      return <div className="widget-modal-feedback">{modalFeedback}</div>;
+    else return <React.Fragment />;
+  };
+
   render() {
     const { display } = this.state;
     const { type } = this.props;
@@ -57,6 +64,7 @@ export default class LoginWidget extends Component {
     return (
       <React.Fragment>
         <div className={style}>
+          {this.handleFeedback()}
           {this.handleSelect()}
           {display === "signup" ? this.displaySignUp() : this.displayLogin()}
         </div>

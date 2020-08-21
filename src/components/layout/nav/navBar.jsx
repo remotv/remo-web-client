@@ -9,8 +9,6 @@ import GetLayout from "../../modules/getLayout";
 import UserProfile from "../userProfile/userProfile";
 import queryString from "query-string";
 import Welcome from "../../modals/welcome/welcome";
-import Signup from "../../modals/signup";
-
 import LoginWidget from "../login/loginWidget";
 
 export default class NavBar extends Component {
@@ -98,7 +96,13 @@ export default class NavBar extends Component {
     console.log("SignUp");
     return [
       {
-        body: <LoginWidget {...this.props} type="modal" />,
+        body: (
+          <LoginWidget
+            {...this.props}
+            type="modal"
+            modalFeedback="An account is required to perform this action"
+          />
+        ),
       },
       { header: "" },
       { footer: "" },

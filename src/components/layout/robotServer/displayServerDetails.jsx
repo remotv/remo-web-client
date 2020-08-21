@@ -6,6 +6,7 @@ import { joinServer, leaveServer } from "../../../config";
 import socket from "../../socket";
 import EditServer from "../../modals/editServer";
 import ServerMembers from "../../modals/serverMembers";
+import LoginWidget from "../login/loginWidget";
 
 export default class DisplayServerDetails extends Component {
   state = {
@@ -122,8 +123,25 @@ export default class DisplayServerDetails extends Component {
     this.setState({ memberCount: status.count });
   };
 
+  handleLoginModal = () => {
+    return [
+      {
+        body: (
+          <LoginWidget
+            {...this.props}
+            type="modal"
+            modalFeedback="An account is required to perform this action"
+          />
+        ),
+      },
+      { header: "" },
+      { footer: "" },
+    ];
+  };
+
   handleJoinClick = () => {
-    const { server, invites } = this.props;
+    const { server, invites, user } = this.props;
+    if (!user) return this.props.modal(this.handleLoginModal());
     // console.log("CHECK INVITES: ", invites);
     const token = localStorage.getItem("token");
 

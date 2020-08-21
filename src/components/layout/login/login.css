@@ -51,7 +51,7 @@
 
 .widget-container {
   border-radius: 24px;
-  background-color: blue;
+  /* background-color: blue; */
   background: rgb(25, 25, 36);
   margin-top: 12px;
 
@@ -59,6 +59,16 @@
   flex-direction: column;
   justify-content: center;
   margin-bottom: -12px;
+}
+
+.widget-container-modal {
+  background: rgb(25, 25, 36);
+  /* margin-top: 12px; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* margin-bottom: -12px; */
 }
 
 .spacer {

@@ -4,7 +4,7 @@ import Signup from "./signup";
 
 export default class LoginWidget extends Component {
   state = {
-    display: "signup"
+    display: "signup",
   };
 
   displayLogin = () => {
@@ -44,15 +44,19 @@ export default class LoginWidget extends Component {
     );
   };
 
-  handleClick = e => {
+  handleClick = (e) => {
     this.setState({ display: e });
   };
 
   render() {
     const { display } = this.state;
+    const { type } = this.props;
+    let style = "";
+    if (type && type === "modal") style = "widget-container-modal";
+    else style = "widget-container";
     return (
       <React.Fragment>
-        <div className="widget-container">
+        <div className={style}>
           {this.handleSelect()}
           {display === "signup" ? this.displaySignUp() : this.displayLogin()}
         </div>

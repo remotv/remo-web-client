@@ -9,6 +9,9 @@ import GetLayout from "../../modules/getLayout";
 import UserProfile from "../userProfile/userProfile";
 import queryString from "query-string";
 import Welcome from "../../modals/welcome/welcome";
+import Signup from "../../modals/signup";
+
+import LoginWidget from "../login/loginWidget";
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -91,6 +94,17 @@ export default class NavBar extends Component {
     ];
   };
 
+  handleSignup = () => {
+    console.log("SignUp");
+    return [
+      {
+        body: <LoginWidget {...this.props} type="modal" />,
+      },
+      { header: "" },
+      { footer: "" },
+    ];
+  };
+
   renderBurger = () => {
     return <GetLayout renderSize={1280} renderMobile={this.handleBurger} />;
   };
@@ -115,16 +129,19 @@ export default class NavBar extends Component {
       return (
         <div className="user">
           {" "}
-          <button className="user-logout btn">login / signup </button>{" "}
+          <button
+            className="user-logout btn"
+            onClick={() => this.props.modal(this.handleSignup())}
+          >
+            login / signup{" "}
+          </button>{" "}
         </div>
       );
 
     return (
       <div
         className="user"
-        onClick={() => {
-          this.props.modal(this.handleUserModal());
-        }}
+        onClick={() => this.props.modal(this.handleUserModal())}
       >
         {this.props.user.username}{" "}
         <button className="user-logout btn" onClick={this.logout}>

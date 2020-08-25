@@ -102,8 +102,6 @@ export default class ServersPage extends Component {
           console.log(err);
           setTimeout(this.getFollowedServers, 600); //retry
         });
-    } else {
-      console.log("Unable to get token for user ( getFolllowedServers ) ");
     }
     return null;
   };

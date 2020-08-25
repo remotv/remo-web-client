@@ -119,7 +119,7 @@ export default class RenderButtons extends Component {
             if (press.button.access && press.button.access === "owner") {
               style.backgroundColor = "#e44884";
               hotKeyStyle = "hotkey hotkey-admin-highlight";
-            } else if (press.button.disabled) {
+            } else if (press.button.disabled || !user) {
               hotKeyStyle = "hotkey hotkey-disabled-highlight";
               style.backgroundColor = "#5e5e5e";
             } else {

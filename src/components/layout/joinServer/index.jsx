@@ -15,21 +15,18 @@ import ServerCard from "../../common/serverCard";
 export default class Join extends Form {
   state = {
     data: {
-      invite: ""
+      invite: "",
     },
     response_data: {},
     errors: {},
     error: "",
     validated: null,
     redirect: false,
-    redirectURL: "/"
+    redirectURL: "/",
   };
 
   schema = {
-    invite: Joi.string()
-      .required()
-      .min(5)
-      .label("Key ID")
+    invite: Joi.string().required().min(5).label("Key ID"),
   };
 
   componentDidMount() {
@@ -47,7 +44,7 @@ export default class Join extends Form {
     return null;
   };
 
-  handleValidateInvite = async url => {
+  handleValidateInvite = async (url) => {
     let invite = "";
     if (url && !this.state.error) {
       invite = url;
@@ -57,9 +54,9 @@ export default class Join extends Form {
     console.log("INVITE CHECK: ", invite, this.state);
     await axios
       .post(validateInviteKey, {
-        invite: invite
+        invite: invite,
       })
-      .then(response => {
+      .then((response) => {
         if (response.data.error) {
           this.setState({ validated: false });
           this.setError(response.data.error);
@@ -67,7 +64,7 @@ export default class Join extends Form {
         }
         this.setState({ response_data: response.data, validated: true });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
     return null;
@@ -86,19 +83,19 @@ export default class Join extends Form {
           joinServer,
           {
             server_id: server.server_id,
-            join: invite.id
+            join: invite.id,
           },
           { headers: { authorization: `Bearer ${token}` } }
         )
-        .then(result => {
+        .then((result) => {
           if (result.data.status.member) {
             this.setState({
               redirect: true,
-              redirectURL: `/${server.server_name}/${server.default_channel}`
+              redirectURL: `/${server.server_name}/${server.default_channel}`,
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     } else {
@@ -146,7 +143,7 @@ export default class Join extends Form {
     );
   };
 
-  setError = error => {
+  setError = (error) => {
     this.setState({ error: error });
   };
 

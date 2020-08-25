@@ -58,11 +58,6 @@
   background-color: #c0376b;
 }
 
-.robtn-disabled {
-  background-color: #414141;
-  color: rgb(172, 172, 172);
-}
-
 .robtn-not-disabled-for-owner {
   background-color: #414141;
   color: rgb(172, 172, 172);
@@ -112,6 +107,16 @@
   margin-left: 6px;
   border-radius: 7px;
   width: 200px;
+}
+
+.robtn-disabled {
+  background-color: #414141;
+  color: rgb(172, 172, 172);
+}
+
+.robtn-disabled-highlight {
+  background-color: #4e4e4e;
+  color: rgb(172, 172, 172);
 }
 
 .hotkey-disabled {

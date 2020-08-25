@@ -122,30 +122,31 @@ export default class ServersPage extends Component {
     let { selectedServer } = this.state;
     if (selectedServer) {
       const token = localStorage.getItem("token");
-      await axios
-        .post(
-          findServer,
-          {
-            server_name: selectedServer.server_name,
-          },
-          {
-            headers: { authorization: `Bearer ${token}` },
-          }
-        )
-        .then((response) => {
-          const { server_id } = response.data;
-          if (server_id === selectedServer.server_id) {
-            // console.log("Selected Server Response: ", response.data);
-            selectedServer = response.data;
-            this.setState({ selectedServer: selectedServer });
-          } else {
-            console.log("Problem fetching data for selected server");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setTimeout(this.getSelectedServer, 600); //retry
-        });
+      if (token)
+        await axios
+          .post(
+            findServer,
+            {
+              server_name: selectedServer.server_name,
+            },
+            {
+              headers: { authorization: `Bearer ${token}` },
+            }
+          )
+          .then((response) => {
+            const { server_id } = response.data;
+            if (server_id === selectedServer.server_id) {
+              // console.log("Selected Server Response: ", response.data);
+              selectedServer = response.data;
+              this.setState({ selectedServer: selectedServer });
+            } else {
+              console.log("Problem fetching data for selected server");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            setTimeout(this.getSelectedServer, 600); //retry
+          });
     }
   };
 

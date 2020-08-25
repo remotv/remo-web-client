@@ -106,6 +106,7 @@ export default class RobotInterface extends Component {
     data.forEach((item) => {
       controls.forEach((button) => {
         if (button.id === item.id) {
+          //make sure buttons remain disabled on state change for non users
           if (!this.props.user) item.disabled = true;
           updateControls.push(item);
         } else updateControls.push(button);
@@ -263,7 +264,7 @@ export default class RobotInterface extends Component {
           channel_id: this.props.channel,
         },
         {
-          headers: { authorization: `Bearer ${token}` },
+          headers: token ? { authorization: `Bearer ${token}` } : "",
         }
       )
       .then((res) => {

@@ -105,8 +105,10 @@ export default class RobotInterface extends Component {
     let updateControls = [];
     data.forEach((item) => {
       controls.forEach((button) => {
-        if (button.id === item.id) updateControls.push(item);
-        else updateControls.push(button);
+        if (button.id === item.id) {
+          if (!this.props.user) item.disabled = true;
+          updateControls.push(item);
+        } else updateControls.push(button);
         return;
       });
     });

@@ -96,13 +96,7 @@ export default class NavBar extends Component {
     console.log("SignUp");
     return [
       {
-        body: (
-          <LoginWidget
-            {...this.props}
-            type="modal"
-            modalFeedback="An account is required to perform this action"
-          />
-        ),
+        body: <LoginWidget {...this.props} type="modal" />,
       },
       { header: "" },
       { footer: "" },

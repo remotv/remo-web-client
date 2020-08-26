@@ -4,9 +4,19 @@ import EditServerMenu from "./editServerMenu";
 export default class EditServer extends Component {
   handleModal = () => {
     const { onCloseModal, server, user } = this.props;
-    return (
-      <EditServerMenu onCloseModal={onCloseModal} server={server} user={user} />
-    );
+    return [
+      {
+        body: (
+          <EditServerMenu
+            onCloseModal={onCloseModal}
+            server={server}
+            user={user}
+          />
+        ),
+      },
+      { header: "" },
+      { footer: "" },
+    ];
   };
 
   render() {

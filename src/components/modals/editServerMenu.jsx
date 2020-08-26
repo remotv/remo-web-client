@@ -9,7 +9,6 @@ import PaddedMessage from "../common/paddedMessage/paddedMessage";
 //TODO: Conditionally render <EditServer /> if user is a member
 export default class EditServerMenu extends Component {
   state = { reload: false, membership: null };
-
   componentDidMount() {
     const { server } = this.props;
     if (!server.membership && !this.state.reload) {
@@ -53,29 +52,24 @@ export default class EditServerMenu extends Component {
   render() {
     const { server, user } = this.props;
     const { membership } = this.state;
-    return [
-      {
-        body: (
-          <React.Fragment>
-            {server.owner_id === user.id ? (
-              <EditServerForm {...this.props} />
-            ) : membership ? (
-              membership.status.member === true ? (
-                <ServerNotifications membership={membership} {...this.props} />
-              ) : (
-                <PaddedMessage>
-                  You are not a member of this server. You must join this server
-                  in order to become a member.
-                </PaddedMessage>
-              )
-            ) : (
-              <PaddedMessage> Waiting for Server Information...</PaddedMessage>
-            )}
-          </React.Fragment>
-        ),
-      },
-      { header: "" },
-      { footer: "" },
-    ];
+
+    return (
+      <React.Fragment>
+        {server.owner_id === user.id ? (
+          <EditServerForm {...this.props} />
+        ) : membership ? (
+          membership.status.member === true ? (
+            <ServerNotifications membership={membership} {...this.props} />
+          ) : (
+            <PaddedMessage>
+              You are not a member of this server. You must join this server in
+              order to become a member.
+            </PaddedMessage>
+          )
+        ) : (
+          <PaddedMessage> Waiting for Server Information...</PaddedMessage>
+        )}
+      </React.Fragment>
+    );
   }
 }

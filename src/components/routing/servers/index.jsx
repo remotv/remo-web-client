@@ -259,20 +259,24 @@ export default class ServersPage extends Component {
     // console.log("Socket Connected: ", this.state.socketConnected);
     if (!this.state.socketConnected) {
       loadingText = "Connecting...";
-    } else if (!this.state.user) {
-      console.log("NO USER");
-      // loadingText = "Waiting for User...";
+    } else if (!this.state.user && localStorage.getItem("token")) {
+      // console.log("NO USER");
+      loadingText = "Waiting for User...";
     } else if (!this.state.robotServers) {
       loadingText = "Waiting for Robot Servers...";
     } else if (this.state.user && !this.state.followedServers) {
       loadingText = "Awaiting user information.";
     }
 
-    return loadingText ? (
-      <div className="ConnectingOverlay">
-        <h3 className="ConnectingOverlayText">{loadingText}</h3>
-      </div>
-    ) : this.state.reload ? (
+    if (loadingText) {
+      return (
+        <div className="ConnectingOverlay">
+          <h3 className="ConnectingOverlayText">{loadingText}</h3>
+        </div>
+      );
+    }
+
+    return this.state.reload ? (
       this.handleReload()
     ) : (
       <React.Fragment>

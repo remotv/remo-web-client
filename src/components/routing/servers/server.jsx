@@ -9,7 +9,7 @@ export default class ServerPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      redirect: false
+      redirect: false,
     };
   }
 
@@ -28,7 +28,7 @@ export default class ServerPage extends Component {
 
   handleSelectedServer = async () => {
     let found = false;
-    this.props.robotServers.map(robotServer => {
+    this.props.robotServers.map((robotServer) => {
       if (robotServer.server_name === this.props.match.params.name) {
         // console.log("SELECTED ROBOT SERVER: ", robotServer);
         this.props.setServer(robotServer);
@@ -60,24 +60,24 @@ export default class ServerPage extends Component {
     }
   };
 
-  handleFindServer = async server_name => {
+  handleFindServer = async (server_name) => {
     const token = localStorage.getItem("token");
     let found = null;
     await axios
       .post(
         findServer,
         {
-          server_name: server_name
+          server_name: server_name,
         },
         {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .then(response => {
+      .then((response) => {
         // console.log(response);
         found = response.data;
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
     // console.log(found);

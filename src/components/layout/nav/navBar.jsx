@@ -53,7 +53,8 @@ export default class NavBar extends Component {
   logout = () => {
     localStorage.removeItem("token");
     socket.emit(LOGOUT);
-    this.setState({ redirect: true });
+    // this.setState({ redirect: true });
+    window.location.reload(true);
   };
 
   renderLogo = () => {

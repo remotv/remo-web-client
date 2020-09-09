@@ -15,16 +15,16 @@ export default class Login extends Form {
     redirect: false,
     error: "",
     redirectURL: "/",
-    submitText: "Submit"
+    submitText: "Submit",
   };
 
   async componentDidMount() {
     await axios
       .get(apiLogin)
-      .then(res => {
+      .then((res) => {
         console.log(res);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
 
@@ -48,10 +48,7 @@ export default class Login extends Form {
       .alphanum()
       .trim()
       .label("Username"),
-    password: Joi.string()
-      .required()
-      .min(5)
-      .label("Password")
+    password: Joi.string().required().min(5).label("Password"),
   };
 
   setUser = ({ user, isUser }) => {
@@ -65,12 +62,12 @@ export default class Login extends Form {
     }
   };
 
-  setError = error => {
+  setError = (error) => {
     console.log(error);
     this.setState({ error: error });
   };
 
-  setErrors = errors => {
+  setErrors = (errors) => {
     console.log(errors);
     this.setState({ errors: errors });
   };
@@ -82,19 +79,20 @@ export default class Login extends Form {
     await axios
       .post(apiLogin, {
         username: data.username,
-        password: data.password
+        password: data.password,
       })
-      .then(res => {
+      .then((res) => {
         if (res.data.error) {
           console.log(res.data.error);
           this.setState({ error: res.data.error });
         }
         if (res.data.token) {
           localStorage.setItem("token", res.data.token);
-          this.setState({ redirect: true });
+          if (this.props.noRedirect) window.location.reload(true);
+          else this.setState({ redirect: true });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("Login Error: ", err);
       });
   };

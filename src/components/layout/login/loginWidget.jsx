@@ -8,11 +8,11 @@ export default class LoginWidget extends Component {
   };
 
   displayLogin = () => {
-    return <Login {...this.props} />;
+    return <Login {...this.props} noRedirect />;
   };
 
   displaySignUp = () => {
-    return <Signup {...this.props} />;
+    return <Signup {...this.props} noRedirect />;
   };
 
   handleSelect = () => {

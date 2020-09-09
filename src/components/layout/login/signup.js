@@ -17,7 +17,7 @@ export default class Signup extends Form {
     captcha: "",
     redirect: false,
     redirectURL: "/",
-    submitText: "Submit"
+    submitText: "Submit",
   };
 
   schema = {
@@ -28,17 +28,9 @@ export default class Signup extends Form {
       .alphanum()
       .trim()
       .label("Username"),
-    password: Joi.string()
-      .required()
-      .min(5)
-      .label("Password"),
-    confirm: Joi.string()
-      .required()
-      .label("Confirm Password"),
-    email: Joi.string()
-      .email()
-      .required()
-      .label("Email")
+    password: Joi.string().required().min(5).label("Password"),
+    confirm: Joi.string().required().label("Confirm Password"),
+    email: Joi.string().email().required().label("Email"),
   };
 
   recaptchaRef = React.createRef();
@@ -47,12 +39,14 @@ export default class Signup extends Form {
     //Just a test to see my API stuff is working
     await axios
       .get(apiUrl)
-      .then(function(response) {
+      .then(function (response) {
         console.log(response);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
+
+    console.log("PROPS CHECK: ", this.props);
 
     this.setRedirect();
   }
@@ -79,7 +73,7 @@ export default class Signup extends Form {
     }
   };
 
-  setError = error => {
+  setError = (error) => {
     this.setState({ error: error });
   };
 
@@ -104,9 +98,9 @@ export default class Signup extends Form {
         username: data.username,
         password: data.password,
         email: data.email,
-        response: captcha
+        response: captcha,
       })
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
         if (response.data.error) {
           // console.log(response.data.error);
@@ -115,10 +109,11 @@ export default class Signup extends Form {
 
         if (response.data.token) {
           localStorage.setItem("token", response.data.token);
-          this.setState({ redirect: true });
+          if (this.props.noRedirect) window.location.reload(true);
+          else this.setState({ redirect: true });
         }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
 
@@ -127,7 +122,7 @@ export default class Signup extends Form {
 
   handleCaptcha = async () => {
     this.setState({
-      captcha: this.recaptchaRef.current.getValue()
+      captcha: this.recaptchaRef.current.getValue(),
     });
   };
 

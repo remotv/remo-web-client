@@ -246,6 +246,7 @@ export default class DisplayServerDetails extends Component {
 
   handleDisplaymembers = () => {
     const { server, user, onCloseModal } = this.props;
+
     console.log("Boop");
     return [
       {
@@ -263,17 +264,20 @@ export default class DisplayServerDetails extends Component {
   };
 
   handleMembers = () => {
-    return (
-      <div
-        className="member-count"
-        onClick={() => {
-          this.props.modal(this.handleDisplaymembers());
-        }}
-      >
-        {" "}
-        {this.handleMemberCount()}{" "}
-      </div>
-    );
+    if (!this.props.user)
+      return <div className="member-count"> {this.handleMemberCount()} </div>;
+    else
+      return (
+        <div
+          className="member-count member-count-clickable"
+          onClick={() => {
+            this.props.modal(this.handleDisplaymembers());
+          }}
+        >
+          {" "}
+          {this.handleMemberCount()}{" "}
+        </div>
+      );
   };
 
   displayDetails = () => {

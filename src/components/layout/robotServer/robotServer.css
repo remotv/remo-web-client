@@ -414,10 +414,12 @@ a:active {
   padding-right: 10px;
   display: flex;
   flex: 1;
+}
+.member-count-clickable {
   cursor: pointer;
 }
 
-.member-count:hover {
+.member-count-clickable:hover {
   background-color: rgb(50, 60, 104);
 }
 

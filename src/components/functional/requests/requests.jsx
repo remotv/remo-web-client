@@ -17,57 +17,68 @@ import axios from "axios";
  *           />
  */
 
-const Requests = async ({ url, type, payload, handleResult }) => {
+const Requests = ({
+  url,
+  type,
+  payload,
+  handleResult,
+  pending,
+  handlePending,
+}) => {
+  const [retry, setRetry] = useState(0);
   const [token] = useState(() => {
     return localStorage.getItem("token");
   });
 
-  const [retry, setRetry] = useState(0);
-
   useEffect(() => {
-    handleReq();
+    if (!pending) {
+      console.log(handlePending);
+      handlePending(true);
+      handleReq();
+    }
   });
 
-  const handleReq = async () => {
+  const handleReq = () => {
     if (!type || type === "post") handlePost();
     return null;
   };
 
-  handleTimeout = callback => {
+  const handleTimeout = () => {
     handleResult({ error: "error, unable to complete request, retrying." });
     if (retry < 3) {
       setTimeout(() => {
-        callback;
+        handlePost();
       }, 600); //retry
       setRetry(retry + 1);
     } else {
       handleResult({
-        error: "unable to contact server, please try again later."
+        error: "unable to contact server, please try again later.",
       });
     }
   };
 
-  handlePost = async () => {
-    if (!token) handleResult({ error: "authentication error." });
-    await axios
+  const handlePost = () => {
+    if (!token) return handleResult({ error: "authentication error." });
+    axios
       .post(
         url,
+        payload,
+
         {
-          payload
-        },
-        {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .then(res => {
+      .then((res) => {
+        console.log("REQUEST RESULT: ", res.data);
         handleResult(res.data);
       })
-      .catch(err => {
-        console.log("API Request Error: ", err);
-        handleTimeout(handlePost);
+      .catch((err) => {
+        const error = err.response.data.error;
+        console.log("API Request Error: ", error);
+        handleResult({ error: error });
+        // handleTimeout();
       });
-
-    return;
+    return null;
   };
 
   return <React.Fragment />;

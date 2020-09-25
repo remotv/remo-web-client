@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Toggle from "../../common/toggle";
-import InlineResponse from "../../common/inlineResult/inlineResult";
-import InlineItem from "../../presentation/inlineItem/inlineItem";
+import InlineResponse from "../../common/inlineResponse";
+import InlineItem from "../../presentation/inlineProfileItem";
 import axios from "axios";
 import { updateUserSettings } from "../../../config";
 
@@ -10,8 +10,8 @@ export default class UserNotificationSettings extends Component {
     status: "",
     error: "",
     settings: {
-      enable_email_notifications: null
-    }
+      enable_email_notifications: null,
+    },
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -33,14 +33,14 @@ export default class UserNotificationSettings extends Component {
   handleToggle = () => {
     const { status } = this.state;
     if (status === "") {
-      this.setState(state => {
+      this.setState((state) => {
         return {
           status: "...sending request",
           settings: {
             ...state.settings,
             enable_email_notifications: !state.settings
-              .enable_email_notifications
-          }
+              .enable_email_notifications,
+          },
         };
       });
     }
@@ -52,16 +52,16 @@ export default class UserNotificationSettings extends Component {
       .post(
         updateUserSettings,
         {
-          settings: this.state.settings
+          settings: this.state.settings,
         },
         {
-          headers: { authorization: `Bearer ${token}` }
+          headers: { authorization: `Bearer ${token}` },
         }
       )
-      .then(res => {
+      .then((res) => {
         if (res.data.error) {
           this.setState({
-            error: res.data.error
+            error: res.data.error,
           });
           return;
         } else {
@@ -69,7 +69,7 @@ export default class UserNotificationSettings extends Component {
           return;
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("Add Server Error: ", err);
       });
   };

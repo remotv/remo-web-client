@@ -3,7 +3,7 @@ import Form from "../../common/form";
 import Joi from "joi-browser";
 import axios from "axios";
 import { renameChannel } from "../../../config/index";
-import InlineResponse from "../../common/inlineResult/inlineResult";
+import InlineResponse from "../../common/inlineResponse";
 import "./renameChannel.scss";
 
 export default class RenameChannel extends Form {

@@ -48,7 +48,6 @@ export default class DisplayRobotAPIKey extends Component {
         }
       )
       .then((res) => {
-        console.log("API KEY RESPONSE: ", res.data);
         this.setState({ apiKey: res.data.key });
       })
       .catch((err) => {
@@ -82,6 +81,7 @@ export default class DisplayRobotAPIKey extends Component {
             className="hidden-clipboard"
             ref={this.setInputRef}
             value={this.state.apiKey}
+            readOnly
           />
         </div>
         <div className="displayRobotAPIKey__container-bottom">

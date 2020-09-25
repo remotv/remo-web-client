@@ -1,5 +1,5 @@
 import React from "react";
-import defaultImages from "../../imgs/placeholders";
+import getServerImage from "../functional/getServerImage/index";
 import "./serverCard.css";
 
 const ServerCard = ({
@@ -7,12 +7,17 @@ const ServerCard = ({
   owner_name,
   created,
   members,
-  live_devices
+  live_devices,
+  image_id,
 }) => {
   const renderServerImage = () => {
     return (
       <div className="server-img-container">
-        <img className="server-img" alt="" src={defaultImages.default01} />
+        <img
+          className="server-img"
+          alt=""
+          src={getServerImage({ image_id: image_id })}
+        />
       </div>
     );
   };

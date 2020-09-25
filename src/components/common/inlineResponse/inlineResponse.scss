@@ -1,7 +1,7 @@
 @import "../../../styles/mixins/inlineStyles.scss";
 @import "../../../styles/mixins/buttonStyles.scss";
 
-.inlineResult {
+.inlineResponse {
   &__error-container {
     @include inline-alert;
   }

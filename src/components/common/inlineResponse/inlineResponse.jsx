@@ -1,5 +1,5 @@
 import React from "react";
-import "./inlineResult.scss";
+import "./inlineResponse.scss";
 /**
  * Inputs:
  *    message: ( string ) any
@@ -9,10 +9,10 @@ import "./inlineResult.scss";
 const InlineResponse = ({ message, type, onClose }) => {
   const displayType = type || "error";
   return (
-    <div className={`inlineResult__${displayType}-container`}>
-      <div className="inlineResult__message"> {message}</div>
+    <div className={`inlineResponse__${displayType}-container`}>
+      <div className="inlineResponse__message"> {message}</div>
       {onClose ? (
-        <button className="inlineResult__dismiss" onClick={() => onClose()}>
+        <button className="inlineResponse__dismiss" onClick={() => onClose()}>
           dismiss
         </button>
       ) : (

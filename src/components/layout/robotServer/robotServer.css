@@ -1,5 +1,7 @@
 .display-robot-server-img {
   width: 64px;
+  height: 48px;
+  object-fit: cover;
   border-radius: 24px;
   padding: 2px;
 }

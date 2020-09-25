@@ -1,6 +1,6 @@
 @import "../../../styles/mixins/inlineStyles.scss";
 
-.inlineItem {
+.inlineProfileItem {
   &__container {
     @include inline-container;
   }

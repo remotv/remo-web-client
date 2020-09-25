@@ -27,6 +27,7 @@ const defaults = {
   apiUrl: apiUrl,
   recoveryPage: overrides.recoveryPage || "https://remo.tv/recovery",
   ws: overrides.ws || "ws://",
+  imageStore: "https://remo-image-store.sfo2.digitaloceanspaces.com/user/",
 
   //User Signup / Login:
   reCaptchaSiteKey: "6Lfg_KYUAAAAAH1hvQdp-qDOUToVn6FQWFOvbySo",
@@ -41,9 +42,6 @@ const defaults = {
 
   //General API
   listRobotServers: `${apiUrl}/robot-server/list`,
-  addServer: `${apiUrl}/robot-server/create`,
-  joinServer: `${apiUrl}/robot-server/join`,
-  leaveServer: `${apiUrl}/robot-server/leave`,
   addRobot: `${apiUrl}/robot/setup`,
   deleteRobot: `${apiUrl}/robot/delete`,
   robotAPIKey: `${apiUrl}/robot/key`,
@@ -52,24 +50,31 @@ const defaults = {
   listFollowedServers: `${apiUrl}/user/followed`,
   makeButtons: `${apiUrl}/controls/make`,
   getButtons: `${apiUrl}/controls/button-input`,
-  findServer: `${apiUrl}/robot-server/get-server`,
-  setServerListing: `${apiUrl}/robot-server/settings/listing`,
-  setServerPrivate: `${apiUrl}/robot-server/settings/private`,
-  updateSettings: `${apiUrl}/robot-server/settings/update`,
   requestPasswordReset: `${apiUrl}/user/request-password-reset`, //No Auth
   validateResetKey: `${apiUrl}/user/validate-key`,
   passwordReset: `${apiUrl}/user/password-reset`, //execute reset w/ valid key
   getControls: `${apiUrl}/controls/get-controls`,
-  validateInviteKey: `${apiUrl}/robot-server/validate-invite`,
-  disableInvite: `${apiUrl}/robot-server/deactivate-invite`,
   userProfile: `${apiUrl}/user/profile`,
   updateEmail: `${apiUrl}/user/update-email`,
-  invite: `${apiUrl}/robot-server/invite`,
-  getMembers: `${apiUrl}/robot-server/get-members`,
   kickMember: `${apiUrl}/moderation/kick`,
   welcome: `${apiUrl}/user/welcome`,
-  membershipSettings: `${apiUrl}/robot-server/membership/update-settings`,
   updateUserSettings: `${apiUrl}/user/update-settings`,
+
+  //Servers
+  findServer: `${apiUrl}/robot-server/get-server`,
+  addServer: `${apiUrl}/robot-server/create`,
+  joinServer: `${apiUrl}/robot-server/join`,
+  leaveServer: `${apiUrl}/robot-server/leave`,
+  getMembers: `${apiUrl}/robot-server/get-members`,
+  membershipSettings: `${apiUrl}/robot-server/membership/update-settings`,
+  setServerListing: `${apiUrl}/robot-server/settings/listing`,
+  setServerPrivate: `${apiUrl}/robot-server/settings/private`,
+  updateSettings: `${apiUrl}/robot-server/settings/update`,
+  uploadServerImage: `${apiUrl}/robot-server/:id/upload`,
+  //Server Invites
+  validateInviteKey: `${apiUrl}/robot-server/validate-invite`,
+  disableInvite: `${apiUrl}/robot-server/deactivate-invite`,
+  invite: `${apiUrl}/robot-server/invite`,
 
   //Channels:
   addChannel: `${apiUrl}/channels/create`,

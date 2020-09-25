@@ -8,7 +8,6 @@ import GetLayout from "../../modules/getLayout";
 
 export default class RobotServer extends Component {
   displayServers = (servers) => {
-    console.log("Robot Server Props: ", this.props);
     return servers.map((server) => {
       return (
         <DisplayRobotServer
@@ -21,6 +20,7 @@ export default class RobotServer extends Component {
           }
           followed={server.followed}
           settings={server.settings}
+          image_id={server.image_id}
         />
       );
     });

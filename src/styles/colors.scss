@@ -1,0 +1,41 @@
+//Moving final colors into this file, will deprecate old variables.scss file
+
+//Named Colors:
+//Brand:
+$color-remo-green: #7cff1e;
+$color-remo-orange: #ffa557;
+$color-remo-blue: #1f93ff;
+
+$color-steel-gray-1: rgb(25, 25, 36);
+$color-cool-plum: #1f1f2e;
+$color-outer-space: #263238;
+$color-lavender: rgb(176, 115, 211); //default Link
+$color-robins-egg-blue-1: #00dfd3;
+$color-neutral-gray-text: #acacac;
+
+//Named Gradients:
+$gradient-remo-default: -webkit-linear-gradient(
+  -45deg,
+  #954ed6 0%,
+  #009bee 100%
+);
+$gradient-remo-dark: -webkit-linear-gradient(-45deg, #491769 0%, #0d3091 100%);
+$gradient-danger: -webkit-linear-gradient(-45deg, #b31515 0%, #ee3b94 100%);
+$gradient-neutral: -webkit-linear-gradient(-45deg, #414141 0%, #5e5e5e 100%);
+
+//Modal
+$modal-header: $gradient-remo-dark;
+$modal-body: $gradient-remo-default;
+$modal-footer: $color-outer-space;
+
+//Form Buttons ( Not Robot GUI )
+$button-default: $gradient-remo-default;
+
+//InlineForms
+$color-form-group-container: $color-steel-gray-1;
+$color-inline-container: $color-cool-plum;
+$color-content-default: $color-neutral-gray-text;
+
+//Links:
+$color-link-default-hover: cyan;
+$color-link-gray: $color-neutral-gray-text;

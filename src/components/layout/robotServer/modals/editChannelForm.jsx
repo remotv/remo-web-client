@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import DeleteChannelForm from "../../../forms/deleteChannelForm/deleteChannelForm";
 import DefaultChannel from "../../../forms/defaultChannel/index";
-import RenameChannel from "../../../forms/renameChannel/renameChannel";
+import RenameChannel from "../../../forms/renameChannel";
 import DisplayRobotAPIKey from "../../../forms/displayRobotAPIKey";
 import "../../../forms/inlineForms.css";
 

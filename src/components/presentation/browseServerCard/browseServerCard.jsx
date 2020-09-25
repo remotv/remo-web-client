@@ -1,7 +1,7 @@
 import React from "react";
-import defaultImages from "../../../imgs/placeholders";
 import Icon from "../../common/icon";
 import ICONS from "../../../icons/icons";
+import getServerImage from "../../functional/getServerImage/index";
 import "./browseServerCard.scss";
 
 const BrowseServerCard = ({
@@ -9,6 +9,7 @@ const BrowseServerCard = ({
   username,
   created,
   followed,
+  image_id,
   ...server
 }) => {
   const date = new Date(parseInt(created)).toDateString();
@@ -49,7 +50,7 @@ const BrowseServerCard = ({
               : "browseServerCard__server-img"
           }
           alt=""
-          src={defaultImages.default01}
+          src={getServerImage({ image_id: image_id })}
         />
       </div>
 

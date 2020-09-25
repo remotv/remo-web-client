@@ -85,7 +85,7 @@ const defaults = {
   removePatreon: `${apiUrl}/integrations/patreon-remove`,
 
   //External Links:
-  discordUrl: `https://discord.gg/7cAgWKV`,
+  discordUrl: `https://discord.gg/dhkCweA`,
   githubUrl: `https://github.com/remotv/controller`,
 
   //JSMpeg

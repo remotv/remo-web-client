@@ -72,9 +72,11 @@ export default class Channels extends Component {
 
   handleKeyPress = (e) => {
     if (e.keyCode === 9) {
-      e.preventDefault();
-      // console.log(this.state.chatTabbed);
-      this.setChatTabbed(!this.state.chatTabbed);
+      if (!this.props.isModalShowing) {
+        e.preventDefault();
+        this.setChatTabbed(!this.state.chatTabbed)
+      }
+      else this.setChatTabbed(false)
     }
   };
 

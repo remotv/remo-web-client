@@ -49,9 +49,9 @@ const defaultSort = (robotServers) => {
   let live = [];
   let rest = [];
 
-  console.log(robotServers);
+  // console.log(robotServers);
   robotServers = robotServers.sort(compare);
-  console.log(robotServers);
+  // console.log(robotServers);
 
   robotServers.forEach((server) => {
     if (server.status.liveDevices && server.status.liveDevices.length > 0) {

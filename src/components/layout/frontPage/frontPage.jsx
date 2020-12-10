@@ -117,8 +117,8 @@ const AddARobot = () => {
 const Platform = () => {
   return (
     <InlineLink
-      link="https://github.com/jillytot/remote-control"
-      text="Remo Web Platform Repo: "
+      link="https://github.com/remotv"
+      text="The Remo.TV platform is opensource: "
     />
   );
 };

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import "./index.css";
 import RobotServer from "../../layout/robotServer/robotServer";
 import NavBar from "../../layout/nav/navBar";

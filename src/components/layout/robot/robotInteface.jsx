@@ -9,7 +9,7 @@ import defaultImages from "../../../imgs/placeholders";
 import RenderButtons from "./renderButtons";
 import socket from "../../socket";
 import axios from "axios";
-import { ws as configSocket, jsmpegDisabled } from "../../../config/index";
+import { jsmpegDisabled } from "../../../config/index";
 import "./robot.css";
 
 /**

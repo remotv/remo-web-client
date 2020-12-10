@@ -25,7 +25,7 @@ const Requests = ({
   pending,
   handlePending,
 }) => {
-  const [retry, setRetry] = useState(0);
+  // const [retry, setRetry] = useState(0);
   const [token] = useState(() => {
     return localStorage.getItem("token");
   });
@@ -43,19 +43,19 @@ const Requests = ({
     return null;
   };
 
-  const handleTimeout = () => {
-    handleResult({ error: "error, unable to complete request, retrying." });
-    if (retry < 3) {
-      setTimeout(() => {
-        handlePost();
-      }, 600); //retry
-      setRetry(retry + 1);
-    } else {
-      handleResult({
-        error: "unable to contact server, please try again later.",
-      });
-    }
-  };
+  // const handleTimeout = () => {
+  //   handleResult({ error: "error, unable to complete request, retrying." });
+  //   if (retry < 3) {
+  //     setTimeout(() => {
+  //       handlePost();
+  //     }, 600); //retry
+  //     setRetry(retry + 1);
+  //   } else {
+  //     handleResult({
+  //       error: "unable to contact server, please try again later.",
+  //     });
+  //   }
+  // };
 
   const handlePost = () => {
     if (!token) return handleResult({ error: "authentication error." });

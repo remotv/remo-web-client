@@ -9,7 +9,6 @@ const DisplayRobotServer = ({
   defaultChannel,
   displayClasses,
   liveDevices,
-  followed,
   settings,
   image_id,
 }) => {

@@ -9,7 +9,7 @@ import AddChannelForm from "./modals/addChannelForm";
 import EditChannel from "./modals/editChannel";
 import DisplayServerDetails from "./displayServerDetails";
 import socket from "../../socket";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Route, Switch, Redirect } from "react-router-dom";
 import Channel from "./channel";
 import defaultImages from "../../../imgs/placeholders";
 import "./channels.css";
@@ -319,6 +319,7 @@ export default class Channels extends Component {
                 {...props}
                 setCurrentChannel={this.setCurrentChannel}
                 channels={this.state.channels}
+                server={selectedServer}
               />
             )}
           />
@@ -381,12 +382,26 @@ class AddChannel extends Component {
   }
 }
 
+
 class NoChannel extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      redirectUrl: ""
+    };
+  }
+
   componentDidMount() {
     this.props.setCurrentChannel(null);
+    if ( this.props && this.props.server ) {
+      const { default_channel } = this.props.server.settings;
+      const redirectUrl = `/${this.props.server.server_name}/${default_channel}`;
+      this.setState({ redirectUrl: redirectUrl });
+    }
   }
 
   render() {
+    if (this.state.redirectUrl) return <Redirect to={this.state.redirectUrl} />;
     return (
       <div id="no-channel">
         <img className="logo" alt="" src={defaultImages.remoGrey} />

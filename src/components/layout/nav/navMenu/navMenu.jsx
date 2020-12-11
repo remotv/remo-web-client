@@ -1,5 +1,6 @@
 import React from "react";
 import { documentationLink } from "../../../../config";
+import "./navMenu.scss";
 
 const NavMenu = () => {
   const navLink = ({ text, url }) => {

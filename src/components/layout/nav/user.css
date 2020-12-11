@@ -9,7 +9,7 @@
 .user-container {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  flex: 1;
   justify-content: flex-end;
 }
 

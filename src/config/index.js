@@ -92,6 +92,7 @@ const defaults = {
   //External Links:
   discordUrl: `https://discord.gg/dhkCweA`,
   githubUrl: `https://github.com/remotv/controller`,
+  documentationLink: "https://docs.remo.tv/",
 
   //JSMpeg
   jsmpegDisabled: false,

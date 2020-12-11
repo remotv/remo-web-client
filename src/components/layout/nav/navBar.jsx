@@ -10,6 +10,7 @@ import UserProfile from "../userProfile/userProfile";
 import queryString from "query-string";
 import Welcome from "../../modals/welcome/welcome";
 import LoginWidget from "../login/loginWidget";
+import NavMenu from "./navMenu/navMenu";
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -157,6 +158,7 @@ export default class NavBar extends Component {
       <div className="nav-container">
         {this.renderBurger()}
         <Link to="/"> {this.renderLogo()}</Link>
+        <NavMenu />
         <Welcome {...this.props} />
         <div className="user-container">{this.handleDisplayUser()}</div>
       </div>

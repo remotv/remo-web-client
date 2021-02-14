@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Emotes from "../../../emotes/emotes";
 import defaultImages from "../../../imgs/placeholders";
 import { mobileMessageFadeOut } from "../../../config";
+import { ServerUserManagementMenu } from "../../forms/serverUserManagementMenu"
 
 const Message = ({
   message,
@@ -15,6 +16,22 @@ const Message = ({
 
   const handleFade = () => {
     setFadeout(true);
+  };
+
+  handleModal = () => {
+    const { onCloseModal, message } = this.props;
+    return [
+      {
+        body: (
+          <ServerUserManagementMenu
+            onCloseModal={onCloseModal}
+            user={message.sender}
+          />
+        )
+      },
+      { header: "" },
+      { footer: "" }
+    ];
   };
 
   const types = {

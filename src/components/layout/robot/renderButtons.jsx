@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import defaultImages from "../../../imgs/placeholders";
 import { DisplayCooldown } from "../../presentation/robotInterface/";
 import "./robot.css";
 
@@ -37,6 +38,31 @@ export default class RenderButtons extends Component {
           <React.Fragment />
         )}
       </button>
+    );
+  };
+
+  // single joystick render
+  handleJoystick = (aButton) => {
+    const { onJoystickMouseEvent } = this.props;
+    // Create a 300 pixel by 300 pixel canvas for rendering the joystick UI. The data-label custom attribute is used to store the joystick's label so that the event handler can send it over the WebSocket. The data-id custom attribute store the joystick's ID. The data-command custom attribute stores the prefix of the command that the joystick will send.
+    return (
+      <canvas
+        className="joystick_canvas"
+        key={aButton.id}
+        ref={aButton.id}
+        width="300"
+        height="300"
+        data-id={aButton.id}
+        data-label={aButton.label}
+        data-command={aButton.command}
+        style={{ backgroundImage: `url(${defaultImages.joystickBackground})`}}
+        onMouseMove={(e) => {onJoystickMouseEvent(e, aButton.id, "move")}}
+        onMouseDown={(e) => {onJoystickMouseEvent(e, aButton.id, "down")}}
+        onMouseUp={(e) => {onJoystickMouseEvent(e, aButton.id, "up")}}
+        onMouseEnter={(e) => {onJoystickMouseEvent(e, aButton.id, "enter")}}
+        >
+            HTML5 Canvas unsupported. Please upgrade your browser to use the joystick feature.
+        </canvas>
     );
   };
 
@@ -133,6 +159,9 @@ export default class RenderButtons extends Component {
           //do nothing?
         }
         if (aButton.break) return this.handleBreak(aButton, index);
+        if (aButton.joystick) {
+          return this.handleJoystick(aButton);
+        }
         return this.handleButton({ aButton, style, hotKeyStyle });
       });
     }

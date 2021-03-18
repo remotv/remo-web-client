@@ -280,7 +280,6 @@ export default class RobotInterface extends Component {
     if (this.props.user) {
       const isOwner = this.props.server.owner_id === this.props.user.id;
       if (isOwner || !click.button.disabled) {
-        console.log(click.user); // OLIVER TODO REMOVE
         socket.emit(BUTTON_COMMAND, {
           user: click.user,
           button: click.button,

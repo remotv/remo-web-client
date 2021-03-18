@@ -33,8 +33,6 @@ export default class RobotInterface extends Component {
     renderCurrentKey: null, //key this user is activiely pressing
     renderPresses: [], //render user activity streamed from the server
     canvasHeight: null, //height of the video display area
-    joystickStates: {}, //used to keep track of the states of all joystick controls in the robot's interface
-    joystickPositions: {}, //used to keep track of the positions of the control sticks of all joystick controls
   };
 
   currentKey = null;
@@ -282,6 +280,7 @@ export default class RobotInterface extends Component {
     if (this.props.user) {
       const isOwner = this.props.server.owner_id === this.props.user.id;
       if (isOwner || !click.button.disabled) {
+        console.log(click.user); // OLIVER TODO REMOVE
         socket.emit(BUTTON_COMMAND, {
           user: click.user,
           button: click.button,
@@ -292,85 +291,6 @@ export default class RobotInterface extends Component {
       }
       //else pop up the login message
     }
-  };
-
-  changeJoystickState(buttonId, newState) {
-    let updatedState = {};
-    updatedState[buttonId] = newState;
-    this.setState({
-                    joystickStates: Object.assign(this.state.joystickStates, updatedState)
-                  });
-  }
-
-  changeJoystickPosition(buttonId, newPosition) {
-    let updatedState = {};
-    updatedState[buttonId] = newPosition;
-    this.setState({
-                    joystickPositions: Object.assign(this.state.joystickPositions, updatedState)
-                  });
-  }
-
-  handleJoystickMouseEvent = (e, buttonId, eventType) => {
-      // Get the drawing context and clear the canvas.
-      let canvas = e.target;
-      let ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let stick_radius = 30;
-      let circle_radius = canvas.width / 2;
-
-      // If this joystick isn't already in the list of joysticks being tracked, add it.
-      if (!(buttonId in this.state.joystickStates)) {
-        this.changeJoystickPosition(buttonId, {x: canvas.width / 2.0, y: canvas.height / 2.0});
-        this.changeJoystickState(buttonId, "inactive");
-      }
-      // If the joystick is active and being moved, draw it at the current mouse location.
-      if (this.state.joystickStates[buttonId] === "active" && eventType === "move") {
-        // Update the joystick position.
-        let newJoystickX = this.state.joystickPositions[buttonId].x + e.movementX;
-        let newJoystickY = this.state.joystickPositions[buttonId].y + e.movementY;
-        // If the cursor is within the white circular background, draw it as the stick of the joystick.
-        let distance_from_cursor_to_center = Math.sqrt(Math.pow(newJoystickX - canvas.width / 2, 2) + Math.pow(newJoystickY - canvas.height / 2, 2));
-        if (distance_from_cursor_to_center <= circle_radius) {
-          this.changeJoystickPosition(buttonId, {x: newJoystickX, y: newJoystickY});
-        }
-        // Send the joystick position as a command to be forwarded to the remote robot.
-        let joystickXScaled = Math.round(((newJoystickX - canvas.width / 2.0) / (canvas.width / 2.0)) * 100.0);
-        let joystickYScaled = Math.round(((canvas.height / 2.0 - newJoystickY) / (canvas.height / 2.0)) * 100.0);
-        let command = `${e.target.dataset.command}_${joystickXScaled}_${joystickYScaled}`;
-        socket.emit(BUTTON_COMMAND, {
-          user: e.user,
-          button: {id: e.target.dataset.id, command: command, label: e.target.dataset.label},
-          controls_id: this.state.controlsId,
-          channel: this.props.channel,
-          server: this.props.server.server_id,
-        });
-      }
-      // When the mouse button is pressed down, activate the joystick and lock the user's pointer to prevent it leaving.
-      else if (eventType === "down") {
-        // Calculate position of click on the canvas.
-        // See https://stackoverflow.com/a/17130415 for how we calculate the position of the click within the canvas.
-        let rect = canvas.getBoundingClientRect();
-        let scaleX = canvas.width / rect.width;
-        let scaleY = canvas.height / rect.height;
-        let mouseX = (e.clientX - rect.left) * scaleX;
-        let mouseY = (e.clientY - rect.top) * scaleY;
-        // Set the new joystick position and make the joystick active.
-        this.changeJoystickPosition(buttonId, {x: mouseX, y: mouseY});
-        this.changeJoystickState(buttonId, "active");
-        // Lock the user's pointer.
-        e.target.requestPointerLock();
-      }
-      // When the mouse button is released, deactivate the joystick, move it back to center, and unlock the user's pointer.
-      else if (eventType === "up") {
-        this.changeJoystickPosition(buttonId, {x: canvas.width / 2.0, y: canvas.width / 2.0});
-        this.changeJoystickState(buttonId, "inactive");
-        document.exitPointerLock();
-      }
-      // Draw the joystick at the updated location.
-      ctx.beginPath();
-      ctx.arc(this.state.joystickPositions[buttonId].x, this.state.joystickPositions[buttonId].y, stick_radius, 0, 2 * Math.PI, false);
-      ctx.fillStyle = "red";
-      ctx.fill();
   };
 
   handleRenderPresses = (press) => {
@@ -425,11 +345,11 @@ export default class RobotInterface extends Component {
         renderPresses={this.state.renderPresses}
         renderCurrentKey={this.state.renderCurrentKey}
         onClick={(e) => this.handleClick(e)}
-        onJoystickMouseEvent={(e, buttonId, eventType) => this.handleJoystickMouseEvent(e, buttonId, eventType)}
         user={this.props.user}
         controls_id={this.state.controlsId}
         socket={socket}
         server={this.props.server}
+        channel={this.props.channel}
       />
     );
   };

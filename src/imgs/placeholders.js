@@ -36,9 +36,6 @@ import patreon2500 from "./img/patreon2500.png";
 import patreon3500 from "./img/patreon3500.png";
 import patreon5000 from "./img/patreon5000.png";
 
-//background image for joystick
-import joystickBackground from "./img/joystick_background.png";
-
 const defaultImages = {
   default01: default01,
   default02: default02,
@@ -77,9 +74,6 @@ const defaultImages = {
   patreon2500: patreon2500,
   patreon3500: patreon3500,
   patreon5000: patreon5000,
-
-  //joystick background image
-  joystickBackground: joystickBackground
 };
 
 export default defaultImages;

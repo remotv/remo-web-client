@@ -49,7 +49,7 @@ export default class RenderButtons extends Component {
         aButton={ aButton }
         width = { 300 }
         height = { 300 }
-        stickRadius = { 30 }
+        stickRadius = { 15 }
         user = { this.props.user }
         channel = { this.props.channel }
         controlsId = { this.props.controls_id }

@@ -187,15 +187,15 @@ export default class JoystickInput extends Component {
                     width={ this.props.width }
                     height={ this.props.height }
                     style = { { touchAction: "none" } }
-                    onMouseDown={ this.handleMouseDown }
-                    onMouseMove={ this.handleMouseMove }
-                    onMouseUp={ this.handleMouseUp }
-                    onTouchStart={ this.handleTouchStart }
-                    onTouchMove={ this.handleTouchMove }
-                    onTouchEnd={ this.handleMouseUp }
-                    onTouchCancel={ this.handleMouseUp }
+                    onMouseDown={ this.props.user == null ? undefined : this.handleMouseDown }
+                    onMouseMove={ this.props.user == null ? undefined : this.handleMouseMove }
+                    onMouseUp={ this.props.user == null ? undefined : this.handleMouseUp }
+                    onTouchStart={ this.props.user == null ? undefined : this.handleTouchStart }
+                    onTouchMove={ this.props.user == null ? undefined : this.handleTouchMove }
+                    onTouchEnd={ this.props.user == null ? undefined : this.handleMouseUp }
+                    onTouchCancel={ this.props.user == null ? undefined : this.handleMouseUp }
                 >
-                    <circle cx={ this.props.width / 2 } cy={ this.props.height / 2 } r={ this.props.width / 2 } fill="white" />
+                    <circle cx={ this.props.width / 2 } cy={ this.props.height / 2 } r={ this.props.width / 2 } fill={ this.props.user == null ? "darkgray" : "white" } />
                     { this.state.other_users_joystick_positions.map((other_users_joystick, index) => {
                         return (<circle
                             key={ index }
@@ -210,7 +210,7 @@ export default class JoystickInput extends Component {
                         cx={ this.state.joystick_x }
                         cy={ this.state.joystick_y }
                         r={ this.props.stickRadius }
-                        fill={ this.state.active ? "green" : "red" }
+                        fill={ this.props.user == null ? "gray" : (this.state.active ? "green" : "red") }
                     />
                 </svg>
             </React.Fragment>

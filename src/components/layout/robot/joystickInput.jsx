@@ -88,7 +88,7 @@ export default class JoystickInput extends Component {
     }
 
     componentDidMount = () => {
-        this.updateJoystickPosition(this.props.width / 2.0, this.props.height / 2.0);
+        this.setState({joystick_x: this.props.width / 2, joystick_y: this.props.height / 2});
     }
 
     handleMouseMove = (e) => {
@@ -100,9 +100,16 @@ export default class JoystickInput extends Component {
             let newJoystickX = this.state.joystick_x + e.movementX;
             let newJoystickY = this.state.joystick_y + e.movementY;
             // If the cursor is within the white circular background, update the joystick position.
+            let max_allowable_radius = circle_radius - this.props.stickRadius;
             let distance_from_cursor_to_center = Math.sqrt(Math.pow(newJoystickX - this.props.width / 2, 2) + Math.pow(newJoystickY - this.props.height / 2, 2));
-            if (distance_from_cursor_to_center <= circle_radius - this.props.stickRadius) {
+            if (distance_from_cursor_to_center <= max_allowable_radius) {
                 this.updateJoystickPosition(newJoystickX, newJoystickY);
+            }
+            // If the cursor is outside the white circular background, then calculate where along the border of the circular background it ought to be.
+            else {
+                let angle = Math.atan2(this.props.height / 2 - newJoystickY, newJoystickX - this.props.width / 2);
+                console.log(angle);
+                this.updateJoystickPosition(this.props.width / 2 + Math.cos(angle) * max_allowable_radius, this.props.height / 2 - Math.sin(angle) * max_allowable_radius);
             }
         }
     }
@@ -119,10 +126,17 @@ export default class JoystickInput extends Component {
             let scaleY = svg.height.animVal.value / rect.height;
             let mouseX = (e.touches[0].clientX - rect.left) * scaleX;
             let mouseY = (e.touches[0].clientY - rect.top) * scaleY;
-            // Set the new joystick position.
+            // If the touch is within the white circular background, set the new joystick position.
+            let max_allowable_radius = circle_radius - this.props.stickRadius;
             let distance_from_cursor_to_center = Math.sqrt(Math.pow(mouseX - this.props.width / 2, 2) + Math.pow(mouseY - this.props.height / 2, 2));
-            if (distance_from_cursor_to_center <= circle_radius - this.props.stickRadius) {
+            if (distance_from_cursor_to_center <= max_allowable_radius) {
                 this.updateJoystickPosition(mouseX, mouseY);
+            }
+            // If the cursor is outside the white circular background, then calculate where along the border of the circular background it ought to be.
+            else {
+                let angle = Math.atan2(this.props.height / 2 - mouseY, mouseX - this.props.width / 2);
+                console.log(angle);
+                this.updateJoystickPosition(this.props.width / 2 + Math.cos(angle) * max_allowable_radius, this.props.height / 2 - Math.sin(angle) * max_allowable_radius);
             }
         }
     }
@@ -169,8 +183,7 @@ export default class JoystickInput extends Component {
 
     handleMouseUp = (e) => {
         // When the mouse button is released, deactivate the joystick, move it back to center, and unlock the user's pointer.
-        this.updateJoystickPosition(this.props.width / 2.0, this.props.width / 2.0);
-        this.setState({active: false});
+        this.setState({joystick_x: this.props.width / 2, joystick_y: this.props.height / 2, active: false});
         document.exitPointerLock();
     }
 
@@ -195,7 +208,7 @@ export default class JoystickInput extends Component {
                     onTouchEnd={ this.props.user == null ? undefined : this.handleMouseUp }
                     onTouchCancel={ this.props.user == null ? undefined : this.handleMouseUp }
                 >
-                    <circle cx={ this.props.width / 2 } cy={ this.props.height / 2 } r={ this.props.width / 2 } fill={ this.props.user == null ? "darkgray" : "white" } />
+                    <circle cx={ this.props.width / 2 } cy={ this.props.height / 2 } r={ this.props.width / 2 } fill={ this.props.user == null ? "darkgray" : "#323C68" } />
                     { this.state.other_users_joystick_positions.map((other_users_joystick, index) => {
                         return (<circle
                             key={ index }
@@ -210,7 +223,7 @@ export default class JoystickInput extends Component {
                         cx={ this.state.joystick_x }
                         cy={ this.state.joystick_y }
                         r={ this.props.stickRadius }
-                        fill={ this.props.user == null ? "gray" : (this.state.active ? "green" : "red") }
+                        fill={ this.props.user == null ? "gray" : (this.state.active ? "#00FFFF" : "red") }
                     />
                 </svg>
             </React.Fragment>

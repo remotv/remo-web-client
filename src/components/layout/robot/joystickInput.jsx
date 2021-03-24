@@ -4,7 +4,7 @@ import socket from "../../socket";
 import "./robot.css";
 
 export default class JoystickInput extends Component {
-    possible_joystick_colors = ["#0000FF", "#FFA500", "#FF00FF", "#FFFF00", "#000000"];
+    possible_joystick_colors = ["#FFFFFF", "#FFA500", "#FF00FF", "#FFFF00", "#000000"];
     possible_joystick_colors_index = 0;
 
     state = {
@@ -13,7 +13,7 @@ export default class JoystickInput extends Component {
         joystick_y: 0, // Y-coordinate of the joystick stick in SVG coordinates (pixels from the top-left corner).
         last_socket_send_time: 0, // Last time (obtained from Date.now()) at which a joystick position update was sent to the server. Used to save bandwidth and to not overload mobile clients trying to track desktop clients' joysticks.
         other_users_joystick_colors: {}, // Dictionary that associates other users' user ids with the colors that are used to display the locations of their joysticks.
-        other_users_joystick_positions: [] // Array of objects that store the positions of other users' joysticks. Each object has properties user_id (a string), x (a number), y (a number), and lifetime (a number).
+        other_users_joystick_positions: [] // Array of objects that store the positions of other users' joysticks. Each object has properties user_id (a string), username (a string), x (a number), y (a number), and lifetime (a number).
     }
 
     // Handler that is called when the server forwards us a command sent by another user.
@@ -29,7 +29,7 @@ export default class JoystickInput extends Component {
             // Convert the angle and magnitude into X/Y coordinates in the SVG coordinate space.
             let x = this.props.width / 2.0 + magnitude_pixels * Math.cos(angle * (Math.PI / 180.0));
             let y = this.props.height / 2.0 - magnitude_pixels * Math.sin(angle * (Math.PI / 180.0));
-            let other_user_joystick_position = {user_id: command.user.id, x: x, y: y, lifetime: 100};
+            let other_user_joystick_position = {user_id: command.user.id, username: command.user.username, x: x, y: y, lifetime: 100};
             // Add this other user's joystick position to the state tracker, choosing a new color if one has not already been chosen for the other user.
             let colors_update = {};
             if (!(command.user.id in this.state.other_users_joystick_colors)) {
@@ -108,7 +108,6 @@ export default class JoystickInput extends Component {
             // If the cursor is outside the white circular background, then calculate where along the border of the circular background it ought to be.
             else {
                 let angle = Math.atan2(this.props.height / 2 - newJoystickY, newJoystickX - this.props.width / 2);
-                console.log(angle);
                 this.updateJoystickPosition(this.props.width / 2 + Math.cos(angle) * max_allowable_radius, this.props.height / 2 - Math.sin(angle) * max_allowable_radius);
             }
         }
@@ -135,7 +134,6 @@ export default class JoystickInput extends Component {
             // If the cursor is outside the white circular background, then calculate where along the border of the circular background it ought to be.
             else {
                 let angle = Math.atan2(this.props.height / 2 - mouseY, mouseX - this.props.width / 2);
-                console.log(angle);
                 this.updateJoystickPosition(this.props.width / 2 + Math.cos(angle) * max_allowable_radius, this.props.height / 2 - Math.sin(angle) * max_allowable_radius);
             }
         }
@@ -209,15 +207,30 @@ export default class JoystickInput extends Component {
                     onTouchCancel={ this.props.user == null ? undefined : this.handleMouseUp }
                 >
                     <circle cx={ this.props.width / 2 } cy={ this.props.height / 2 } r={ this.props.width / 2 } fill={ this.props.user == null ? "darkgray" : "#323C68" } />
-                    { this.state.other_users_joystick_positions.map((other_users_joystick, index) => {
-                        return (<circle
+                    { this.state.other_users_joystick_positions.map((other_users_joystick, index, other_users_joystick_positions) => {
+                        let elements = [];
+                        if (index === other_users_joystick_positions.length - 1) {
+                            elements.push(
+                                <text
+                                    key = { `${index}_label` }
+                                    x = { other_users_joystick.x + 10 }
+                                    y = { other_users_joystick.y }
+                                    opacity={ other_users_joystick.lifetime / 100.0 }
+                                    fill={ this.state.other_users_joystick_colors[other_users_joystick.user_id] }
+                                >
+                                    { other_users_joystick.username }
+                                </text>
+                            );
+                        }
+                        elements.push(<circle
                             key={ index }
                             cx={ other_users_joystick.x }
                             cy={ other_users_joystick.y }
                             r="5"
                             opacity={ other_users_joystick.lifetime / 100.0 }
                             fill={ this.state.other_users_joystick_colors[other_users_joystick.user_id] }
-                        />)
+                        />);
+                        return elements;
                     })}
                     <circle
                         cx={ this.state.joystick_x }

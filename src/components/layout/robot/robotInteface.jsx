@@ -316,7 +316,10 @@ export default class RobotInterface extends Component {
   };
 
   handleLoggingClicks = (click) => {
-    let { logClicks, clickCounter } = this.state;
+    let { logClicks, clickCounter, controls } = this.state;
+    if (controls.find(control => control.id === click.button.id).joystick) {
+      return;
+    }
     clickCounter++;
     click.count = clickCounter;
     logClicks.push(click);

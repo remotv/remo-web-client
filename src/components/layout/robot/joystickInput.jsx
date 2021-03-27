@@ -134,8 +134,8 @@ export default class JoystickInput extends Component {
             // Calculate position of touch on the canvas.
             let canvas = this.canvasRef.current;
             let rect = canvas.getBoundingClientRect();
-            let mouseX = e.touches[0].clientX - rect.left;
-            let mouseY = e.touches[0].clientY - rect.top;
+            let mouseX = e.targetTouches[0].clientX - rect.left;
+            let mouseY = e.targetTouches[0].clientY - rect.top;
             // If the touch is within the white circular background, set the new joystick position.
             let max_allowable_radius = circle_radius - this.props.stickRadius;
             let distance_from_cursor_to_center = Math.sqrt(Math.pow(mouseX - this.props.width / 2, 2) + Math.pow(mouseY - this.props.height / 2, 2));

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { DisplayCooldown } from "../../presentation/robotInterface/";
+import JoystickInput from "./joystickInput";
 import "./robot.css";
 
 export default class RenderButtons extends Component {
@@ -37,6 +38,24 @@ export default class RenderButtons extends Component {
           <React.Fragment />
         )}
       </button>
+    );
+  };
+
+  // single joystick render
+  handleJoystick = (aButton) => {
+    return (
+      <JoystickInput
+        key = { aButton.id }
+        aButton={ aButton }
+        width = { 300 }
+        height = { 300 }
+        stickRadius = { 15 }
+        user = { this.props.user }
+        channel = { this.props.channel }
+        controlsId = { this.props.controls_id }
+        serverId = { this.props.server.server_id }
+      >
+      </JoystickInput>
     );
   };
 
@@ -133,6 +152,9 @@ export default class RenderButtons extends Component {
           //do nothing?
         }
         if (aButton.break) return this.handleBreak(aButton, index);
+        if (aButton.joystick) {
+          return this.handleJoystick(aButton);
+        }
         return this.handleButton({ aButton, style, hotKeyStyle });
       });
     }

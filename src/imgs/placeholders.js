@@ -73,7 +73,7 @@ const defaultImages = {
   patreon1500: patreon1500,
   patreon2500: patreon2500,
   patreon3500: patreon3500,
-  patreon5000: patreon5000
+  patreon5000: patreon5000,
 };
 
 export default defaultImages;

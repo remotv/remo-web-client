@@ -39,23 +39,28 @@ export default class JoystickInput extends Component {
             this.setState({
                               other_users_joystick_colors: Object.assign(this.state.other_users_joystick_colors, colors_update),
                               other_users_joystick_positions: this.state.other_users_joystick_positions.concat(other_user_joystick_position)
-                          });
+                          }, this.redrawCanvas);
         }
     }
 
     updateOtherUsersJoystickPositions = () => {
+        let starting_length = this.state.other_users_joystick_positions.length;
+        let changed = false;
         let other_users_joystick_positions_updated = this.state.other_users_joystick_positions.map((other_users_joystick_position) => {
+            changed = true;
             other_users_joystick_position.lifetime--;
             return other_users_joystick_position;
         })
         .filter((other_users_joystick_position) => (other_users_joystick_position.lifetime > 0));
-        this.setState({ other_users_joystick_positions: other_users_joystick_positions_updated });
+        if (changed || this.state.other_users_joystick_positions.length !== starting_length) {
+            this.setState({ other_users_joystick_positions: other_users_joystick_positions_updated }, this.redrawCanvas);
+        }
     }
 
     constructor(props) {
         super(props);
         socket.on(BUTTON_COMMAND, this.handleOtherUsersCommands);
-        this.svgRef = React.createRef();
+        this.canvasRef = React.createRef();
         this.interval = setInterval(() => {
             this.updateOtherUsersJoystickPositions();
         }, 10);
@@ -83,12 +88,21 @@ export default class JoystickInput extends Component {
     }
 
     updateJoystickPosition(x, y) {
-        this.setState({joystick_x: x, joystick_y: y});
+        this.setState({joystick_x: x, joystick_y: y}, this.redrawCanvas);
         this.sendJoystickPositionToSocket(x, y);
     }
 
     componentDidMount = () => {
-        this.setState({joystick_x: this.props.width / 2, joystick_y: this.props.height / 2});
+        let canvas = this.canvasRef.current;
+        const devicePixelRatio = window.devicePixelRatio || 1;
+        canvas.width = this.props.width * devicePixelRatio;
+        canvas.height = this.props.height * devicePixelRatio;
+        canvas.style.width = `${this.props.width}px`;
+        canvas.style.height = `${this.props.height}px`;
+        this.ctx = canvas.getContext("2d");
+        this.ctx.scale(devicePixelRatio, devicePixelRatio);
+        this.ctx.font = "14pt Arial";
+        this.setState({joystick_x: this.props.width / 2, joystick_y: this.props.height / 2}, this.redrawCanvas);
     }
 
     handleMouseMove = (e) => {
@@ -97,8 +111,8 @@ export default class JoystickInput extends Component {
         // If the joystick is active, then move it according to the user's mouse movements.
         if (this.state.active) {
             // Update the joystick position.
-            let newJoystickX = this.state.joystick_x + e.movementX;
-            let newJoystickY = this.state.joystick_y + e.movementY;
+            let newJoystickX = this.state.joystick_x + e.movementX * (window.devicePixelRatio || 1);
+            let newJoystickY = this.state.joystick_y + e.movementY * (window.devicePixelRatio || 1);
             // If the cursor is within the white circular background, update the joystick position.
             let max_allowable_radius = circle_radius - this.props.stickRadius;
             let distance_from_cursor_to_center = Math.sqrt(Math.pow(newJoystickX - this.props.width / 2, 2) + Math.pow(newJoystickY - this.props.height / 2, 2));
@@ -117,14 +131,11 @@ export default class JoystickInput extends Component {
         let circle_radius = this.props.width / 2;
         // If the joystick is active, then move it according to the user's touches.
         if (this.state.active) {
-            // Calculate position of touch on the svg.
-            // See https://stackoverflow.com/a/17130415 for how we calculate the position of the click within the svg.
-            let svg = this.svgRef.current;
-            let rect = svg.getBoundingClientRect();
-            let scaleX = svg.width.animVal.value / rect.width;
-            let scaleY = svg.height.animVal.value / rect.height;
-            let mouseX = (e.touches[0].clientX - rect.left) * scaleX;
-            let mouseY = (e.touches[0].clientY - rect.top) * scaleY;
+            // Calculate position of touch on the canvas.
+            let canvas = this.canvasRef.current;
+            let rect = canvas.getBoundingClientRect();
+            let mouseX = e.touches[0].clientX - rect.left;
+            let mouseY = e.touches[0].clientY - rect.top;
             // If the touch is within the white circular background, set the new joystick position.
             let max_allowable_radius = circle_radius - this.props.stickRadius;
             let distance_from_cursor_to_center = Math.sqrt(Math.pow(mouseX - this.props.width / 2, 2) + Math.pow(mouseY - this.props.height / 2, 2));
@@ -142,46 +153,41 @@ export default class JoystickInput extends Component {
     handleMouseDown = (e) => {
         let circle_radius = this.props.width / 2;
         // When the mouse button is pressed down, activate the joystick and lock the user's pointer to prevent it leaving.
-        // Calculate position of click on the svg.
-        // See https://stackoverflow.com/a/17130415 for how we calculate the position of the click within the svg.
-        let svg = this.svgRef.current;
-        let rect = svg.getBoundingClientRect();
-        let scaleX = svg.width.animVal.value / rect.width;
-        let scaleY = svg.height.animVal.value / rect.height;
-        let mouseX = (e.clientX - rect.left) * scaleX;
-        let mouseY = (e.clientY - rect.top) * scaleY;
+        // Calculate position of click on the canvas.
+        let canvas = this.canvasRef.current;
+        let rect = canvas.getBoundingClientRect();
+        let mouseX = e.clientX - rect.left;
+        let mouseY = e.clientY - rect.top;
         // Set the new joystick position and make the joystick active (if the click was within the white circle).
         let distance_from_cursor_to_center = Math.sqrt(Math.pow(mouseX - this.props.width / 2, 2) + Math.pow(mouseY - this.props.height / 2, 2));
         if (distance_from_cursor_to_center <= circle_radius - this.props.stickRadius) {
             this.updateJoystickPosition(mouseX, mouseY);
-            this.setState({active: true});
+            this.setState({active: true}, this.redrawCanvas);
             // Lock the user's pointer.
-            svg.requestPointerLock();
+            canvas.requestPointerLock();
         }
     }
 
     handleTouchStart = (e) => {
         let circle_radius = this.props.width / 2;
         // When the user starts dragging their finger, activate the joystick.
-        // Calculate position of click on the svg.
-        // See https://stackoverflow.com/a/17130415 for how we calculate the position of the click within the svg.
-        let svg = this.svgRef.current;
-        let rect = svg.getBoundingClientRect();
-        let scaleX = svg.width.animVal.value / rect.width;
-        let scaleY = svg.height.animVal.value / rect.height;
-        let mouseX = (e.targetTouches[0].clientX - rect.left) * scaleX;
-        let mouseY = (e.targetTouches[0].clientY - rect.top) * scaleY;
+        // Calculate position of click on the canvas.
+        let canvas = this.canvasRef.current;
+        let rect = canvas.getBoundingClientRect();
+        let mouseX = e.targetTouches[0].clientX - rect.left;
+        let mouseY = e.targetTouches[0].clientY - rect.top;
         // Set the new joystick position and make the joystick active (if the touch was within the white circle).
         let distance_from_cursor_to_center = Math.sqrt(Math.pow(mouseX - this.props.width / 2, 2) + Math.pow(mouseY - this.props.height / 2, 2));
         if (distance_from_cursor_to_center <= circle_radius - this.props.stickRadius) {
             this.updateJoystickPosition(mouseX, mouseY);
-            this.setState({active: true});
+            this.setState({active: true}, this.redrawCanvas);
         }
     }
 
     handleMouseUp = (e) => {
         // When the mouse button is released, deactivate the joystick, move it back to center, and unlock the user's pointer.
-        this.setState({joystick_x: this.props.width / 2, joystick_y: this.props.height / 2, active: false});
+        this.updateJoystickPosition(this.props.width / 2, this.props.height / 2);
+        this.setState({ active: false }, this.redrawCanvas);
         document.exitPointerLock();
     }
 
@@ -189,57 +195,55 @@ export default class JoystickInput extends Component {
         clearInterval(this.interval);
     }
 
+    redrawCanvas = () => {
+        // Save drawing parameters' state.
+        this.ctx.save();
+        // Clear the canvas.
+        this.ctx.clearRect(0, 0, this.props.width, this.props.height);
+        // Background circle.
+        this.ctx.beginPath();
+        this.ctx.arc(this.props.width / 2, this.props.height / 2, this.props.width / 2, 0, 2 * Math.PI, false);
+        this.ctx.fillStyle = this.props.user == null ? "darkgray" : "#323C68";
+        this.ctx.fill();
+        // Joystick stick.
+        this.ctx.beginPath();
+        this.ctx.arc(this.state.joystick_x, this.state.joystick_y, this.props.stickRadius, 0, 2 * Math.PI, false);
+        this.ctx.fillStyle = this.props.user == null ? "gray" : (this.state.active ? "#00FFFF" : "red");
+        this.ctx.fill();
+        // Other users' joystick positions with labels.
+        for (let i = 0; i < this.state.other_users_joystick_positions.length; i++) {
+            let other_users_joystick = this.state.other_users_joystick_positions[i];
+            this.ctx.globalAlpha = other_users_joystick.lifetime / 100.0;
+            this.ctx.fillStyle = this.state.other_users_joystick_colors[other_users_joystick.user_id];
+            if (i === this.state.other_users_joystick_positions.length - 1) {
+                this.ctx.fillText(other_users_joystick.username, other_users_joystick.x + 10, other_users_joystick.y);
+            }
+            this.ctx.beginPath();
+            this.ctx.arc(other_users_joystick.x, other_users_joystick.y, 5, 0, 2 * Math.PI, false);
+            this.ctx.fill();
+        }
+        // Restore drawing parameters' state.
+        this.ctx.restore();
+    }
+
     render() {
         // Create a 300 pixel by 300 pixel canvas for rendering the joystick UI. The data-label custom attribute is used to store the joystick's label so that the event handler can send it over the WebSocket. The data-id custom attribute store the joystick's ID. The data-command custom attribute stores the prefix of the command that the joystick will send.
         return (
-            <React.Fragment>
-                <svg
-                    ref={ this.svgRef }
-                    width={ this.props.width }
-                    height={ this.props.height }
-                    style = { { touchAction: "none" } }
-                    onMouseDown={ this.props.user == null ? undefined : this.handleMouseDown }
-                    onMouseMove={ this.props.user == null ? undefined : this.handleMouseMove }
-                    onMouseUp={ this.props.user == null ? undefined : this.handleMouseUp }
-                    onTouchStart={ this.props.user == null ? undefined : this.handleTouchStart }
-                    onTouchMove={ this.props.user == null ? undefined : this.handleTouchMove }
-                    onTouchEnd={ this.props.user == null ? undefined : this.handleMouseUp }
-                    onTouchCancel={ this.props.user == null ? undefined : this.handleMouseUp }
-                >
-                    <circle cx={ this.props.width / 2 } cy={ this.props.height / 2 } r={ this.props.width / 2 } fill={ this.props.user == null ? "darkgray" : "#323C68" } />
-                    { this.state.other_users_joystick_positions.map((other_users_joystick, index, other_users_joystick_positions) => {
-                        let elements = [];
-                        if (index === other_users_joystick_positions.length - 1) {
-                            elements.push(
-                                <text
-                                    key = { `${index}_label` }
-                                    x = { other_users_joystick.x + 10 }
-                                    y = { other_users_joystick.y }
-                                    opacity={ other_users_joystick.lifetime / 100.0 }
-                                    fill={ this.state.other_users_joystick_colors[other_users_joystick.user_id] }
-                                >
-                                    { other_users_joystick.username }
-                                </text>
-                            );
-                        }
-                        elements.push(<circle
-                            key={ index }
-                            cx={ other_users_joystick.x }
-                            cy={ other_users_joystick.y }
-                            r="5"
-                            opacity={ other_users_joystick.lifetime / 100.0 }
-                            fill={ this.state.other_users_joystick_colors[other_users_joystick.user_id] }
-                        />);
-                        return elements;
-                    })}
-                    <circle
-                        cx={ this.state.joystick_x }
-                        cy={ this.state.joystick_y }
-                        r={ this.props.stickRadius }
-                        fill={ this.props.user == null ? "gray" : (this.state.active ? "#00FFFF" : "red") }
-                    />
-                </svg>
-            </React.Fragment>
+            <canvas
+                ref={ this.canvasRef }
+                width="300"
+                height="300"
+                style = { { touchAction: "none" } }
+                onMouseDown={ this.props.user == null ? undefined : this.handleMouseDown }
+                onMouseMove={ this.props.user == null ? undefined : this.handleMouseMove }
+                onMouseUp={ this.props.user == null ? undefined : this.handleMouseUp }
+                onTouchStart={ this.props.user == null ? undefined : this.handleTouchStart }
+                onTouchMove={ this.props.user == null ? undefined : this.handleTouchMove }
+                onTouchEnd={ this.props.user == null ? undefined : this.handleMouseUp }
+                onTouchCancel={ this.props.user == null ? undefined : this.handleMouseUp }
+            >
+                Your browser does not support HTML5 Canvas. Please switch to a modern browser to use this functionality.
+            </canvas>
         );
     }
 }
